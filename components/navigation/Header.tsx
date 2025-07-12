@@ -13,9 +13,9 @@ const Header: React.FC = () => {
 
 	const navlinks = [
 		{ id: "solution-demo", name: "Solution Demo", href: "#solution-demo" },
-		{ id: "coverage", name: "Coverage", href: "#coverage" },
-		{ id: "pricing", name: "Pricing", href: "#pricing" },
-		{ id: "get-started", name: "Get Started", href: "#get-started" },
+		{ id: "coverage", name: "Coverage", href: "/coverage" },
+		{ id: "pricing", name: "Pricing", href: "/pricing" },
+		{ id: "get-started", name: "Get Started", href: "/get-started" },
 	];
 
 	React.useEffect(() => {
@@ -72,7 +72,7 @@ const Header: React.FC = () => {
 		<header className="fixed top-0 left-0 right-0 z-100 bg-background/75 backdrop-blur-subtle border-b border-border">
 			{/* Progress Bar */}
 			<div
-				className="absolute bottom-0 left-0 h-0.5 bg-accent transition-all duration-200 ease-out"
+				className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-yellow-400 to-yellow-600 transition-all duration-200 ease-out"
 				style={{ width: `${scrollProgress}%` }}
 			/>
 
@@ -108,7 +108,7 @@ const Header: React.FC = () => {
 								onClick={() => handleNavClick(item.href)}
 								className={`px-3 py-2 text-sm font-medium transition-smooth rounded-md ${
 									activeSection === item.id
-										? "text-accent bg-accent/10"
+										? "text-yellow-600 bg-yellow-300 dark:text-yellow-400 dark:bg-yellow-900/20"
 										: "text-text-secondary hover:text-primary hover:bg-surface"
 								}`}>
 								{item.name}
@@ -162,7 +162,7 @@ const Header: React.FC = () => {
 									onClick={() => handleNavClick(item.href)}
 									className={`block w-full text-left px-3 py-2 text-sm font-medium transition-smooth rounded-md cursor-pointer ${
 										activeSection === item.id
-											? "text-accent bg-accent/10"
+											? "text-yellow-600 bg-yellow-100 dark:text-yellow-400 dark:bg-yellow-900/20"
 											: "text-text-secondary hover:text-primary hover:bg-surface"
 									}`}>
 									{item.name}
