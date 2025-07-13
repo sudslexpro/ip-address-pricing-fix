@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/icon/AppIcon";
 import "ol/ol.css";
@@ -14,6 +14,7 @@ import Feature from "ol/Feature";
 import Point from "ol/geom/Point";
 import { Style, Circle as CircleStyle, Fill, Stroke } from "ol/style";
 import Overlay from "ol/Overlay";
+import type { FeatureLike } from "ol/Feature";
 
 interface CountryData {
 	id: string;
@@ -38,6 +39,39 @@ const HeroSection: React.FC = () => {
 	const popupRef = useRef<HTMLDivElement | null>(null);
 	const popupContentRef = useRef<HTMLDivElement | null>(null);
 	const vectorSourceRef = useRef<VectorSource | null>(null);
+	const vectorLayerRef = useRef<VectorLayer<VectorSource> | null>(null);
+
+	// Unified style function that handles both filtering and hover states
+	const getFeatureStyle = useCallback(
+		(feature: FeatureLike) => {
+			// Check if feature should be visible based on current filter
+			const featureRegion = feature.get("region");
+			const isVisible =
+				activeRegion === "all" || featureRegion === activeRegion;
+
+			// If not visible, return undefined to hide the feature
+			if (!isVisible) {
+				return undefined;
+			}
+
+			// Check if feature is highlighted (hovered)
+			const isHighlighted = hoveredCountry?.id === feature.get("id");
+
+			return new Style({
+				image: new CircleStyle({
+					radius: isHighlighted ? 8 : 6,
+					fill: new Fill({
+						color: isHighlighted ? "#6366F1" : "#3B82F6",
+					}),
+					stroke: new Stroke({
+						color: "white",
+						width: 2,
+					}),
+				}),
+			});
+		},
+		[activeRegion, hoveredCountry]
+	);
 
 	const countryData: CountryData[] = [
 		{
@@ -98,6 +132,7 @@ const HeroSection: React.FC = () => {
 		},
 	];
 
+	// Initialize map only once
 	useEffect(() => {
 		const interval = setInterval(() => {
 			setQuotesGenerated((prev) => prev + Math.floor(Math.random() * 3) + 1);
@@ -117,6 +152,8 @@ const HeroSection: React.FC = () => {
 			popupElement.style.left = "-50px";
 			popupElement.style.minWidth = "150px";
 			popupElement.style.display = "none";
+			popupElement.style.pointerEvents = "none"; // Prevent popup from blocking map interactions
+			popupElement.style.zIndex = "1000"; // Ensure popup is above map
 
 			const popupContent = document.createElement("div");
 			popupContent.className = "ol-popup-content";
@@ -142,22 +179,11 @@ const HeroSection: React.FC = () => {
 
 			const vectorLayer = new VectorLayer({
 				source: vectorSource,
-				style: (feature) => {
-					const isHighlighted = hoveredCountry?.id === feature.get("id");
-					return new Style({
-						image: new CircleStyle({
-							radius: isHighlighted ? 8 : 6,
-							fill: new Fill({
-								color: isHighlighted ? "#6366F1" : "#3B82F6",
-							}),
-							stroke: new Stroke({
-								color: "white",
-								width: 2,
-							}),
-						}),
-					});
-				},
+				style: getFeatureStyle,
 			});
+
+			// Store reference to vector layer
+			vectorLayerRef.current = vectorLayer;
 
 			// Create the map
 			const newMap = new Map({
@@ -201,53 +227,73 @@ const HeroSection: React.FC = () => {
 				vectorSource.addFeature(feature);
 			});
 
-			// Handle pointer move event
+			// Handle pointer move event with debouncing
+			let hoverTimeout: NodeJS.Timeout | null = null;
 			newMap.on("pointermove", (evt) => {
-				const feature = newMap.forEachFeatureAtPixel(
-					evt.pixel,
-					(feature) => feature
-				);
-
-				if (feature) {
-					const countryId = feature.get("id");
-					const country = countryData.find((c) => c.id === countryId);
-
-					if (
-						country &&
-						popupContentRef.current &&
-						popupRef.current &&
-						mapContainerRef.current
-					) {
-						// Update the popup content
-						popupContentRef.current.innerHTML = `
-							<div style="font-weight: 600;">${country.name}</div>
-							<div style="color: #6366F1; margin-top: 5px;">${country.price}</div>
-						`;
-
-						// Show the popup
-						popupRef.current.style.display = "block";
-						popup.setPosition(evt.coordinate);
-
-						// Update the hovered country
-						setHoveredCountry(country);
-
-						// Change cursor to pointer
-						mapContainerRef.current.style.cursor = "pointer";
-					}
-				} else {
-					// Hide the popup
-					if (popupRef.current) {
-						popupRef.current.style.display = "none";
-					}
-
-					// Clear the hovered country
-					setHoveredCountry(null);
-
-					// Reset cursor
-					if (mapContainerRef.current) {
-						mapContainerRef.current.style.cursor = "";
-					}
+				// Clear previous timeout
+				if (hoverTimeout) {
+					clearTimeout(hoverTimeout);
 				}
+
+				// Debounce the hover effect
+				hoverTimeout = setTimeout(() => {
+					const feature = newMap.forEachFeatureAtPixel(
+						evt.pixel,
+						(feature) => feature,
+						{
+							hitTolerance: 5, // Add some tolerance for easier hover detection
+						}
+					);
+
+					if (feature) {
+						const countryId = feature.get("id");
+						const country = countryData.find((c) => c.id === countryId);
+
+						// Check if the feature should be visible based on current filter
+						const featureRegion = feature.get("region");
+						const isVisible =
+							activeRegion === "all" || featureRegion === activeRegion;
+
+						// Only update if it's a different country and the feature is visible
+						if (
+							country &&
+							isVisible &&
+							hoveredCountry?.id !== countryId &&
+							popupContentRef.current &&
+							popupRef.current &&
+							mapContainerRef.current
+						) {
+							// Update the popup content
+							popupContentRef.current.innerHTML = `
+								<div style="font-weight: 600;">${country.name}</div>
+								<div style="color: #6366F1; margin-top: 5px;">${country.price}</div>
+							`;
+
+							// Show the popup
+							popupRef.current.style.display = "block";
+							popup.setPosition(evt.coordinate);
+
+							// Update the hovered country
+							setHoveredCountry(country);
+
+							// Change cursor to pointer
+							mapContainerRef.current.style.cursor = "pointer";
+						}
+					} else {
+						// Hide the popup
+						if (popupRef.current) {
+							popupRef.current.style.display = "none";
+						}
+
+						// Clear the hovered country
+						setHoveredCountry(null);
+
+						// Reset cursor
+						if (mapContainerRef.current) {
+							mapContainerRef.current.style.cursor = "";
+						}
+					}
+				}, 50); // 50ms debounce
 			});
 
 			// Handle click event for toggling popups
@@ -260,7 +306,12 @@ const HeroSection: React.FC = () => {
 					const countryId = feature.get("id");
 					const country = countryData.find((c) => c.id === countryId);
 
-					if (country && popupRef.current) {
+					// Check if the feature should be visible based on current filter
+					const featureRegion = feature.get("region");
+					const isVisible =
+						activeRegion === "all" || featureRegion === activeRegion;
+
+					if (country && isVisible && popupRef.current) {
 						// Toggle the popup
 						if (popupRef.current.style.display === "none") {
 							popupRef.current.style.display = "block";
@@ -274,68 +325,66 @@ const HeroSection: React.FC = () => {
 
 			setMap(newMap);
 			setIsMapLoaded(true);
-
-			// Update the vector layer when hoveredCountry changes
-			vectorLayer.changed();
 		}
 
 		// Cleanup function
 		return () => {
 			clearInterval(interval);
+		};
+	}, []); // Remove dependencies to prevent re-initialization
+
+	// Separate effect to handle hover state changes and region filtering
+	useEffect(() => {
+		if (vectorLayerRef.current) {
+			// Update the style function on the layer
+			vectorLayerRef.current.setStyle(getFeatureStyle);
+			// Trigger re-render of the vector layer
+			vectorLayerRef.current.changed();
+		}
+	}, [getFeatureStyle]);
+
+	// Cleanup effect for component unmount
+	useEffect(() => {
+		return () => {
 			if (map) {
 				map.setTarget(undefined);
+				setMap(null);
 			}
 		};
-	}, [map, hoveredCountry]);
+	}, [map]);
 
 	// Function to filter markers by region
-	const filterMarkersByRegion = (region: string) => {
-		setActiveRegion(region);
+	const filterMarkersByRegion = useCallback(
+		(region: string) => {
+			setActiveRegion(region);
 
-		if (vectorSourceRef.current) {
-			// Get all features
-			const features = vectorSourceRef.current.getFeatures();
+			// Optional: Pan to region center when filtering
+			if (map && region !== "all") {
+				const regionCenters = {
+					americas: [-85, 40],
+					europe: [10, 50],
+					asia: [100, 30],
+				};
 
-			// Filter features by region
-			features.forEach((feature) => {
-				const featureRegion = feature.get("region");
-				feature.set("visible", region === "all" || featureRegion === region);
-			});
-
-			// Update the vector layer
-			if (map) {
-				map.getLayers().forEach((layer) => {
-					if (layer instanceof VectorLayer) {
-						// Update the style function to hide/show features based on visibility
-						layer.setStyle((feature) => {
-							if (
-								!feature.get("visible") &&
-								feature.get("visible") !== undefined
-							) {
-								return undefined; // Hide feature
-							}
-
-							const isHighlighted = hoveredCountry?.id === feature.get("id");
-							return new Style({
-								image: new CircleStyle({
-									radius: isHighlighted ? 8 : 6,
-									fill: new Fill({
-										color: isHighlighted ? "#6366F1" : "#3B82F6",
-									}),
-									stroke: new Stroke({
-										color: "white",
-										width: 2,
-									}),
-								}),
-							});
-						});
-
-						layer.changed();
-					}
+				const center = regionCenters[region as keyof typeof regionCenters];
+				if (center) {
+					map.getView().animate({
+						center: fromLonLat(center),
+						zoom: 3,
+						duration: 1000,
+					});
+				}
+			} else if (map && region === "all") {
+				// Reset to world view
+				map.getView().animate({
+					center: fromLonLat([0, 20]),
+					zoom: 2,
+					duration: 1000,
 				});
 			}
-		}
-	};
+		},
+		[map]
+	);
 
 	// Function to toggle all price popups
 	const toggleAllPrices = () => {
@@ -346,7 +395,12 @@ const HeroSection: React.FC = () => {
 			const features = vectorSourceRef.current.getFeatures();
 
 			features.forEach((feature) => {
-				if (feature.get("visible") !== false) {
+				// Only show popups for features that match the current region filter
+				const featureRegion = feature.get("region");
+				const isVisible =
+					activeRegion === "all" || featureRegion === activeRegion;
+
+				if (isVisible) {
 					const countryId = feature.get("id");
 					const country = countryData.find((c) => c.id === countryId);
 
@@ -427,6 +481,8 @@ const HeroSection: React.FC = () => {
 					box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 					font-family: inherit;
 					background-color: white;
+					pointer-events: none !important;
+					z-index: 1000;
 				}
 
 				/* Style the OpenLayers controls */
@@ -451,6 +507,16 @@ const HeroSection: React.FC = () => {
 				.map-container {
 					transition: opacity 0.5s ease;
 				}
+
+				/* Ensure map container doesn't interfere with interactions */
+				.map-container * {
+					pointer-events: auto;
+				}
+
+				/* Popup should not block pointer events */
+				.ol-popup * {
+					pointer-events: none !important;
+				}
 			`}</style>
 
 			{/* Background Pattern */}
@@ -468,7 +534,7 @@ const HeroSection: React.FC = () => {
 					{/* Left Side - Content */}
 					<div className="space-y-8">
 						<div className="space-y-6">
-							<div className="inline-flex items-center space-x-2 bg-yellow-200/20 text-yellow-600 px-4 py-2 rounded-full text-sm font-medium">
+							<div className="inline-flex items-center space-x-2 bg-yellow-200/20 text-yellow-500 px-4 py-2 rounded-full text-sm font-medium">
 								<Icon name="Zap" size={16} />
 								<span>White-Label Trademark Platform</span>
 							</div>
@@ -476,7 +542,8 @@ const HeroSection: React.FC = () => {
 							<h1 className="text-4xl lg:text-6xl font-bold text-primary leading-tight">
 								Generate Professional{" "}
 								<span className="text-yellow-600">Trademark Quotes</span> in 2
-								Minutes for <span className="text-primary">100+ Countries</span>
+								Minutes for{" "}
+								<span className="text-[#1a365d]">100+ Countries</span>
 							</h1>
 
 							<p className="text-xl text-text-secondary leading-relaxed max-w-2xl">
@@ -493,7 +560,7 @@ const HeroSection: React.FC = () => {
 								variant="default"
 								size="lg"
 								onClick={handleDemoRequest}
-								className="bg-accent hover:bg-accent-700 text-white font-semibold px-8 py-4">
+								className="bg-[#1a365d] hover:bg-background text-white hover:text-[#1a365d] border-ring font-semibold px-8 py-8">
 								<Icon name="Play" size={16} />
 								Request Live Demo
 							</Button>
@@ -501,7 +568,7 @@ const HeroSection: React.FC = () => {
 								variant="outline"
 								size="lg"
 								onClick={handleTrialStart}
-								className="border-primary text-primary hover:bg-primary hover:text-white px-8 py-4">
+								className="border-primary text-primary hover:bg-[#1a365d] hover:text-white px-8 py-8">
 								Start Free Trial
 								<Icon name="ArrowRight" size={16} />
 							</Button>
@@ -511,13 +578,13 @@ const HeroSection: React.FC = () => {
 						<div className="pt-8 border-t border-border">
 							<div className="flex flex-wrap items-center gap-8">
 								<div className="flex items-center space-x-2">
-									<div className="w-3 h-3 bg-success rounded-full animate-pulse"></div>
-									<span className="text-sm font-medium text-text-secondary">
+									<div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+									<span className="text-sm font-medium text-primary">
 										{quotesGenerated.toLocaleString()}+ quotes generated monthly
 									</span>
 								</div>
 								<div className="flex items-center space-x-2">
-									<Icon name="Shield" size={16} className="text-success" />
+									<Icon name="Shield" size={16} className="text-green-500" />
 									<span className="text-sm font-medium text-text-secondary">
 										SOC 2 Certified
 									</span>
@@ -605,7 +672,7 @@ const HeroSection: React.FC = () => {
 										onClick={() => filterMarkersByRegion("all")}
 										className={`${
 											activeRegion === "all"
-												? "bg-accent text-white"
+												? "bg-[#1a365d] text-white"
 												: "bg-white/80 text-text-secondary hover:text-primary"
 										} px-2 py-1 rounded text-xs font-medium shadow-sm transition-colors`}>
 										All
@@ -643,7 +710,7 @@ const HeroSection: React.FC = () => {
 								<div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-4 border border-border/50 z-10">
 									<div className="grid grid-cols-3 gap-4 text-center">
 										<div>
-											<div className="text-2xl font-bold text-primary">
+											<div className="text-2xl font-bold text-[#1a365d]">
 												100+
 											</div>
 											<div className="text-xs text-text-secondary">
@@ -651,13 +718,15 @@ const HeroSection: React.FC = () => {
 											</div>
 										</div>
 										<div>
-											<div className="text-2xl font-bold text-accent">95%</div>
+											<div className="text-2xl font-bold text-yellow-600">
+												95%
+											</div>
 											<div className="text-xs text-text-secondary">
 												Accuracy
 											</div>
 										</div>
 										<div>
-											<div className="text-2xl font-bold text-success">
+											<div className="text-2xl font-bold text-green-500">
 												2min
 											</div>
 											<div className="text-xs text-text-secondary">
