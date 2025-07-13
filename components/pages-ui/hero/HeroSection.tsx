@@ -534,14 +534,14 @@ const HeroSection: React.FC = () => {
 					{/* Left Side - Content */}
 					<div className="space-y-8">
 						<div className="space-y-6">
-							<div className="inline-flex items-center space-x-2 bg-yellow-200/20 text-yellow-500 px-4 py-2 rounded-full text-sm font-medium">
+							<div className="inline-flex items-center space-x-2 bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium">
 								<Icon name="Zap" size={16} />
 								<span>White-Label Trademark Platform</span>
 							</div>
 
 							<h1 className="text-4xl lg:text-6xl font-bold text-primary leading-tight">
 								Generate Professional{" "}
-								<span className="text-yellow-600">Trademark Quotes</span> in 2
+								<span className="text-accent">Trademark Quotes</span> in 2
 								Minutes for{" "}
 								<span className="text-[#1a365d]">100+ Countries</span>
 							</h1>
@@ -578,13 +578,13 @@ const HeroSection: React.FC = () => {
 						<div className="pt-8 border-t border-border">
 							<div className="flex flex-wrap items-center gap-8">
 								<div className="flex items-center space-x-2">
-									<div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+									<div className="w-3 h-3 bg-success rounded-full animate-pulse"></div>
 									<span className="text-sm font-medium text-primary">
 										{quotesGenerated.toLocaleString()}+ quotes generated monthly
 									</span>
 								</div>
 								<div className="flex items-center space-x-2">
-									<Icon name="Shield" size={16} className="text-green-500" />
+									<Icon name="Shield" size={16} className="text-success" />
 									<span className="text-sm font-medium text-text-secondary">
 										SOC 2 Certified
 									</span>
@@ -718,7 +718,7 @@ const HeroSection: React.FC = () => {
 											</div>
 										</div>
 										<div>
-											<div className="text-2xl font-bold text-yellow-600">
+											<div className="text-2xl font-bold text-accent">
 												95%
 											</div>
 											<div className="text-xs text-text-secondary">
@@ -726,7 +726,7 @@ const HeroSection: React.FC = () => {
 											</div>
 										</div>
 										<div>
-											<div className="text-2xl font-bold text-green-500">
+											<div className="text-2xl font-bold text-success">
 												2min
 											</div>
 											<div className="text-xs text-text-secondary">
