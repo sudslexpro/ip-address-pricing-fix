@@ -1,9 +1,21 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
-import * as d3 from "d3";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/icon/AppIcon";
 import SimplePDFDownload from "@/components/pages-ui/download-pdf/SimplePDFDownload";
+import "ol/ol.css";
+import Map from "ol/Map";
+import View from "ol/View";
+import TileLayer from "ol/layer/Tile";
+import OSM from "ol/source/OSM";
+import { fromLonLat } from "ol/proj";
+import { Vector as VectorLayer } from "ol/layer";
+import { Vector as VectorSource } from "ol/source";
+import Feature from "ol/Feature";
+import Point from "ol/geom/Point";
+import { Style, Circle as CircleStyle, Fill, Stroke } from "ol/style";
+import Overlay from "ol/Overlay";
+import type { FeatureLike } from "ol/Feature";
 
 interface Country {
 	id: string;
@@ -11,6 +23,7 @@ interface Country {
 	price: number;
 	flag: string;
 	timeline: string;
+	coordinates: [number, number];
 }
 
 interface Service {
@@ -39,7 +52,7 @@ interface GeneratedQuote {
 }
 
 const InteractiveCoverageMap = () => {
-	const svgRef = useRef<SVGSVGElement>(null);
+	const mapContainerRef = useRef<HTMLDivElement>(null);
 	const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
 	const [selectedServices, setSelectedServices] = useState<string[]>([]);
 	const [hoveredCountry, setHoveredCountry] = useState<Country | null>(null);
@@ -48,6 +61,12 @@ const InteractiveCoverageMap = () => {
 		null
 	);
 	const [isGenerating, setIsGenerating] = useState(false);
+	const [map, setMap] = useState<Map | null>(null);
+	const [isMapLoaded, setIsMapLoaded] = useState(false);
+	const popupRef = useRef<HTMLDivElement | null>(null);
+	const popupContentRef = useRef<HTMLDivElement | null>(null);
+	const vectorSourceRef = useRef<VectorSource | null>(null);
+	const vectorLayerRef = useRef<VectorLayer<VectorSource> | null>(null);
 
 	const countryData = [
 		{
@@ -56,6 +75,7 @@ const InteractiveCoverageMap = () => {
 			price: 325,
 			flag: "🇺🇸",
 			timeline: "8-12 months",
+			coordinates: [-98.5795, 39.8283] as [number, number],
 		},
 		{
 			id: "UK",
@@ -63,6 +83,7 @@ const InteractiveCoverageMap = () => {
 			price: 280,
 			flag: "🇬🇧",
 			timeline: "4-6 months",
+			coordinates: [-0.1278, 51.5074] as [number, number],
 		},
 		{
 			id: "DE",
@@ -70,6 +91,7 @@ const InteractiveCoverageMap = () => {
 			price: 290,
 			flag: "🇩🇪",
 			timeline: "6-8 months",
+			coordinates: [10.4515, 51.1657] as [number, number],
 		},
 		{
 			id: "JP",
@@ -77,6 +99,7 @@ const InteractiveCoverageMap = () => {
 			price: 420,
 			flag: "🇯🇵",
 			timeline: "10-14 months",
+			coordinates: [138.2529, 36.2048] as [number, number],
 		},
 		{
 			id: "AU",
@@ -84,6 +107,7 @@ const InteractiveCoverageMap = () => {
 			price: 380,
 			flag: "🇦🇺",
 			timeline: "8-10 months",
+			coordinates: [133.7751, -25.2744] as [number, number],
 		},
 		{
 			id: "CA",
@@ -91,6 +115,7 @@ const InteractiveCoverageMap = () => {
 			price: 310,
 			flag: "🇨🇦",
 			timeline: "6-8 months",
+			coordinates: [-106.3468, 56.1304] as [number, number],
 		},
 		{
 			id: "FR",
@@ -98,6 +123,7 @@ const InteractiveCoverageMap = () => {
 			price: 295,
 			flag: "🇫🇷",
 			timeline: "6-8 months",
+			coordinates: [2.2137, 46.2276] as [number, number],
 		},
 		{
 			id: "IN",
@@ -105,6 +131,7 @@ const InteractiveCoverageMap = () => {
 			price: 180,
 			flag: "🇮🇳",
 			timeline: "12-18 months",
+			coordinates: [78.9629, 20.5937] as [number, number],
 		},
 		{
 			id: "BR",
@@ -112,6 +139,7 @@ const InteractiveCoverageMap = () => {
 			price: 250,
 			flag: "🇧🇷",
 			timeline: "8-12 months",
+			coordinates: [-51.9253, -14.235] as [number, number],
 		},
 		{
 			id: "CN",
@@ -119,6 +147,7 @@ const InteractiveCoverageMap = () => {
 			price: 350,
 			flag: "🇨🇳",
 			timeline: "9-12 months",
+			coordinates: [104.1954, 35.8617] as [number, number],
 		},
 		{
 			id: "KR",
@@ -126,6 +155,7 @@ const InteractiveCoverageMap = () => {
 			price: 320,
 			flag: "🇰🇷",
 			timeline: "8-10 months",
+			coordinates: [127.7669, 35.9078] as [number, number],
 		},
 		{
 			id: "MX",
@@ -133,15 +163,31 @@ const InteractiveCoverageMap = () => {
 			price: 220,
 			flag: "🇲🇽",
 			timeline: "6-9 months",
+			coordinates: [-102.5528, 23.6345] as [number, number],
 		},
-		{ id: "IT", name: "Italy", price: 285, flag: "🇮🇹", timeline: "6-8 months" },
-		{ id: "ES", name: "Spain", price: 275, flag: "🇪🇸", timeline: "6-8 months" },
+		{
+			id: "IT",
+			name: "Italy",
+			price: 285,
+			flag: "🇮🇹",
+			timeline: "6-8 months",
+			coordinates: [12.5674, 41.8719] as [number, number],
+		},
+		{
+			id: "ES",
+			name: "Spain",
+			price: 275,
+			flag: "🇪🇸",
+			timeline: "6-8 months",
+			coordinates: [-3.7492, 40.4637] as [number, number],
+		},
 		{
 			id: "NL",
 			name: "Netherlands",
 			price: 300,
 			flag: "🇳🇱",
 			timeline: "4-6 months",
+			coordinates: [5.2913, 52.1326] as [number, number],
 		},
 		{
 			id: "CH",
@@ -149,6 +195,7 @@ const InteractiveCoverageMap = () => {
 			price: 450,
 			flag: "🇨🇭",
 			timeline: "8-10 months",
+			coordinates: [8.2275, 46.8182] as [number, number],
 		},
 		{
 			id: "SE",
@@ -156,6 +203,7 @@ const InteractiveCoverageMap = () => {
 			price: 320,
 			flag: "🇸🇪",
 			timeline: "6-8 months",
+			coordinates: [18.6435, 60.1282] as [number, number],
 		},
 		{
 			id: "NO",
@@ -163,6 +211,7 @@ const InteractiveCoverageMap = () => {
 			price: 340,
 			flag: "🇳🇴",
 			timeline: "6-8 months",
+			coordinates: [9.5018, 60.472] as [number, number],
 		},
 		{
 			id: "DK",
@@ -170,6 +219,7 @@ const InteractiveCoverageMap = () => {
 			price: 330,
 			flag: "🇩🇰",
 			timeline: "4-6 months",
+			coordinates: [9.5018, 56.2639] as [number, number],
 		},
 		{
 			id: "FI",
@@ -177,6 +227,7 @@ const InteractiveCoverageMap = () => {
 			price: 315,
 			flag: "🇫🇮",
 			timeline: "6-8 months",
+			coordinates: [25.7482, 61.9241] as [number, number],
 		},
 	];
 
@@ -219,133 +270,257 @@ const InteractiveCoverageMap = () => {
 		},
 	];
 
+	// Unified style function that handles both selection and hover states
+	const getFeatureStyle = useCallback(
+		(feature: FeatureLike) => {
+			// Check if feature is selected
+			const countryId = feature.get("id");
+			const isSelected = selectedCountries.includes(countryId);
+
+			// Check if feature is highlighted (hovered)
+			const isHighlighted = hoveredCountry?.id === countryId;
+
+			return new Style({
+				image: new CircleStyle({
+					radius: isSelected ? 10 : isHighlighted ? 8 : 6,
+					fill: new Fill({
+						color: isSelected
+							? "#f59e0b"
+							: isHighlighted
+							? "#6366F1"
+							: "#3B82F6",
+					}),
+					stroke: new Stroke({
+						color: "white",
+						width: 2,
+					}),
+				}),
+			});
+		},
+		[selectedCountries, hoveredCountry]
+	);
+
 	useEffect(() => {
-		if (!svgRef.current) return;
+		// Create popup elements
+		if (!popupRef.current) {
+			const popupElement = document.createElement("div");
+			popupElement.className = "ol-popup";
+			popupElement.style.position = "absolute";
+			popupElement.style.backgroundColor = "white";
+			popupElement.style.boxShadow = "0 1px 4px rgba(0,0,0,0.2)";
+			popupElement.style.padding = "15px";
+			popupElement.style.borderRadius = "10px";
+			popupElement.style.border = "1px solid #cccccc";
+			popupElement.style.bottom = "12px";
+			popupElement.style.left = "-50px";
+			popupElement.style.minWidth = "150px";
+			popupElement.style.display = "none";
+			popupElement.style.pointerEvents = "none";
+			popupElement.style.zIndex = "1000";
 
-		const svg = d3.select(svgRef.current);
-		svg.selectAll("*").remove();
+			const popupContent = document.createElement("div");
+			popupContent.className = "ol-popup-content";
+			popupContent.style.textAlign = "center";
+			popupContent.style.fontSize = "14px";
 
-		const width = 800;
-		const height = 400;
-		const margin = { top: 20, right: 20, bottom: 20, left: 20 };
+			popupElement.appendChild(popupContent);
 
-		svg.attr("width", width).attr("height", height);
+			popupRef.current = popupElement;
+			popupContentRef.current = popupContent;
+		}
 
-		// Create a simple world map representation
-		const projection = d3
-			.geoNaturalEarth1()
-			.scale(120)
-			.translate([width / 2, height / 2]);
+		// Initialize OpenLayers map
+		if (!map && mapContainerRef.current) {
+			// Add the popup overlay to the map container
+			if (popupRef.current) {
+				mapContainerRef.current.appendChild(popupRef.current);
+			}
 
-		const path = d3.geoPath().projection(projection);
+			// Create vector source and layer for markers
+			const vectorSource = new VectorSource();
+			vectorSourceRef.current = vectorSource;
 
-		// Draw ocean background
-		svg
-			.append("rect")
-			.attr("width", width)
-			.attr("height", height)
-			.attr("fill", "#f0f9ff");
+			const vectorLayer = new VectorLayer({
+				source: vectorSource,
+				style: getFeatureStyle,
+			});
 
-		// Draw simplified continents
-		const continents = [
-			{
-				name: "North America",
-				path: "M150,120 L300,120 L300,200 L150,200 Z",
-				fill: "#e2e8f0",
-			},
-			{
-				name: "South America",
-				path: "M200,250 L280,250 L280,350 L200,350 Z",
-				fill: "#e2e8f0",
-			},
-			{
-				name: "Europe",
-				path: "M380,100 L480,100 L480,160 L380,160 Z",
-				fill: "#e2e8f0",
-			},
-			{
-				name: "Africa",
-				path: "M380,180 L480,180 L480,300 L380,300 Z",
-				fill: "#e2e8f0",
-			},
-			{
-				name: "Asia",
-				path: "M500,80 L700,80 L700,220 L500,220 Z",
-				fill: "#e2e8f0",
-			},
-			{
-				name: "Australia",
-				path: "M650,280 L720,280 L720,320 L650,320 Z",
-				fill: "#e2e8f0",
-			},
-		];
+			// Store reference to vector layer
+			vectorLayerRef.current = vectorLayer;
 
-		continents.forEach((continent) => {
-			svg
-				.append("path")
-				.attr("d", continent.path)
-				.attr("fill", continent.fill)
-				.attr("stroke", "#cbd5e1")
-				.attr("stroke-width", 1);
-		});
+			// Create the map
+			const newMap = new Map({
+				target: mapContainerRef.current,
+				layers: [
+					// Base map layer
+					new TileLayer({
+						source: new OSM(),
+					}),
+					vectorLayer,
+				],
+				view: new View({
+					center: fromLonLat([0, 20]),
+					zoom: 2,
+					minZoom: 1.5,
+					maxZoom: 6,
+				}),
+				controls: [],
+			});
 
-		// Add country markers
-		const countryPositions: Record<string, [number, number]> = {
-			US: [220, 160],
-			CA: [200, 120],
-			MX: [180, 200],
-			UK: [420, 120],
-			DE: [450, 130],
-			FR: [430, 140],
-			IT: [460, 150],
-			ES: [410, 160],
-			NL: [440, 120],
-			CH: [450, 140],
-			SE: [470, 100],
-			NO: [460, 90],
-			DK: [460, 110],
-			FI: [480, 100],
-			BR: [240, 300],
-			CN: [620, 140],
-			JP: [670, 140],
-			IN: [580, 160],
-			KR: [640, 130],
-			AU: [685, 300],
+			// Create a popup overlay
+			const popup = new Overlay({
+				element: popupRef.current || undefined,
+				positioning: "bottom-center",
+				stopEvent: false,
+				offset: [0, -10],
+			});
+
+			newMap.addOverlay(popup);
+
+			// Add markers for each country
+			countryData.forEach((country) => {
+				const feature = new Feature({
+					geometry: new Point(fromLonLat(country.coordinates)),
+					id: country.id,
+					name: country.name,
+					price: country.price,
+					flag: country.flag,
+					timeline: country.timeline,
+				});
+
+				vectorSource.addFeature(feature);
+			});
+
+			// Handle pointer move event with debouncing
+			let hoverTimeout: NodeJS.Timeout | null = null;
+			newMap.on("pointermove", (evt) => {
+				// Clear previous timeout
+				if (hoverTimeout) {
+					clearTimeout(hoverTimeout);
+				}
+
+				// Debounce the hover effect
+				hoverTimeout = setTimeout(() => {
+					const feature = newMap.forEachFeatureAtPixel(
+						evt.pixel,
+						(feature) => feature,
+						{
+							hitTolerance: 5,
+						}
+					);
+
+					if (feature) {
+						const countryId = feature.get("id");
+						const country = countryData.find((c) => c.id === countryId);
+
+						// Only update if it's a different country
+						if (
+							country &&
+							hoveredCountry?.id !== countryId &&
+							popupContentRef.current &&
+							popupRef.current &&
+							mapContainerRef.current
+						) {
+							// Update the popup content
+							popupContentRef.current.innerHTML = `
+								<div style="font-weight: 600; display: flex; align-items: center; gap: 8px;">
+									<span>${country.flag}</span>
+									<span>${country.name}</span>
+								</div>
+								<div style="color: #6366F1; margin-top: 5px;">$${country.price}</div>
+								<div style="color: #6b7280; font-size: 12px; margin-top: 2px;">${country.timeline}</div>
+							`;
+
+							// Show the popup
+							popupRef.current.style.display = "block";
+							popup.setPosition(evt.coordinate);
+
+							// Update the hovered country
+							setHoveredCountry(country);
+
+							// Change cursor to pointer
+							mapContainerRef.current.style.cursor = "pointer";
+						}
+					} else {
+						// Hide the popup
+						if (popupRef.current) {
+							popupRef.current.style.display = "none";
+						}
+
+						// Clear the hovered country
+						setHoveredCountry(null);
+
+						// Reset cursor
+						if (mapContainerRef.current) {
+							mapContainerRef.current.style.cursor = "";
+						}
+					}
+				}, 50);
+			});
+
+			// Handle click event for country selection
+			newMap.on("click", (evt) => {
+				const feature = newMap.forEachFeatureAtPixel(
+					evt.pixel,
+					(feature) => feature
+				);
+				if (feature) {
+					const countryId = feature.get("id");
+					toggleCountrySelection(countryId);
+				}
+			});
+
+			setMap(newMap);
+			setIsMapLoaded(true);
+		}
+
+		// Cleanup function
+		return () => {
+			if (map) {
+				map.setTarget(undefined);
+				setMap(null);
+			}
 		};
+	}, []); // Remove dependencies to prevent re-initialization
 
-		countryData.forEach((country) => {
-			const pos = countryPositions[country.id];
-			if (!pos) return;
+	// Separate effect to handle style changes
+	useEffect(() => {
+		if (vectorLayerRef.current) {
+			// Update the style function on the layer
+			vectorLayerRef.current.setStyle(getFeatureStyle);
+			// Trigger re-render of the vector layer
+			vectorLayerRef.current.changed();
+		}
+	}, [getFeatureStyle]);
 
-			const isSelected = selectedCountries.includes(country.id);
-			const isHovered = hoveredCountry?.id === country.id;
+	// Effect to update map features based on selected countries
+	useEffect(() => {
+		if (vectorSourceRef.current) {
+			// Clear existing features
+			vectorSourceRef.current.clear();
 
-			svg
-				.append("circle")
-				.attr("cx", pos[0])
-				.attr("cy", pos[1])
-				.attr("r", isSelected ? 8 : 6)
-				.attr("fill", isSelected ? "#f59e0b" : "#3b82f6")
-				.attr("stroke", "#ffffff")
-				.attr("stroke-width", 2)
-				.attr("opacity", isHovered ? 1 : 0.8)
-				.style("cursor", "pointer")
-				.on("mouseover", () => setHoveredCountry(country))
-				.on("mouseout", () => setHoveredCountry(null))
-				.on("click", () => toggleCountrySelection(country.id));
+			// Add features only for selected countries, or all if none selected
+			const countriesToShow =
+				selectedCountries.length > 0
+					? countryData.filter((country) =>
+							selectedCountries.includes(country.id)
+					  )
+					: countryData;
 
-			// Add country labels
-			svg
-				.append("text")
-				.attr("x", pos[0])
-				.attr("y", pos[1] - 12)
-				.attr("text-anchor", "middle")
-				.attr("font-size", "10px")
-				.attr("font-weight", "bold")
-				.attr("fill", "#374151")
-				.text(country.id);
-		});
-	}, [selectedCountries, hoveredCountry]);
+			countriesToShow.forEach((country) => {
+				const feature = new Feature({
+					geometry: new Point(fromLonLat(country.coordinates)),
+					id: country.id,
+					name: country.name,
+					price: country.price,
+					flag: country.flag,
+					timeline: country.timeline,
+				});
+
+				vectorSourceRef.current?.addFeature(feature);
+			});
+		}
+	}, [selectedCountries]);
 
 	const toggleCountrySelection = (countryId: string) => {
 		setSelectedCountries((prev) =>
@@ -474,19 +649,16 @@ const InteractiveCoverageMap = () => {
 							World Coverage Map
 						</h3>
 						<div className="relative">
-							<svg
-								ref={svgRef}
-								className="w-full h-auto border border-border rounded-lg"
-							/>
-							{hoveredCountry && (
-								<div className="absolute top-4 left-4 bg-text-primary text-white px-3 py-2 rounded-lg text-sm">
-									<div className="font-semibold">{hoveredCountry.name}</div>
-									<div className="text-accent">${hoveredCountry.price}</div>
-									<div className="text-xs opacity-80">
-										{hoveredCountry.timeline}
+							<div
+								ref={mapContainerRef}
+								className="w-full border border-border rounded-lg"
+								style={{ height: "400px", minHeight: "400px" }}>
+								{!isMapLoaded && (
+									<div className="absolute inset-0 flex items-center justify-center bg-gray-50 rounded-lg">
+										<div className="text-gray-500">Loading map...</div>
 									</div>
-								</div>
-							)}
+								)}
+							</div>
 						</div>
 						<div className="mt-4 text-center">
 							<div className="text-sm text-text-secondary">
