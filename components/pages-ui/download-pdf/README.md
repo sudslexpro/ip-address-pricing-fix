@@ -52,41 +52,41 @@ import { PDFDownloadComponent } from "@/components/pages-ui/download-pdf";
 
 // In your component
 const MyComponent = () => {
-	const quote = {
-		countries: [
-			{
-				country: "United States",
-				flag: "🇺🇸",
-				governmentFee: 325,
-				attorneyFee: 200,
-				commission: 78,
-				total: 603,
-				timeline: "8-12 months",
-				services: ["Trademark Search", "Application Filing"],
-			},
-			// ... more countries
-		],
-		services: [
-			{
-				id: "search",
-				name: "Trademark Search",
-				description: "Comprehensive database search",
-				basePrice: 150,
-			},
-			// ... more services
-		],
-		grandTotal: 1500,
-		generatedAt: new Date().toISOString(),
-	};
+ const quote = {
+  countries: [
+   {
+    country: "United States",
+    flag: "🇺🇸",
+    governmentFee: 325,
+    attorneyFee: 200,
+    commission: 78,
+    total: 603,
+    timeline: "8-12 months",
+    services: ["Trademark Search", "Application Filing"],
+   },
+   // ... more countries
+  ],
+  services: [
+   {
+    id: "search",
+    name: "Trademark Search",
+    description: "Comprehensive database search",
+    basePrice: 150,
+   },
+   // ... more services
+  ],
+  grandTotal: 1500,
+  generatedAt: new Date().toISOString(),
+ };
 
-	return (
-		<PDFDownloadComponent
-			quote={quote}
-			onDownloadComplete={() => {
-				console.log("PDF download completed");
-			}}
-		/>
-	);
+ return (
+  <PDFDownloadComponent
+   quote={quote}
+   onDownloadComplete={() => {
+    console.log("PDF download completed");
+   }}
+  />
+ );
 };
 ```
 
@@ -101,7 +101,7 @@ const MyComponent = () => {
 
 ## File Structure
 
-```
+```directory
 components/pages-ui/download-pdf/
 ├── index.ts                     # Export file
 ├── LexProtectorLetterhead.tsx   # Letterhead component
