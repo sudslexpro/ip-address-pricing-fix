@@ -11,11 +11,11 @@ const Footer: React.FC = () => {
 						{/* Company Info */}
 						<div className="lg:col-span-2">
 							<div className="flex items-center space-x-3 mb-6">
-								<div className="flex items-center justify-center w-10 h-10 border border-border rounded-lg">
+								<div className="flex items-center justify-center">
 									<Image
 										src="/assets/images/LP_Logo_Only-1751558392904.jpeg"
 										alt="Lex Quotes Logo"
-										className="w-8 h-8 object-contain"
+										className="w-12 h-12 object-contain"
 										width={100}
 										height={100}
 									/>

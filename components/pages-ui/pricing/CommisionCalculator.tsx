@@ -140,7 +140,7 @@ const CommissionCalculator = () => {
 									max="200"
 									value={monthlyQuotes}
 									onChange={(e) => setMonthlyQuotes(parseInt(e.target.value))}
-									className="w-full h-2 bg-surface rounded-lg appearance-none cursor-pointer slider"
+									className="w-full slider"
 								/>
 								<div className="flex justify-between text-xs text-text-muted mt-2">
 									<span>10</span>
@@ -164,7 +164,7 @@ const CommissionCalculator = () => {
 									max="80"
 									value={commissionRate}
 									onChange={(e) => setCommissionRate(parseInt(e.target.value))}
-									className="w-full h-2 bg-surface rounded-lg appearance-none cursor-pointer slider"
+									className="w-full slider"
 								/>
 								<div className="flex justify-between text-xs text-text-muted mt-2">
 									<span>20%</span>
@@ -191,7 +191,7 @@ const CommissionCalculator = () => {
 									onChange={(e) =>
 										setAverageQuoteValue(parseInt(e.target.value))
 									}
-									className="w-full h-2 bg-surface rounded-lg appearance-none cursor-pointer slider"
+									className="w-full slider"
 								/>
 								<div className="flex justify-between text-xs text-text-muted mt-2">
 									<span>$200</span>
@@ -347,24 +347,131 @@ const CommissionCalculator = () => {
 			</div>
 
 			<style jsx>{`
+				.slider {
+					-webkit-appearance: none;
+					appearance: none;
+					width: 100%;
+					height: 8px;
+					border-radius: 4px;
+					background: #e2e8f0;
+					outline: none;
+					cursor: pointer;
+					position: relative;
+				}
+
+				.slider::-webkit-slider-track {
+					-webkit-appearance: none;
+					appearance: none;
+					width: 100%;
+					height: 8px;
+					border-radius: 4px;
+					background: #e2e8f0;
+					border: none;
+					outline: none;
+				}
+
 				.slider::-webkit-slider-thumb {
+					-webkit-appearance: none;
 					appearance: none;
 					height: 20px;
 					width: 20px;
 					border-radius: 50%;
-					background: var(--color-accent);
+					background: #3b82f6;
 					cursor: pointer;
-					box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+					box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+					border: 2px solid white;
+					transition: all 0.2s ease;
+					position: relative;
+					z-index: 2;
+				}
+
+				.slider::-webkit-slider-thumb:hover {
+					transform: scale(1.1);
+					box-shadow: 0 4px 12px rgba(59, 130, 246, 0.6);
+				}
+
+				.slider::-webkit-slider-thumb:active {
+					transform: scale(0.95);
+				}
+
+				.slider::-moz-range-track {
+					width: 100%;
+					height: 8px;
+					border-radius: 4px;
+					background: #e2e8f0;
+					border: none;
+					outline: none;
+				}
+
+				.slider::-moz-range-progress {
+					height: 8px;
+					border-radius: 4px;
+					background: #3b82f6;
 				}
 
 				.slider::-moz-range-thumb {
+					height: 16px;
+					width: 16px;
+					border-radius: 50%;
+					background: #3b82f6;
+					cursor: pointer;
+					border: 2px solid white;
+					box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+					transition: all 0.2s ease;
+					-moz-appearance: none;
+					appearance: none;
+				}
+
+				.slider::-moz-range-thumb:hover {
+					transform: scale(1.1);
+					box-shadow: 0 4px 12px rgba(59, 130, 246, 0.6);
+				}
+
+				.slider::-moz-range-thumb:active {
+					transform: scale(0.95);
+				}
+
+				.slider:focus {
+					outline: none;
+				}
+
+				.slider:focus::-webkit-slider-thumb {
+					box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4),
+						0 0 0 3px rgba(59, 130, 246, 0.2);
+				}
+
+				.slider:focus::-moz-range-thumb {
+					box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4),
+						0 0 0 3px rgba(59, 130, 246, 0.2);
+				}
+
+				/* For Edge/IE */
+				.slider::-ms-track {
+					width: 100%;
+					height: 8px;
+					background: transparent;
+					border-color: transparent;
+					color: transparent;
+				}
+
+				.slider::-ms-fill-lower {
+					background: #3b82f6;
+					border-radius: 4px;
+				}
+
+				.slider::-ms-fill-upper {
+					background: #e2e8f0;
+					border-radius: 4px;
+				}
+
+				.slider::-ms-thumb {
 					height: 20px;
 					width: 20px;
 					border-radius: 50%;
-					background: var(--color-accent);
+					background: #3b82f6;
 					cursor: pointer;
-					border: none;
-					box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+					border: 2px solid white;
+					box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
 				}
 			`}</style>
 		</section>
