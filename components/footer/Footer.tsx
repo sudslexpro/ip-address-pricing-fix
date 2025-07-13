@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 const Footer: React.FC = () => {
 	return (
@@ -63,25 +64,25 @@ const Footer: React.FC = () => {
 							<h3 className="text-lg font-semibold mb-4">Platform</h3>
 							<ul className="space-y-2 text-gray-300">
 								<li>
-									<a
-										href="#solution-demo"
-										className="hover:text-accent transition-colors">
+									<Link
+										href={"/#solution-demo"}
+										className={`hover:text-accent transition-colors`}>
 										Live Demo
-									</a>
+									</Link>
 								</li>
 								<li>
-									<a
-										href="#pricing"
+									<Link
+										href="/pricing"
 										className="hover:text-accent transition-colors">
 										Pricing
-									</a>
+									</Link>
 								</li>
 								<li>
-									<a
-										href="#coverage"
+									<Link
+										href="/#coverage"
 										className="hover:text-accent transition-colors">
 										Coverage
-									</a>
+									</Link>
 								</li>
 								<li>
 									<a href="#" className="hover:text-accent transition-colors">
