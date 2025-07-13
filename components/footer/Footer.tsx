@@ -85,9 +85,9 @@ const Footer: React.FC = () => {
 									</Link>
 								</li>
 								<li>
-									<a href="#" className="hover:text-accent transition-colors">
+									<Link href="/api-docs" className="hover:text-accent transition-colors">
 										API Documentation
-									</a>
+									</Link>
 								</li>
 								<li>
 									<a href="#" className="hover:text-accent transition-colors">
