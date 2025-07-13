@@ -116,13 +116,13 @@ const FloatingCTA = () => {
 		<div className="fixed bottom-6 right-6 z-150 animate-fade-in">
 			<div className="relative">
 				{/* Pulse animation for attention */}
-				<div className="absolute -inset-1 bg-blue-500 rounded-full opacity-20 animate-pulse"></div>
+				<div className="absolute -inset-1 bg-yellow-500 rounded-full opacity-20 animate-pulse"></div>
 
 				<Button
 					variant="default"
 					size="lg"
 					onClick={handleCTAClick}
-					className="shadow-cta hover:shadow-elevation transition-all duration-200 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold px-6 py-3 rounded-full border-0">
+					className="shadow-cta hover:shadow-elevation transition-all duration-200 bg-gradient-to-r from-blue-900 to-indigo-800 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold px-6 py-3 rounded-full border-0">
 					{ctaText}
 					<ArrowRight className="ml-2" />
 				</Button>

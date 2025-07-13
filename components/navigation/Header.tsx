@@ -69,7 +69,7 @@ const Header: React.FC = () => {
 	};
 
 	return (
-		<header className="fixed top-0 left-0 right-0 z-100 bg-background/75 backdrop-blur-subtle border-b border-border">
+		<header className="fixed top-0 left-0 right-0 z-100 bg-background/95 backdrop-blur-subtle border-b border-border">
 			{/* Progress Bar */}
 			<div
 				className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-yellow-400 to-yellow-600 transition-all duration-200 ease-out"
@@ -122,14 +122,14 @@ const Header: React.FC = () => {
 							variant="outline"
 							size="sm"
 							onClick={() => handleNavClick("#get-started")}
-							className="text-[#1a365d] border-[#1a365d] hover:bg-[#1a365d] hover:text-white">
+							className="text-[#1a365d] border-[#1a365d] hover:bg-[#1a365d] hover:text-white px-8 py-5">
 							Request Demo
 						</Button>
 						<Button
 							variant="default"
 							size="sm"
 							onClick={() => handleNavClick("#get-started")}
-							className={`bg-[#1a365d] text-white hover:bg-[#1b3f6f] border-[#1a365d]`}>
+							className={`bg-[#1a365d] text-white hover:bg-[#1b3f6f] border border-[#8f9297] px-12 py-5`}>
 							Start Trial
 							<ArrowRight className="ml-0.5 size-4" />
 						</Button>
