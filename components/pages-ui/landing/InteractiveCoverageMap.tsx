@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import * as d3 from "d3";
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/icon/AppIcon";
+import SimplePDFDownload from "@/components/pages-ui/download-pdf/SimplePDFDownload";
 
 interface Country {
 	id: string;
@@ -417,10 +418,8 @@ const InteractiveCoverageMap = () => {
 	};
 
 	const downloadQuotePDF = () => {
-		// In a real implementation, this would generate and download a PDF
-		alert(
-			"PDF download functionality would be implemented here with detailed quote information and country flowcharts."
-		);
+		// This function is now handled by the PDFDownloadComponent
+		console.log("PDF download initiated via PDFDownloadComponent");
 	};
 
 	return (
@@ -626,13 +625,12 @@ const InteractiveCoverageMap = () => {
 												<div className="text-lg font-semibold text-text-primary">
 													Grand Total: ${generatedQuote.grandTotal}
 												</div>
-												<Button
-													variant="default"
-													onClick={downloadQuotePDF}
-													className="flex items-center gap-2">
-													<Icon name="Download" size={16} />
-													Download PDF
-												</Button>
+												<SimplePDFDownload
+													quote={generatedQuote}
+													onDownloadComplete={() => {
+														console.log("PDF download completed successfully");
+													}}
+												/>
 											</div>
 										</div>
 									</div>
