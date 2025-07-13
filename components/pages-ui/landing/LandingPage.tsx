@@ -16,6 +16,7 @@ const LandingPage: React.FC = () => {
 				<SolutionDemo />
 				{/* Interactive Coverage Map */}
 				<InteractiveCoverageMap />
+				{/* Testimonials & Social Proof */}
 			</div>
 		</main>
 	);

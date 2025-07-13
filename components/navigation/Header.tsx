@@ -13,7 +13,7 @@ const Header: React.FC = () => {
 
 	const navlinks = [
 		{ id: "solution-demo", name: "Solution Demo", href: "/#solution-demo" },
-		{ id: "coverage", name: "Coverage", href: "/coverage" },
+		{ id: "coverage", name: "Coverage", href: "/#coverage" },
 		{ id: "pricing", name: "Pricing", href: "/pricing" },
 		{ id: "get-started", name: "Get Started", href: "/get-started" },
 	];
@@ -79,7 +79,7 @@ const Header: React.FC = () => {
 			<div className="max-w-7xl mx-auto px-6 lg:px-8">
 				<div className="flex items-center justify-between h-16">
 					{/* Logo */}
-					<div className="flex items-center space-x-3">
+					<Link href="/" className="flex items-center space-x-2">
 						<div className="flex items-center justify-center">
 							<Image
 								src="/assets/images/LP_Logo_Only-1751558392904.jpeg"
@@ -97,7 +97,7 @@ const Header: React.FC = () => {
 								Professional Platform
 							</span>
 						</div>
-					</div>
+					</Link>
 
 					{/* Desktop Navigation */}
 					<nav className="hidden lg:flex items-center space-x-8">
