@@ -12,7 +12,7 @@ const Header: React.FC = () => {
 	const [scrollProgress, setScrollProgress] = React.useState(0);
 
 	const navlinks = [
-		{ id: "solution-demo", name: "Solution Demo", href: "#solution-demo" },
+		{ id: "solution-demo", name: "Solution Demo", href: "/#solution-demo" },
 		{ id: "coverage", name: "Coverage", href: "/coverage" },
 		{ id: "pricing", name: "Pricing", href: "/pricing" },
 		{ id: "get-started", name: "Get Started", href: "/get-started" },

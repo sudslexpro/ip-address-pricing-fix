@@ -120,7 +120,7 @@ const QuickAccessMenu = () => {
 					className="shadow-cta hover:shadow-elevation transition-all duration-200 bg-[#1a365d] hover:bg-surface-secondary border border-blue-200 text-white"
 					aria-label="Quick access menu">
 					<span className="hidden sm:inline ml-2">Quick Access</span>
-					<Icon name="Zap" size={20} className="ml-2" />
+					<Icon name="Zap" size={20} className="ml-0 md:ml-2" />
 				</Button>
 			</div>
 
