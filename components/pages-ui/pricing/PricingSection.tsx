@@ -389,7 +389,7 @@ const PricingSection = () => {
 							<Button
 								variant="default"
 								size="lg"
-								className="bg-accent hover:bg-accent-700 text-white"
+								className="bg-primary hover:bg-blue-900 text-white"
 								onClick={() => handlePlanSelect("professional")}>
 								<Icon name="Play" size={16} className="mr-2" />
 								Start 14-Day Free Trial
@@ -397,6 +397,7 @@ const PricingSection = () => {
 							<Button
 								variant="outline"
 								size="lg"
+                className={`hover:bg-primary hover:text-white`}
 								onClick={() => {
 									const element = document.querySelector("#demo-form");
 									if (element) {

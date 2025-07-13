@@ -1,18 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/navigation/Header";
 import Footer from "@/components/footer/Footer";
 import FloatingCTA from "@/components/cta/FloatingCTA";
 import QuickAccessMenu from "@/components/cta/QuickAccessMenu";
 
-const geistSans = Geist({
-	variable: "--font-geist-sans",
-	subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-	variable: "--font-geist-mono",
+const inter = Inter({
+	variable: "--font-inter",
 	subsets: ["latin"],
 });
 
@@ -29,11 +24,11 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+				className={`${inter.variable} antialiased`}>
 				<Header />
 				{/* Floating Elements */}
 				<FloatingCTA />
-        <QuickAccessMenu />
+				<QuickAccessMenu />
 				<div className={`pt-16`}>{children}</div>
 				<Footer />
 			</body>
