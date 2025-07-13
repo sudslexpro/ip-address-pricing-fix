@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Icon from "@/components/icon/AppIcon";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 interface FirmSize {
 	label: string;
@@ -322,22 +323,24 @@ const CommissionCalculator = () => {
 
 						{/* CTA */}
 						<div className="flex flex-col items-center justify-center pt-6">
-							<Button
-								variant="default"
-								size="lg"
-								className="bg-primary hover:bg-blue-900 text-white font-semibold px-8 py-4 flex items-center gap-2"
-								onClick={() => {
-									const element = document.querySelector("#get-started");
-									if (element) {
-										element.scrollIntoView({
-											behavior: "smooth",
-											block: "start",
-										});
-									}
-								}}>
-								Start Earning More Today
-								<Icon name="ArrowRight" size={16} />
-							</Button>
+							<Link href="/get-started">
+								<Button
+									variant="default"
+									size="lg"
+									className="bg-primary hover:bg-blue-900 text-white font-semibold px-8 py-4 flex items-center gap-2"
+									onClick={() => {
+										const element = document.querySelector("#get-started");
+										if (element) {
+											element.scrollIntoView({
+												behavior: "smooth",
+												block: "start",
+											});
+										}
+									}}>
+									Start Earning More Today
+									<Icon name="ArrowRight" size={16} />
+								</Button>
+							</Link>
 							<p className="text-sm text-text-secondary mt-3">
 								14-day free trial • No credit card required
 							</p>

@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/icon/AppIcon";
+import Link from "next/link";
 
 const PricingSection = () => {
 	const [billingCycle, setBillingCycle] = useState("monthly");
@@ -303,8 +304,8 @@ const PricingSection = () => {
 									onClick={() => handlePlanSelect(key)}
 									className={`w-full ${
 										plan.popular
-											? "bg-accent hover:bg-accent-700 text-white"
-											: ""
+											? "bg-accent hover:bg-accent/90 text-white"
+											: "hover:text-white"
 									}`}>
 									{plan.cta}
 								</Button>
@@ -386,18 +387,20 @@ const PricingSection = () => {
 							faster, more accurate quotes and increase their revenue.
 						</p>
 						<div className="flex flex-col sm:flex-row gap-4 justify-center">
-							<Button
-								variant="default"
-								size="lg"
-								className="bg-primary hover:bg-blue-900 text-white"
-								onClick={() => handlePlanSelect("professional")}>
-								<Icon name="Play" size={16} className="mr-2" />
-								Start 14-Day Free Trial
-							</Button>
+							<Link href="/get-started">
+								<Button
+									variant="default"
+									size="lg"
+									className="bg-primary hover:bg-blue-900 text-white"
+									onClick={() => handlePlanSelect("professional")}>
+									<Icon name="Play" size={16} className="mr-2" />
+									Start 14-Day Free Trial
+								</Button>
+							</Link>
 							<Button
 								variant="outline"
 								size="lg"
-                className={`hover:bg-primary hover:text-white`}
+								className={`hover:bg-primary hover:text-white`}
 								onClick={() => {
 									const element = document.querySelector("#demo-form");
 									if (element) {

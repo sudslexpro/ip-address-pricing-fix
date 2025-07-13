@@ -15,6 +15,7 @@ import Point from "ol/geom/Point";
 import { Style, Circle as CircleStyle, Fill, Stroke } from "ol/style";
 import Overlay from "ol/Overlay";
 import type { FeatureLike } from "ol/Feature";
+import Link from "next/link";
 
 interface CountryData {
 	id: string;
@@ -564,14 +565,16 @@ const HeroSection: React.FC = () => {
 								<Icon name="Play" size={16} />
 								Request Live Demo
 							</Button>
-							<Button
-								variant="outline"
-								size="lg"
-								onClick={handleTrialStart}
-								className="border-primary text-primary hover:bg-[#1a365d] hover:text-white px-8 py-8">
-								Start Free Trial
-								<Icon name="ArrowRight" size={16} />
-							</Button>
+							<Link href="/get-started">
+								<Button
+									variant="outline"
+									size="lg"
+									onClick={handleTrialStart}
+									className="border-primary text-primary hover:bg-[#1a365d] hover:text-white px-8 py-8">
+									Start Free Trial
+									<Icon name="ArrowRight" size={16} />
+								</Button>
+							</Link>
 						</div>
 
 						{/* Trust Bar */}
@@ -718,9 +721,7 @@ const HeroSection: React.FC = () => {
 											</div>
 										</div>
 										<div>
-											<div className="text-2xl font-bold text-accent">
-												95%
-											</div>
+											<div className="text-2xl font-bold text-accent">95%</div>
 											<div className="text-xs text-text-secondary">
 												Accuracy
 											</div>
