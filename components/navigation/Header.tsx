@@ -108,7 +108,7 @@ const Header: React.FC = () => {
 								onClick={() => handleNavClick(item.href)}
 								className={`px-3 py-2 text-sm font-medium transition-smooth rounded-md ${
 									activeSection === item.id
-										? "text-yellow-600 bg-yellow-300 dark:text-yellow-400 dark:bg-yellow-900/20"
+										? "text-yellow-600 bg-accent/10 dark:text-yellow-400 dark:bg-yellow-900/20"
 										: "text-text-secondary hover:text-primary hover:bg-surface"
 								}`}>
 								{item.name}
