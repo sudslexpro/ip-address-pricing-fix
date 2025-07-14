@@ -151,16 +151,24 @@ const Footer: React.FC = () => {
 								© {new Date().getFullYear()} Lex Quotes. All rights reserved.
 							</div>
 							<div className="flex space-x-6 text-sm text-gray-400">
-								<Link href="#" className="hover:text-accent transition-colors">
+								<Link
+									href="/privacy-policy"
+									className="hover:text-accent transition-colors">
 									Privacy Policy
 								</Link>
-								<Link href="#" className="hover:text-accent transition-colors">
+								<Link
+									href="/terms-of-service"
+									className="hover:text-accent transition-colors">
 									Terms of Service
 								</Link>
-								<Link href="#" className="hover:text-accent transition-colors">
+								<Link
+									href="/cookie-policy"
+									className="hover:text-accent transition-colors">
 									Cookie Policy
 								</Link>
-								<Link href="#" className="hover:text-accent transition-colors">
+								<Link
+									href="/gdpr-compliance"
+									className="hover:text-accent transition-colors">
 									GDPR Compliance
 								</Link>
 							</div>
