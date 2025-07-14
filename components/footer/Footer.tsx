@@ -85,14 +85,18 @@ const Footer: React.FC = () => {
 									</Link>
 								</li>
 								<li>
-									<Link href="/api-docs" className="hover:text-accent transition-colors">
+									<Link
+										href="/api-docs"
+										className="hover:text-accent transition-colors">
 										API Documentation
 									</Link>
 								</li>
 								<li>
-									<a href="#" className="hover:text-accent transition-colors">
+									<Link
+										href="/integration"
+										className="hover:text-accent transition-colors">
 										Integrations
-									</a>
+									</Link>
 								</li>
 							</ul>
 						</div>
@@ -102,29 +106,39 @@ const Footer: React.FC = () => {
 							<h3 className="text-lg font-semibold mb-4">Support</h3>
 							<ul className="space-y-2 text-gray-300">
 								<li>
-									<a href="#" className="hover:text-accent transition-colors">
+									<Link
+										href="#"
+										className="hover:text-accent transition-colors">
 										Help Center
-									</a>
+									</Link>
 								</li>
 								<li>
-									<a href="#" className="hover:text-accent transition-colors">
+									<Link
+										href="#"
+										className="hover:text-accent transition-colors">
 										Contact Support
-									</a>
+									</Link>
 								</li>
 								<li>
-									<a href="#" className="hover:text-accent transition-colors">
+									<Link
+										href="#"
+										className="hover:text-accent transition-colors">
 										Training Resources
-									</a>
+									</Link>
 								</li>
 								<li>
-									<a href="#" className="hover:text-accent transition-colors">
+									<Link
+										href="#"
+										className="hover:text-accent transition-colors">
 										System Status
-									</a>
+									</Link>
 								</li>
 								<li>
-									<a href="#" className="hover:text-accent transition-colors">
+									<Link
+										href="#"
+										className="hover:text-accent transition-colors">
 										Legal Resources
-									</a>
+									</Link>
 								</li>
 							</ul>
 						</div>
@@ -137,18 +151,18 @@ const Footer: React.FC = () => {
 								© {new Date().getFullYear()} Lex Quotes. All rights reserved.
 							</div>
 							<div className="flex space-x-6 text-sm text-gray-400">
-								<a href="#" className="hover:text-accent transition-colors">
+								<Link href="#" className="hover:text-accent transition-colors">
 									Privacy Policy
-								</a>
-								<a href="#" className="hover:text-accent transition-colors">
+								</Link>
+								<Link href="#" className="hover:text-accent transition-colors">
 									Terms of Service
-								</a>
-								<a href="#" className="hover:text-accent transition-colors">
+								</Link>
+								<Link href="#" className="hover:text-accent transition-colors">
 									Cookie Policy
-								</a>
-								<a href="#" className="hover:text-accent transition-colors">
+								</Link>
+								<Link href="#" className="hover:text-accent transition-colors">
 									GDPR Compliance
-								</a>
+								</Link>
 							</div>
 						</div>
 					</div>
