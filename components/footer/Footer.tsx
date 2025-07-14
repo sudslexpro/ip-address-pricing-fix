@@ -135,7 +135,7 @@ const Footer: React.FC = () => {
 								</li>
 								<li>
 									<Link
-										href="#"
+										href="/legal-resources"
 										className="hover:text-accent transition-colors">
 										Legal Resources
 									</Link>
