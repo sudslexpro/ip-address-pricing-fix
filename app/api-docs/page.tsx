@@ -4,7 +4,7 @@ import ApiDocumentationPage from "@/components/pages-ui/api-docs/ApiDocumentatio
 const page: React.FC = () => {
 	return (
 		<main>
-			<div>
+			<div className={`min-h-screen bg-background`}>
 				<ApiDocumentationPage />
 			</div>
 		</main>
