@@ -107,7 +107,7 @@ const Footer: React.FC = () => {
 							<ul className="space-y-2 text-gray-300">
 								<li>
 									<Link
-										href="#"
+										href="/help-center"
 										className="hover:text-accent transition-colors">
 										Help Center
 									</Link>

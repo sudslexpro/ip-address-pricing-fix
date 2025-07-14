@@ -1,5 +1,5 @@
 import React from "react";
-import Integration from "./Integration";
+import Integration from "@/components/pages-ui/integration/Integration";
 
 const IntegrationPage: React.FC = () => {
 	return (
