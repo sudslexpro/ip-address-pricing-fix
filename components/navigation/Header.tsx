@@ -125,14 +125,16 @@ const Header: React.FC = () => {
 							className="text-[#1a365d] border-[#1a365d] hover:bg-[#1a365d] hover:text-white px-8 py-5">
 							Request Demo
 						</Button>
-						<Button
-							variant="default"
-							size="sm"
-							onClick={() => handleNavClick("#get-started")}
-							className={`bg-[#1a365d] text-white hover:bg-[#1b3f6f] border border-[#8f9297] px-12 py-5`}>
-							Start Trial
-							<ArrowRight className="ml-0.5 size-4" />
-						</Button>
+						<Link href={"/get-started"}>
+							<Button
+								variant="default"
+								size="sm"
+								onClick={() => handleNavClick("#get-started")}
+								className={`bg-[#1a365d] text-white hover:bg-[#1b3f6f] border border-[#8f9297] px-12 py-5`}>
+								Start Trial
+								<ArrowRight className="ml-0.5 size-4" />
+							</Button>
+						</Link>
 					</div>
 
 					{/* Mobile Menu Button */}
