@@ -128,7 +128,7 @@ const Footer: React.FC = () => {
 								</li>
 								<li>
 									<Link
-										href="#"
+										href="/system-status"
 										className="hover:text-accent transition-colors">
 										System Status
 									</Link>
