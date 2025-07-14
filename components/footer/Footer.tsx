@@ -114,7 +114,7 @@ const Footer: React.FC = () => {
 								</li>
 								<li>
 									<Link
-										href="#"
+										href="/support"
 										className="hover:text-accent transition-colors">
 										Contact Support
 									</Link>
