@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import Link from "next/link";
 import Icon from "@/components/icon/AppIcon";
 import { Button } from "@/components/ui/button";
 import { LucideProps, icons as LucideIcons } from "lucide-react";
@@ -13,22 +14,7 @@ const QuickAccessMenu = () => {
 			label: "Commission Calculator",
 			description: "Calculate potential earnings",
 			icon: "Calculator",
-			action: () => {
-				const element = document.querySelector("#pricing");
-				if (element) {
-					element.scrollIntoView({ behavior: "smooth", block: "start" });
-					// Focus on calculator section within pricing
-					setTimeout(() => {
-						const calculator = element.querySelector("[data-calculator]");
-						if (calculator) {
-							calculator.scrollIntoView({
-								behavior: "smooth",
-								block: "center",
-							});
-						}
-					}, 500);
-				}
-			},
+			href: "/pricing",
 		},
 		{
 			id: "demo",
@@ -41,6 +27,7 @@ const QuickAccessMenu = () => {
 					element.scrollIntoView({ behavior: "smooth", block: "start" });
 				}
 			},
+			href: "/#solution-demo",
 		},
 		{
 			id: "coverage-map",
@@ -53,6 +40,7 @@ const QuickAccessMenu = () => {
 					element.scrollIntoView({ behavior: "smooth", block: "start" });
 				}
 			},
+			href: "/#coverage",
 		},
 		{
 			id: "testimonials",
@@ -65,16 +53,35 @@ const QuickAccessMenu = () => {
 					element.scrollIntoView({ behavior: "smooth", block: "start" });
 				}
 			},
+			href: "/#success-stories",
 		},
 		{
 			id: "resources",
 			label: "Download Resources",
 			description: "Guides and whitepapers",
 			icon: "Download",
-			action: () => {
-				// This would typically trigger a download or open a resource modal
-				window.open("/resources/trademark-guide.pdf", "_blank");
-			},
+			href: "/legal-resources",
+		},
+		{
+			id: "api-docs",
+			label: "API Documentation",
+			description: "Integration guides",
+			icon: "Code",
+			href: "/api-docs",
+		},
+		{
+			id: "help",
+			label: "Help Center",
+			description: "Support & tutorials",
+			icon: "Info",
+			href: "/help-center",
+		},
+		{
+			id: "training",
+			label: "Training Center",
+			description: "Learn the platform",
+			icon: "GraduationCap",
+			href: "/training",
 		},
 	];
 
@@ -82,32 +89,51 @@ const QuickAccessMenu = () => {
 		setIsOpen(!isOpen);
 	};
 
-  interface QuickAccessItem {
-	id: string;
-	label: string;
-	description: string;
-	icon: keyof typeof LucideIcons;
-	action: () => void;
-  }
+	interface QuickAccessItem {
+		id: string;
+		label: string;
+		description: string;
+		icon: keyof typeof LucideIcons;
+		href?: string; // For navigation links
+		action?: () => void; // For scroll actions or custom behavior
+		external?: boolean; // For external links
+	}
 
-  const handleItemClick = (item: QuickAccessItem): void => {
-    item.action();
-    setIsOpen(false);
+	const handleItemClick = (item: QuickAccessItem): void => {
+		// If it's a navigation link, let Next.js handle it
+		if (item.href) {
+			// Analytics tracking for navigation
+			if (window.gtag) {
+				window.gtag("event", "quick_access_navigation", {
+					item_id: item.id,
+					item_label: item.label,
+					destination: item.href,
+				});
+			}
+			return; // Let the Link component handle navigation
+		}
 
-    // Analytics tracking
-    if (window.gtag) {
-      window.gtag("event", "quick_access_click", {
-        item_id: item.id,
-        item_label: item.label,
-      });
-    }
-  };
+		// If it's a custom action (scroll, etc.)
+		if (item.action) {
+			item.action();
+		}
 
-  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>): void => {
-    if (e.target === e.currentTarget) {
-      setIsOpen(false);
-    }
-  };
+		setIsOpen(false);
+
+		// Analytics tracking for actions
+		if (window.gtag) {
+			window.gtag("event", "quick_access_action", {
+				item_id: item.id,
+				item_label: item.label,
+			});
+		}
+	};
+
+	const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>): void => {
+		if (e.target === e.currentTarget) {
+			setIsOpen(false);
+		}
+	};
 
 	return (
 		<>
@@ -158,54 +184,66 @@ const QuickAccessMenu = () => {
 
 						{/* Menu Items */}
 						<div className="p-2 space-y-1 max-h-96 overflow-y-auto">
-							{quickAccessItems.map((item) => (
-								<button
-									key={item.id}
-									onClick={() => handleItemClick(item)}
-									className="w-full flex items-start space-x-3 p-3 rounded-md text-left hover:bg-surface transition-smooth group">
-									<div className="flex-shrink-0 w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-smooth">
+							{quickAccessItems.map((item) => {
+								const itemContent = (
+									<div className="w-full flex items-start space-x-3 p-3 rounded-md text-left hover:bg-surface transition-smooth group">
+										<div className="flex-shrink-0 w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-smooth">
+											<Icon
+												name={item.icon}
+												size={20}
+												color="var(--color-primary)"
+											/>
+										</div>
+										<div className="flex-1 min-w-0">
+											<p className="text-sm font-medium text-text-primary group-hover:text-primary transition-smooth">
+												{item.label}
+											</p>
+											<p className="text-xs text-text-secondary mt-1">
+												{item.description}
+											</p>
+										</div>
 										<Icon
-											name={item.icon}
-											size={20}
-											color="var(--color-primary)"
+											name="ChevronRight"
+											size={16}
+											className="text-text-muted group-hover:text-primary transition-smooth"
 										/>
 									</div>
-									<div className="flex-1 min-w-0">
-										<p className="text-sm font-medium text-text-primary group-hover:text-primary transition-smooth">
-											{item.label}
-										</p>
-										<p className="text-xs text-text-secondary mt-1">
-											{item.description}
-										</p>
-									</div>
-									<Icon
-										name="ChevronRight"
-										size={16}
-										className="text-text-muted group-hover:text-primary transition-smooth"
-									/>
-								</button>
-							))}
+								);
+
+								return item.href ? (
+									<Link
+										key={item.id}
+										href={item.href}
+										onClick={() => {
+											setIsOpen(false);
+											// Analytics tracking for navigation
+											if (window.gtag && item.href) {
+												window.gtag("event", "quick_access_navigation", {
+													item_id: item.id,
+													item_label: item.label,
+													destination: item.href,
+												});
+											}
+										}}
+										className="block">
+										{itemContent}
+									</Link>
+								) : (
+									<button key={item.id} onClick={() => handleItemClick(item)}>
+										{itemContent}
+									</button>
+								);
+							})}
 						</div>
 
 						{/* Footer */}
 						<div className="p-4 border-t border-border bg-surface/50">
-							<Button
-								variant="default"
-								size="sm"
-								className="w-full"
-								onClick={() => {
-									const element = document.querySelector("#get-started");
-									if (element) {
-										element.scrollIntoView({
-											behavior: "smooth",
-											block: "start",
-										});
-									}
-									setIsOpen(false);
-								}}>
-								Start Your Trial
-								<Icon name="ArrowRight" size={16} className="ml-2" />
-							</Button>
+							<Link href="/get-started" onClick={() => setIsOpen(false)}>
+								<Button variant="default" size="sm" className="w-full">
+									Start Your Trial
+									<Icon name="ArrowRight" size={16} className="ml-2" />
+								</Button>
+							</Link>
 						</div>
 					</div>
 				</>
