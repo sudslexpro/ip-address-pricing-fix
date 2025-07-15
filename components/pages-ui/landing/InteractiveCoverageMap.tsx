@@ -282,7 +282,7 @@ const InteractiveCoverageMap = () => {
 
 			return new Style({
 				image: new CircleStyle({
-					radius: isSelected ? 10 : isHighlighted ? 8 : 6,
+					radius: isSelected ? 7 : isHighlighted ? 8 : 7,
 					fill: new Fill({
 						color: isSelected
 							? "#f59e0b"
@@ -660,9 +660,43 @@ const InteractiveCoverageMap = () => {
 								)}
 							</div>
 						</div>
-						<div className="mt-4 text-center">
-							<div className="text-sm text-text-secondary">
-								Selected: {selectedCountries.length} countries
+						<div className="mt-4 space-y-3">
+							<div className="text-center">
+								<div className="text-sm text-text-secondary">
+									Selected: {selectedCountries.length} countries
+								</div>
+							</div>
+							{/* Color Legend */}
+							<div className="bg-gray-600 rounded-lg p-3">
+								<div className="text-xs font-medium text-white mb-2 text-center">
+									Map Colour Codes Identification
+								</div>
+								<div className="space-y-2">
+									<div className="flex items-center justify-between text-xs">
+										<div className="flex items-center space-x-2">
+											<div
+												className="w-3 h-3 rounded-full border border-white"
+												style={{ backgroundColor: "#3B82F6" }}></div>
+											<span className="text-white">Available Countries</span>
+										</div>
+									</div>
+									<div className="flex items-center justify-between text-xs">
+										<div className="flex items-center space-x-2">
+											<div
+												className="w-3 h-3 rounded-full border border-white"
+												style={{ backgroundColor: "#6366F1" }}></div>
+											<span className="text-white">Hovered Country</span>
+										</div>
+									</div>
+									<div className="flex items-center justify-between text-xs">
+										<div className="flex items-center space-x-2">
+											<div
+												className="w-3 h-3 rounded-full border border-white"
+												style={{ backgroundColor: "#f59e0b" }}></div>
+											<span className="text-white">Selected Countries</span>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
