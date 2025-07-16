@@ -17,15 +17,8 @@ import {
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Separator } from "@/components/ui/separator";
-import {
-	Eye,
-	EyeOff,
-	Mail,
-	Lock,
-	Chrome,
-	Facebook,
-	Twitter,
-} from "lucide-react";
+import { Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { FaGoogle, FaFacebook, FaXTwitter } from "react-icons/fa6";
 import { cn } from "@/lib/utils";
 
 const SignInPage: React.FC = () => {
@@ -99,25 +92,25 @@ const SignInPage: React.FC = () => {
 							variant="outline"
 							onClick={() => handleOAuthSignIn("google")}
 							disabled={isLoading}
-							className="w-full">
-							<Chrome className="mr-2 h-4 w-4" />
+							className="w-full hover:text-white h-12 text-md">
+							<FaGoogle className="mr-2 h-12 w-12 text-blue-500" />
 							Continue with Google
 						</Button>
 						<Button
 							variant="outline"
 							onClick={() => handleOAuthSignIn("facebook")}
 							disabled={isLoading}
-							className="w-full">
-							<Facebook className="mr-2 h-4 w-4" />
+							className="w-full hover:text-white h-12 text-md">
+							<FaFacebook className="mr-2 h-12 w-12 text-blue-600" />
 							Continue with Facebook
 						</Button>
 						<Button
 							variant="outline"
-							onClick={() => handleOAuthSignIn("twitter")}
+							onClick={() => handleOAuthSignIn("x")}
 							disabled={isLoading}
-							className="w-full">
-							<Twitter className="mr-2 h-4 w-4" />
-							Continue with Twitter
+							className="w-full hover:text-white h-12 text-md">
+							<FaXTwitter className="mr-2 h-12 w-12 text-black" />
+							Continue with X
 						</Button>
 					</div>
 

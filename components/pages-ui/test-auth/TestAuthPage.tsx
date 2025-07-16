@@ -13,14 +13,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import {
-	Chrome,
-	Facebook,
-	Twitter,
-	Mail,
-	Lock,
-	CheckCircle,
-} from "lucide-react";
+import { Mail, Lock, CheckCircle, Activity } from "lucide-react";
+import { FaGoogle, FaFacebook, FaXTwitter } from "react-icons/fa6";
 
 const TestAuthPage: React.FC = () => {
 	const { data: session, status } = useSession();
@@ -112,7 +106,7 @@ const TestAuthPage: React.FC = () => {
 								variant="outline"
 								className="w-full justify-start"
 								disabled={status === "authenticated"}>
-								<Chrome className="mr-2 h-4 w-4" />
+								<FaGoogle className="mr-2 h-12 w-12 text-blue-500" />
 								Sign in with Google
 							</Button>
 
@@ -121,17 +115,17 @@ const TestAuthPage: React.FC = () => {
 								variant="outline"
 								className="w-full justify-start"
 								disabled={status === "authenticated"}>
-								<Facebook className="mr-2 h-4 w-4" />
+								<FaFacebook className="mr-2 h-12 w-12 text-blue-600" />
 								Sign in with Facebook
 							</Button>
 
 							<Button
-								onClick={() => signIn("twitter")}
+								onClick={() => signIn("x")}
 								variant="outline"
 								className="w-full justify-start"
 								disabled={status === "authenticated"}>
-								<Twitter className="mr-2 h-4 w-4" />
-								Sign in with Twitter
+								<FaXTwitter className="mr-2 h-12 w-12 text-black" />
+								Sign in with X
 							</Button>
 						</CardContent>
 					</Card>
@@ -215,7 +209,7 @@ const TestAuthPage: React.FC = () => {
 										<code>/api/auth/callback/facebook</code>
 									</li>
 									<li>
-										<code>/api/auth/callback/twitter</code>
+										<code>/api/auth/callback/x</code>
 									</li>
 									<li>
 										<code>/api/auth/callback/credentials</code>
