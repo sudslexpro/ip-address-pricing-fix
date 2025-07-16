@@ -2,14 +2,24 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useSession, signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, X } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ArrowRight, X, User, Settings, LogOut, Shield } from "lucide-react";
 import Icon from "../icon/AppIcon";
 
 const Header: React.FC = () => {
 	const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 	const [activeSection, setActiveSection] = React.useState("");
 	const [scrollProgress, setScrollProgress] = React.useState(0);
+	const { data: session, status } = useSession();
 
 	const navlinks = [
 		{ id: "solution-demo", name: "Solution Demo", href: "/#solution-demo" },
@@ -118,23 +128,71 @@ const Header: React.FC = () => {
 
 					{/* Desktop CTA */}
 					<div className="hidden lg:flex items-center space-x-4">
-						<Button
-							variant="outline"
-							size="sm"
-							onClick={() => handleNavClick("#get-started")}
-							className="text-[#1a365d] border-[#1a365d] hover:bg-[#1a365d] hover:text-white px-8 py-5">
-							Request Demo
-						</Button>
-						<Link href={"/get-started"}>
-							<Button
-								variant="default"
-								size="sm"
-								onClick={() => handleNavClick("#get-started")}
-								className={`bg-[#1a365d] text-white hover:bg-[#1b3f6f] border border-[#8f9297] px-12 py-5`}>
-								Start Trial
-								<ArrowRight className="ml-0.5 size-4" />
-							</Button>
-						</Link>
+						{session?.user ? (
+							// Authenticated user menu
+							<DropdownMenu>
+								<DropdownMenuTrigger className="flex items-center space-x-2">
+									<Avatar className="h-8 w-8">
+										<AvatarImage
+											src={session.user.image || ""}
+											alt={session.user.name || ""}
+										/>
+										<AvatarFallback>
+											{session.user.name
+												?.split(" ")
+												.map((n) => n[0])
+												.join("") || "U"}
+										</AvatarFallback>
+									</Avatar>
+									<span className="text-sm font-medium">
+										{session.user.name}
+									</span>
+								</DropdownMenuTrigger>
+								<DropdownMenuContent align="end" className="w-56">
+									<DropdownMenuItem>
+										<User className="mr-2 h-4 w-4" />
+										<Link href="/dashboard">Dashboard</Link>
+									</DropdownMenuItem>
+									<DropdownMenuItem>
+										<Settings className="mr-2 h-4 w-4" />
+										<span>Settings</span>
+									</DropdownMenuItem>
+									{session.user.role === "ADMIN" && (
+										<DropdownMenuItem>
+											<Shield className="mr-2 h-4 w-4" />
+											<span>Admin Panel</span>
+										</DropdownMenuItem>
+									)}
+									<DropdownMenuSeparator />
+									<DropdownMenuItem
+										onClick={() => signOut({ callbackUrl: "/" })}>
+										<LogOut className="mr-2 h-4 w-4" />
+										<span>Sign out</span>
+									</DropdownMenuItem>
+								</DropdownMenuContent>
+							</DropdownMenu>
+						) : (
+							// Unauthenticated user buttons
+							<>
+								<Link href="/auth/signin">
+									<Button
+										variant="outline"
+										size="sm"
+										className="text-[#1a365d] border-[#1a365d] hover:bg-[#1a365d] hover:text-white px-8 py-5">
+										Sign In
+									</Button>
+								</Link>
+								<Link href="/auth/signup">
+									<Button
+										variant="default"
+										size="sm"
+										className={`bg-[#1a365d] text-white hover:bg-[#1b3f6f] border border-[#8f9297] px-12 py-5`}>
+										Get Started
+										<ArrowRight className="ml-0.5 size-4" />
+									</Button>
+								</Link>
+							</>
+						)}
 					</div>
 
 					{/* Mobile Menu Button */}
@@ -174,19 +232,40 @@ const Header: React.FC = () => {
 
 						{/* Mobile CTAs */}
 						<div className="pt-4 border-t border-border space-y-3 flex justify-center gap-3">
-							<Button
-								variant="outline"
-								size="sm"
-								onClick={() => handleNavClick("#get-started")}
-								className="text-primary border-primary hover:bg-primary hover:text-white">
-								Request Demo
-							</Button>
-							<Button
-								variant="default"
-								size="sm"
-								onClick={() => handleNavClick("#get-started")}>
-								Start Trial
-							</Button>
+							{session?.user ? (
+								<div className="w-full space-y-2">
+									<Link href="/dashboard" className="w-full">
+										<Button variant="outline" size="sm" className="w-full">
+											<User className="mr-2 h-4 w-4" />
+											Dashboard
+										</Button>
+									</Link>
+									<Button
+										variant="outline"
+										size="sm"
+										onClick={() => signOut({ callbackUrl: "/" })}
+										className="w-full">
+										<LogOut className="mr-2 h-4 w-4" />
+										Sign Out
+									</Button>
+								</div>
+							) : (
+								<>
+									<Link href="/auth/signin">
+										<Button
+											variant="outline"
+											size="sm"
+											className="text-primary border-primary hover:bg-primary hover:text-white">
+											Sign In
+										</Button>
+									</Link>
+									<Link href="/auth/signup">
+										<Button variant="default" size="sm">
+											Get Started
+										</Button>
+									</Link>
+								</>
+							)}
 						</div>
 					</div>
 				</div>

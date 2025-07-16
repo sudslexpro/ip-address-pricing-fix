@@ -5,6 +5,7 @@ import Header from "@/components/navigation/Header";
 import Footer from "@/components/footer/Footer";
 import FloatingCTA from "@/components/cta/FloatingCTA";
 import QuickAccessMenu from "@/components/cta/QuickAccessMenu";
+import AuthProvider from "@/components/providers/AuthProvider";
 
 const inter = Inter({
 	variable: "--font-inter",
@@ -23,14 +24,15 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" suppressHydrationWarning>
-			<body
-				className={`${inter.variable} antialiased`}>
-				<Header />
-				{/* Floating Elements */}
-				<FloatingCTA />
-				<QuickAccessMenu />
-				<div className={`pt-16`}>{children}</div>
-				<Footer />
+			<body className={`${inter.variable} antialiased`}>
+				<AuthProvider>
+					<Header />
+					{/* Floating Elements */}
+					<FloatingCTA />
+					<QuickAccessMenu />
+					<div className={`pt-16`}>{children}</div>
+					<Footer />
+				</AuthProvider>
 			</body>
 		</html>
 	);
