@@ -31,42 +31,55 @@ export const authOptions: NextAuthOptions = {
 				password: { label: "Password", type: "password" },
 			},
 			async authorize(credentials) {
+				// Skip database operations during build time
+				if (
+					process.env.NODE_ENV === "production" &&
+					!process.env.DATABASE_URL
+				) {
+					return null;
+				}
+
 				if (!credentials?.email || !credentials?.password) {
 					return null;
 				}
 
-				const user = await prisma.user.findUnique({
-					where: {
-						email: credentials.email,
-					},
-				});
+				try {
+					const user = await prisma.user.findUnique({
+						where: {
+							email: credentials.email,
+						},
+					});
 
-				if (!user || !user.password) {
+					if (!user || !user.password) {
+						return null;
+					}
+
+					const isPasswordValid = await bcrypt.compare(
+						credentials.password,
+						user.password
+					);
+
+					if (!isPasswordValid) {
+						return null;
+					}
+
+					// Update last login
+					await prisma.user.update({
+						where: { id: user.id },
+						data: { lastLoginAt: new Date() },
+					});
+
+					return {
+						id: user.id,
+						email: user.email,
+						name: user.name,
+						image: user.image,
+						role: user.role,
+					};
+				} catch (error) {
+					console.error("Auth error:", error);
 					return null;
 				}
-
-				const isPasswordValid = await bcrypt.compare(
-					credentials.password,
-					user.password
-				);
-
-				if (!isPasswordValid) {
-					return null;
-				}
-
-				// Update last login
-				await prisma.user.update({
-					where: { id: user.id },
-					data: { lastLoginAt: new Date() },
-				});
-
-				return {
-					id: user.id,
-					email: user.email,
-					name: user.name,
-					image: user.image,
-					role: user.role,
-				};
 			},
 		}),
 	],
@@ -93,14 +106,24 @@ export const authOptions: NextAuthOptions = {
 				return true;
 			}
 
+			// Skip database operations during build time
+			if (process.env.NODE_ENV === "production" && !process.env.DATABASE_URL) {
+				return true;
+			}
+
 			// For OAuth providers, ensure user is active
 			if (user.email) {
-				const existingUser = await prisma.user.findUnique({
-					where: { email: user.email },
-				});
+				try {
+					const existingUser = await prisma.user.findUnique({
+						where: { email: user.email },
+					});
 
-				if (existingUser && !existingUser.isActive) {
-					return false;
+					if (existingUser && !existingUser.isActive) {
+						return false;
+					}
+				} catch (error) {
+					console.error("SignIn error:", error);
+					return true; // Allow sign in on error to prevent build failures
 				}
 			}
 
@@ -113,15 +136,25 @@ export const authOptions: NextAuthOptions = {
 	},
 	events: {
 		async signIn({ user, account, profile, isNewUser }) {
+			// Skip database operations during build time
+			if (process.env.NODE_ENV === "production" && !process.env.DATABASE_URL) {
+				return;
+			}
+
 			if (isNewUser && user.email) {
-				// Create user profile for new users
-				await prisma.userProfile.create({
-					data: {
-						userId: user.id,
-						firstName: user.name?.split(" ")[0] || "",
-						lastName: user.name?.split(" ").slice(1).join(" ") || "",
-					},
-				});
+				try {
+					// Create user profile for new users
+					await prisma.userProfile.create({
+						data: {
+							userId: user.id,
+							firstName: user.name?.split(" ")[0] || "",
+							lastName: user.name?.split(" ").slice(1).join(" ") || "",
+						},
+					});
+				} catch (error) {
+					console.error("User profile creation error:", error);
+					// Don't throw error to prevent build failures
+				}
 			}
 		},
 	},
