@@ -4,16 +4,5 @@
 		"app/api/auth/[...nextauth]/route.ts": {
 			"maxDuration": 30
 		}
-	},
-	"builds": [
-		{
-			"src": "package.json",
-			"use": "@vercel/next",
-			"config": {
-				"experimental": {
-					"corepack": true
-				}
-			}
-		}
-	]
+	}
 }
