@@ -14,6 +14,9 @@ export const authOptions: NextAuthOptions = {
 		GoogleProvider({
 			clientId: process.env.GOOGLE_CLIENT_ID!,
 			clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+			httpOptions: {
+				timeout: 10000, // 10 seconds timeout
+			},
 		}),
 		FacebookProvider({
 			clientId: process.env.FACEBOOK_CLIENT_ID!,
@@ -102,37 +105,60 @@ export const authOptions: NextAuthOptions = {
 			return session;
 		},
 		async signIn({ user, account, profile, email, credentials }) {
-			if (account?.provider === "credentials") {
-				return true;
-			}
-
-			// Skip database operations during build time
-			if (process.env.NODE_ENV === "production" && !process.env.DATABASE_URL) {
-				return true;
-			}
-
-			// For OAuth providers, ensure user is active
-			if (user.email) {
-				try {
-					const existingUser = await prisma.user.findUnique({
-						where: { email: user.email },
-					});
-
-					if (existingUser && !existingUser.isActive) {
-						return false;
-					}
-				} catch (error) {
-					console.error("SignIn error:", error);
-					return true; // Allow sign in on error to prevent build failures
+			try {
+				if (account?.provider === "credentials") {
+					return true;
 				}
-			}
 
-			return true;
+				// Skip database operations during build time
+				if (
+					process.env.NODE_ENV === "production" &&
+					!process.env.DATABASE_URL
+				) {
+					return true;
+				}
+
+				// For OAuth providers, ensure user is active
+				if (user.email) {
+					try {
+						const existingUser = await prisma.user.findUnique({
+							where: { email: user.email },
+						});
+
+						if (existingUser && !existingUser.isActive) {
+							return false;
+						}
+					} catch (error) {
+						console.error("SignIn error:", error);
+						return true; // Allow sign in on error to prevent build failures
+					}
+				}
+
+				return true;
+			} catch (error) {
+				console.error("SignIn callback error:", error);
+				// Allow sign in on error to prevent complete failure
+				return true;
+			}
 		},
 	},
 	pages: {
 		signIn: "/auth/signin",
 		error: "/auth/error",
+	},
+	debug: process.env.NODE_ENV === "development",
+	logger: {
+		error(code, metadata) {
+			console.error(`[next-auth][error][${code}]`, metadata);
+		},
+		warn(code) {
+			console.warn(`[next-auth][warn][${code}]`);
+		},
+		debug(code, metadata) {
+			if (process.env.NODE_ENV === "development") {
+				console.debug(`[next-auth][debug][${code}]`, metadata);
+			}
+		},
 	},
 	events: {
 		async signIn({ user, account, profile, isNewUser }) {
