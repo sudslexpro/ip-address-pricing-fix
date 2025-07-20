@@ -148,7 +148,7 @@ const Header: React.FC = () => {
 										{session.user.name}
 									</span>
 								</DropdownMenuTrigger>
-								<DropdownMenuContent align="end" className="w-56">
+								<DropdownMenuContent align="end" className="w-56 mt-4">
 									<DropdownMenuItem>
 										<User className="mr-2 h-4 w-4" />
 										<Link href="/dashboard">Dashboard</Link>
