@@ -1,0 +1,20 @@
+{
+	"dbcode.connections": [
+		{
+			"connectionId": "WcpQxSOJKPhC3TI97D3zD",
+			"name": "lex-protector-partner-postgres",
+			"driver": "postgres",
+			"color": "#00B083",
+			"connectionType": "host",
+			"host": "localhost",
+			"port": 5432,
+			"ssl": false,
+			"username": "lex_user",
+			"password": "",
+			"savePassword": "secretStorage",
+			"database": "lex_protector_db",
+			"readOnly": true,
+			"connectionTimeout": 30
+		}
+	]
+}
