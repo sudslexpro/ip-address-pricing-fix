@@ -118,7 +118,7 @@ export const authOptions: NextAuthOptions = {
 					return true;
 				}
 
-				// For OAuth providers, ensure user is active
+				// For OAuth providers, check user status and update lastLoginAt
 				if (user.email) {
 					try {
 						const existingUser = await prisma.user.findUnique({
@@ -127,6 +127,14 @@ export const authOptions: NextAuthOptions = {
 
 						if (existingUser && !existingUser.isActive) {
 							return false;
+						}
+
+						// Update last login for OAuth providers
+						if (existingUser) {
+							await prisma.user.update({
+								where: { email: user.email },
+								data: { lastLoginAt: new Date() },
+							});
 						}
 					} catch (error) {
 						console.error("SignIn error:", error);

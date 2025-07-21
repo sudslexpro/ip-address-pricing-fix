@@ -154,9 +154,17 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 				...(searchTerm && { search: searchTerm }),
 				...(roleFilter !== "all" && { role: roleFilter }),
 				...(statusFilter !== "all" && { status: statusFilter }),
+				// Add timestamp to prevent caching
+				_t: Date.now().toString(),
 			});
 
-			const response = await fetch(`/api/admin/users?${params}`);
+			const response = await fetch(`/api/admin/users?${params}`, {
+				method: "GET",
+				headers: {
+					"Cache-Control": "no-cache, no-store, must-revalidate",
+					Pragma: "no-cache",
+				},
+			});
 			const data = await response.json();
 
 			if (!response.ok) {
@@ -167,6 +175,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 			setTotalPages(data.pagination.totalPages);
 		} catch (err: any) {
 			setError(err.message);
+			console.error("Error fetching users:", err);
 		} finally {
 			setLoading(false);
 			setRefreshLoading(false);

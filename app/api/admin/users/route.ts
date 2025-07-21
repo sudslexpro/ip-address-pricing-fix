@@ -103,7 +103,7 @@ export async function GET(request: NextRequest) {
 			prisma.user.count({ where }),
 		]);
 
-		return NextResponse.json({
+		const response = NextResponse.json({
 			users,
 			pagination: {
 				page,
@@ -112,6 +112,16 @@ export async function GET(request: NextRequest) {
 				totalPages: Math.ceil(total / limit),
 			},
 		});
+
+		// Add cache control headers to ensure fresh data
+		response.headers.set(
+			"Cache-Control",
+			"no-cache, no-store, must-revalidate"
+		);
+		response.headers.set("Pragma", "no-cache");
+		response.headers.set("Expires", "0");
+
+		return response;
 	} catch (error) {
 		console.error("Error fetching users:", error);
 		return NextResponse.json(
