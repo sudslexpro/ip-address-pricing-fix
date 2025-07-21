@@ -89,9 +89,9 @@ const RecentActivity: React.FC<RecentActivityProps> = ({ role }) => {
 		},
 		{
 			id: 4,
-			type: "integration_added",
-			title: "Integration configured",
-			description: "Slack integration enabled for notifications",
+			type: "system_update",
+			title: "System configuration updated",
+			description: "Security settings have been enhanced",
 			timestamp: "6 hours ago",
 			status: "completed",
 			icon: Activity,

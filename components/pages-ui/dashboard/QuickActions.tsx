@@ -133,16 +133,6 @@ const QuickActions: React.FC<QuickActionsProps> = ({
 			variant: "outline" as const,
 		},
 		{
-			id: "integrations",
-			title: "Integration Settings",
-			description: "Configure integrations",
-			icon: Webhook,
-			action: () => {
-				window.location.href = "/integration";
-			},
-			variant: "outline" as const,
-		},
-		{
 			id: "audit-logs",
 			title: "Audit Logs",
 			description: "View system activity",

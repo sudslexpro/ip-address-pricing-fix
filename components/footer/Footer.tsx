@@ -84,13 +84,6 @@ const Footer: React.FC = () => {
 										Coverage
 									</Link>
 								</li>
-								<li>
-									<Link
-										href="/integration"
-										className="hover:text-accent transition-colors">
-										Integrations
-									</Link>
-								</li>
 							</ul>
 						</div>
 

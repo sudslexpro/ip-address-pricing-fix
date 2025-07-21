@@ -15,7 +15,6 @@ All routes are located in the `app/` directory using Next.js App Router:
 | `/`                | `LandingPage`        | Home/Landing page with hero section     |
 | `/pricing`         | `PricingPage`        | Pricing plans and commission calculator |
 | `/get-started`     | `GetStartedPage`     | Onboarding and setup flow               |
-| `/integration`     | `IntegrationPage`    | Integration guides and partners         |
 | `/training`        | `TrainingPage`       | Training resources and materials        |
 | `/help-center`     | `HelpCenterPage`     | Help and support documentation          |
 | `/support`         | `SupportPage`        | Customer support and ticketing          |

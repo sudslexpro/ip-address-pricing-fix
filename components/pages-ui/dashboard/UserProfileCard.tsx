@@ -76,7 +76,7 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
 					"User management",
 					"Quote oversight",
 					"Analytics access",
-					"Integration management",
+					"System management",
 					"Audit log access",
 					"All user features",
 				];
@@ -86,7 +86,7 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
 					"Quote generation",
 					"Account management",
 					"Basic reporting",
-					"Integration setup",
+					"Support access",
 				];
 		}
 	};
