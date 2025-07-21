@@ -1,0 +1,9 @@
+export { default as DashboardPage } from "./DashboardPage";
+export { default as DashboardLayout } from "./DashboardLayout";
+export { default as DashboardSidebar } from "./DashboardSidebar";
+export { default as DashboardStats } from "./DashboardStats";
+export { default as DashboardTabs } from "./DashboardTabs";
+export { default as QuickActions } from "./QuickActions";
+export { default as RecentActivity } from "./RecentActivity";
+export { default as UserManagement } from "./UserManagement";
+export { default as UserProfileCard } from "./UserProfileCard";

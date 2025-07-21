@@ -3,7 +3,7 @@
 import React from "react";
 import { signOut } from "next-auth/react";
 import { useRole } from "@/hooks/useRole";
-import DashboardTabs from "./DashboardTabs";
+import DashboardLayout from "./DashboardLayout";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle, Crown, Shield, User } from "lucide-react";
 
@@ -101,13 +101,15 @@ const DashboardPage: React.FC = () => {
 					</div>
 				</div>
 
-				{/* Dashboard Content */}
-				<DashboardTabs
-					role={role || "USER"}
-					permissions={permissions}
-					user={session.user}
-					onSignOut={handleSignOut}
-				/>
+				{/* Dashboard Content with Sidebar */}
+				<div className="bg-white rounded-lg shadow-lg overflow-hidden">
+					<DashboardLayout
+						role={role || "USER"}
+						permissions={permissions}
+						user={session.user}
+						onSignOut={handleSignOut}
+					/>
+				</div>
 			</div>
 		</div>
 	);
