@@ -71,16 +71,6 @@ const QuickActions: React.FC<QuickActionsProps> = ({
 			variant: "default" as const,
 		},
 		{
-			id: "api-keys",
-			title: "API Keys",
-			description: "Manage your API access",
-			icon: Key,
-			action: () => {
-				window.location.href = "/integration";
-			},
-			variant: "outline" as const,
-		},
-		{
 			id: "account-settings",
 			title: "Account Settings",
 			description: "Update your preferences",
@@ -262,16 +252,6 @@ const QuickActions: React.FC<QuickActionsProps> = ({
 			icon: Clock,
 			action: () => {
 				console.log("Opening audit & compliance...");
-			},
-			variant: "outline" as const,
-		},
-		{
-			id: "api-management",
-			title: "API Management",
-			description: "Global API settings",
-			icon: Key,
-			action: () => {
-				window.location.href = "/integration";
 			},
 			variant: "outline" as const,
 		},

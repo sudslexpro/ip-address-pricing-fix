@@ -84,7 +84,6 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
 			default:
 				return [
 					"Quote generation",
-					"API access",
 					"Account management",
 					"Basic reporting",
 					"Integration setup",

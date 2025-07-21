@@ -60,12 +60,13 @@ interface IntegrationStep {
 
 const integrationGuides: IntegrationGuide[] = [
 	{
-		id: "rest-api",
-		title: "REST API Integration",
-		description: "Integrate Lex Protector using our RESTful API endpoints",
-		category: "API",
+		id: "custom-integration",
+		title: "Custom Integration Solutions",
+		description:
+			"Work with our team to build custom integrations for your workflow",
+		category: "Custom",
 		difficulty: "Beginner",
-		timeEstimate: "15-30 minutes",
+		timeEstimate: "Contact for estimate",
 		icon: Globe,
 	},
 	{
@@ -154,67 +155,34 @@ const getDifficultyColor = (difficulty: string) => {
 const quickStartSteps: IntegrationStep[] = [
 	{
 		id: "step-1",
-		title: "Get API Credentials",
-		description: "Sign up for a developer account and obtain your API key",
-		note: "Your API key provides access to all Lex Protector endpoints",
+		title: "Contact Our Team",
+		description:
+			"Reach out to our integration team to discuss your requirements",
+		note: "Our team will guide you through available integration options",
 	},
 	{
 		id: "step-2",
-		title: "Install SDK",
-		description: "Choose your preferred SDK and install it in your project",
-		code: `# JavaScript/TypeScript
-npm install @lex-protector/sdk
-
-# Python
-pip install lex-protector-sdk
-
-# PHP
-composer require lex-protector/sdk`,
+		title: "Choose Integration Method",
+		description: "Select from our available integration partners and methods",
+		note: "We support various third-party platforms and custom integrations",
 	},
 	{
 		id: "step-3",
-		title: "Initialize Client",
-		description: "Set up the client with your API credentials",
-		code: `// JavaScript/TypeScript
-import { LexProtectorClient } from '@lex-protector/sdk';
-
-const client = new LexProtectorClient({
-  apiKey: 'your-api-key',
-  environment: 'sandbox' // or 'production'
-});
-
-# Python
-from lex_protector import Client
-
-client = Client(
-    api_key='your-api-key',
-    environment='sandbox'
-)`,
+		title: "Setup Configuration",
+		description: "Configure the integration settings with our support team",
+		note: "Our technical team will help you configure the integration properly",
 	},
 	{
 		id: "step-4",
-		title: "Create Your First Quote",
-		description: "Test the integration by creating a sample quote",
-		code: `// JavaScript/TypeScript
-const quote = await client.quotes.create({
-  clientId: 'client-123',
-  serviceType: 'Legal Consultation',
-  amount: 2500.00,
-  currency: 'USD'
-});
-
-# Python
-quote = client.quotes.create(
-    client_id='client-123',
-    service_type='Legal Consultation',
-    amount=2500.00,
-    currency='USD'
-)`,
+		title: "Test Integration",
+		description: "Verify the integration is working correctly with test data",
+		note: "Our team will help you test the integration to ensure it meets your needs",
 	},
 ];
 
 const Integration: React.FC = () => {
-	const [selectedGuide, setSelectedGuide] = React.useState<string>("rest-api");
+	const [selectedGuide, setSelectedGuide] =
+		React.useState<string>("custom-integration");
 	const [selectedCategory, setSelectedCategory] = React.useState<string>("All");
 	const [isSidebarOpen, setIsSidebarOpen] = React.useState<boolean>(false);
 	const [copiedCode, setCopiedCode] = React.useState<string>("");
@@ -259,17 +227,12 @@ const Integration: React.FC = () => {
   "signature": "sha256=..."
 }`;
 
-	const embedCode = `<!-- Basic Quote Widget -->
-<div id="lex-protector-widget"></div>
-<script src="https://cdn.lexprotector.com/widget/v1/widget.js"></script>
-<script>
-  LexProtectorWidget.init({
-    apiKey: 'your-public-api-key',
-    element: '#lex-protector-widget',
-    theme: 'light', // or 'dark'
-    services: ['consultation', 'contract-review', 'litigation']
-  });
-</script>`;
+	const embedCode = `<!-- Contact our team for custom widget implementation -->
+<!-- Email: integration@lexprotector.com -->
+<div id="lex-protector-widget">
+  <p>Custom integration solutions available</p>
+  <a href="mailto:integration@lexprotector.com">Contact Integration Team</a>
+</div>`;
 
 	return (
 		<div className="flex min-h-[calc(100vh-8rem)] bg-background relative">
@@ -333,7 +296,7 @@ const Integration: React.FC = () => {
 									}
 									className="w-full justify-start text-sm"
 									onClick={() => setSelectedCategory(category)}>
-									{category === "API" && <Globe className="h-4 w-4 mr-2" />}
+									{category === "Custom" && <Globe className="h-4 w-4 mr-2" />}
 									{category === "SDK" && <Package className="h-4 w-4 mr-2" />}
 									{category === "Webhooks" && (
 										<Webhook className="h-4 w-4 mr-2" />
@@ -431,7 +394,7 @@ const Integration: React.FC = () => {
 								</div>
 
 								{/* Quick Start Section - Always show this first */}
-								{currentGuide.id === "rest-api" && (
+								{currentGuide.id === "custom-integration" && (
 									<Card className="mb-6 lg:mb-8">
 										<CardHeader>
 											<CardTitle className="flex items-center gap-2">
@@ -515,14 +478,14 @@ const Integration: React.FC = () => {
 									</TabsList>
 
 									<TabsContent value="overview" className="space-y-4">
-										{currentGuide.id === "rest-api" && (
+										{currentGuide.id === "custom-integration" && (
 											<>
 												<Card>
 													<CardHeader>
-														<CardTitle>REST API Overview</CardTitle>
+														<CardTitle>Custom Integration Overview</CardTitle>
 														<CardDescription>
-															Comprehensive RESTful API for all Lex Protector
-															functionality
+															Work with our team to build tailored integrations
+															for your specific needs
 														</CardDescription>
 													</CardHeader>
 													<CardContent>
@@ -549,15 +512,18 @@ const Integration: React.FC = () => {
 																</ul>
 															</div>
 															<div className="space-y-3">
-																<h4 className="font-medium">Authentication</h4>
+																<h4 className="font-medium">
+																	Integration Process
+																</h4>
 																<div className="bg-muted p-3 rounded-lg">
-																	<code className="text-sm">
-																		Authorization: Bearer your-api-key
-																	</code>
+																	<p className="text-sm">
+																		Contact our integration team to discuss your
+																		specific requirements
+																	</p>
 																</div>
 																<p className="text-sm text-muted-foreground">
-																	All requests require a valid API key in the
-																	Authorization header.
+																	Our team will work with you to design and
+																	implement the perfect integration solution.
 																</p>
 															</div>
 														</div>
@@ -701,9 +667,9 @@ const Integration: React.FC = () => {
 													<div className="border-l-4 border-primary pl-4">
 														<h4 className="font-medium">Prerequisites</h4>
 														<ul className="mt-2 space-y-1 text-sm text-muted-foreground">
-															<li>• Valid Lex Protector API credentials</li>
-															<li>• Development environment setup</li>
-															<li>• Basic understanding of REST APIs</li>
+															<li>• Active Lex Protector account</li>
+															<li>• Clear integration requirements</li>
+															<li>• Contact with our integration team</li>
 															{currentGuide.category === "SDK" && (
 																<li>• Node.js 16+ or Python 3.8+ installed</li>
 															)}

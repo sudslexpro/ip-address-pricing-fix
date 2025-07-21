@@ -152,7 +152,7 @@ Successfully scanned the codebase, analyzed current implementations, and enhance
 ### USER Role
 
 - **Dashboard Stats**: Account status, system status, basic metrics
-- **Quick Actions**: Generate quotes, manage API keys, account settings, view reports
+- **Quick Actions**: Generate quotes, account settings, view reports
 - **Restricted Access**: Cannot access user management or admin features
 
 ### ADMIN Role
@@ -160,7 +160,7 @@ Successfully scanned the codebase, analyzed current implementations, and enhance
 - **Dashboard Stats**: User statistics, growth metrics, basic analytics
 - **Quick Actions**: User management, analytics refresh, integrations, audit logs
 - **User Management**: Full CRUD except Super Admin users
-- **API Access**: Can manage regular users, view analytics
+- **System Access**: Can manage regular users, view analytics
 
 ### SUPER_ADMIN Role
 
