@@ -8,7 +8,7 @@ Next.js 15 application for a legal quotation portal with React 19, TypeScript, a
 
 ### Component Organization
 
-- **Pages**: `components/pages-ui/[feature]/` - Feature-specific page components (landing, pricing, integration)
+- **Pages**: `components/pages-ui/[feature]/` - Feature-specific page components (landing, pricing)
 - **UI Components**: `components/ui/` - shadcn/ui components with customizations
 - **Layout**: `components/navigation/`, `components/footer/`, `components/cta/` - Global layout elements
 - **Utilities**: `lib/utils.ts` exports `cn()` for className merging with clsx + tailwind-merge
