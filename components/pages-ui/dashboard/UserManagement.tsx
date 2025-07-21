@@ -56,6 +56,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import OnlineStatusIndicator from "@/components/ui/online-status-indicator";
 import {
 	Users,
 	Search,
@@ -78,6 +79,7 @@ import {
 	RefreshCw,
 } from "lucide-react";
 import { getRoleColor } from "@/lib/role-utils";
+import { useOnlineStatus } from "@/hooks/useOnlineStatus";
 
 interface User {
 	id: string;
@@ -108,6 +110,10 @@ interface CreateUserForm {
 }
 
 const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
+	// Online status hook for current user (optional - for demo purposes)
+	const { isOnline: currentUserOnline, status: currentUserStatus } =
+		useOnlineStatus();
+
 	const [users, setUsers] = useState<User[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [searchTerm, setSearchTerm] = useState("");
@@ -438,9 +444,21 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 							<CardTitle className="flex items-center gap-2">
 								<Users className="h-5 w-5" />
 								User Management
+								{/* Connection Status Indicator */}
+								<div className="ml-2">
+									<OnlineStatusIndicator
+										lastLoginAt={new Date().toISOString()}
+										variant="dot"
+										showLabel={false}
+										className="scale-75"
+									/>
+								</div>
 							</CardTitle>
-							<CardDescription>
+							<CardDescription className="flex items-center gap-2">
 								Manage user accounts, roles, and permissions
+								<span className="text-xs text-muted-foreground">
+									• Connection: {currentUserStatus}
+								</span>
 							</CardDescription>
 						</div>
 						<div className="flex items-center gap-2">
@@ -606,6 +624,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 									<TableHead>User</TableHead>
 									<TableHead>Role</TableHead>
 									<TableHead>Status</TableHead>
+									<TableHead>Online Status</TableHead>
 									<TableHead>Last Login</TableHead>
 									<TableHead>Created</TableHead>
 									<TableHead className="text-right">Actions</TableHead>
@@ -614,14 +633,14 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 							<TableBody>
 								{loading ? (
 									<TableRow>
-										<TableCell colSpan={6} className="text-center py-8">
+										<TableCell colSpan={7} className="text-center py-8">
 											<Loader2 className="h-8 w-8 animate-spin mx-auto mb-2" />
 											<p>Loading users...</p>
 										</TableCell>
 									</TableRow>
 								) : users.length === 0 ? (
 									<TableRow>
-										<TableCell colSpan={6} className="text-center py-8">
+										<TableCell colSpan={7} className="text-center py-8">
 											<Users className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
 											<p className="text-muted-foreground">
 												No users found matching your criteria.
@@ -659,6 +678,14 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 												</Badge>
 											</TableCell>
 											<TableCell>{getStatusBadge(user)}</TableCell>
+											<TableCell>
+												<OnlineStatusIndicator
+													lastLoginAt={user.lastLoginAt}
+													variant="dot"
+													showTimeAgo={true}
+													showLabel={false}
+												/>
+											</TableCell>
 											<TableCell>
 												<div
 													className={`text-sm flex items-center gap-2 ${
