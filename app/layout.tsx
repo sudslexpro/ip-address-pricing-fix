@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/navigation/Header";
-import Footer from "@/components/footer/Footer";
-import FloatingCTA from "@/components/cta/FloatingCTA";
-import QuickAccessMenu from "@/components/cta/QuickAccessMenu";
 import AuthProvider from "@/components/providers/AuthProvider";
+import LayoutClient from "./LayoutClient";
 
 const inter = Inter({
 	variable: "--font-inter",
@@ -26,12 +23,7 @@ export default function RootLayout({
 		<html lang="en" suppressHydrationWarning>
 			<body className={`${inter.variable} antialiased`}>
 				<AuthProvider>
-					<Header />
-					{/* Floating Elements */}
-					<FloatingCTA />
-					<QuickAccessMenu />
-					<div className={`pt-16`}>{children}</div>
-					<Footer />
+					<LayoutClient>{children}</LayoutClient>
 				</AuthProvider>
 			</body>
 		</html>
