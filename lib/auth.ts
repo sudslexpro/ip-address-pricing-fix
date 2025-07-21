@@ -175,18 +175,26 @@ export const authOptions: NextAuthOptions = {
 				return;
 			}
 
-			if (isNewUser && user.email) {
+			if (user.email) {
 				try {
-					// Create user profile for new users
-					await prisma.userProfile.create({
-						data: {
-							userId: user.id,
-							firstName: user.name?.split(" ")[0] || "",
-							lastName: user.name?.split(" ").slice(1).join(" ") || "",
-						},
+					// Update lastLoginAt for all successful sign-ins
+					await prisma.user.update({
+						where: { email: user.email },
+						data: { lastLoginAt: new Date() },
 					});
+
+					// Create user profile for new users
+					if (isNewUser) {
+						await prisma.userProfile.create({
+							data: {
+								userId: user.id,
+								firstName: user.name?.split(" ")[0] || "",
+								lastName: user.name?.split(" ").slice(1).join(" ") || "",
+							},
+						});
+					}
 				} catch (error) {
-					console.error("User profile creation error:", error);
+					console.error("User profile creation/update error:", error);
 					// Don't throw error to prevent build failures
 				}
 			}

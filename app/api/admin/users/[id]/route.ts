@@ -90,7 +90,17 @@ export async function GET(
 			return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
 		}
 
-		return NextResponse.json({ user });
+		const response = NextResponse.json({ user });
+
+		// Add cache control headers to ensure fresh data
+		response.headers.set(
+			"Cache-Control",
+			"no-cache, no-store, must-revalidate"
+		);
+		response.headers.set("Pragma", "no-cache");
+		response.headers.set("Expires", "0");
+
+		return response;
 	} catch (error) {
 		console.error("Error fetching user:", error);
 		return NextResponse.json(

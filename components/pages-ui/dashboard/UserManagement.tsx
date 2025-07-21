@@ -390,7 +390,36 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 
 	const formatDateTime = (dateString: string | null) => {
 		if (!dateString) return "Never";
-		return new Date(dateString).toLocaleString();
+
+		const date = new Date(dateString);
+		const now = new Date();
+		const diffInMs = now.getTime() - date.getTime();
+		const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+		const diffInHours = Math.floor(diffInMinutes / 60);
+		const diffInDays = Math.floor(diffInHours / 24);
+
+		// Show relative time for recent logins
+		if (diffInMinutes < 1) {
+			return "Just now";
+		} else if (diffInMinutes < 60) {
+			return `${diffInMinutes} minute${diffInMinutes !== 1 ? "s" : ""} ago`;
+		} else if (diffInHours < 24) {
+			return `${diffInHours} hour${diffInHours !== 1 ? "s" : ""} ago`;
+		} else if (diffInDays < 7) {
+			return `${diffInDays} day${diffInDays !== 1 ? "s" : ""} ago`;
+		}
+
+		// For older logins, show the full date
+		return date.toLocaleString();
+	};
+
+	const isRecentLogin = (dateString: string | null) => {
+		if (!dateString) return false;
+		const date = new Date(dateString);
+		const now = new Date();
+		const diffInMs = now.getTime() - date.getTime();
+		const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+		return diffInMinutes < 30; // Consider logins within 30 minutes as recent
 	};
 
 	return (
@@ -631,7 +660,15 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 											</TableCell>
 											<TableCell>{getStatusBadge(user)}</TableCell>
 											<TableCell>
-												<div className="text-sm">
+												<div
+													className={`text-sm flex items-center gap-2 ${
+														isRecentLogin(user.lastLoginAt)
+															? "text-green-600 font-medium"
+															: ""
+													}`}>
+													{isRecentLogin(user.lastLoginAt) && (
+														<div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+													)}
 													{formatDateTime(user.lastLoginAt)}
 												</div>
 											</TableCell>
