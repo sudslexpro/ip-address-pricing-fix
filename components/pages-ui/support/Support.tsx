@@ -149,9 +149,9 @@ const Support: React.FC = () => {
 				"Absolutely. We use enterprise-grade security with end-to-end encryption, SOC 2 compliance, and regular security audits. Your client data and legal documents are protected with the highest security standards.",
 		},
 		{
-			question: "Can I integrate with my existing CRM?",
+			question: "Can I customize my quotes and branding?",
 			answer:
-				"Yes! We offer integrations with popular CRM systems and a comprehensive API. Check our integration documentation for supported platforms or contact us for custom integration needs.",
+				"Yes! We offer extensive customization options for your quotes and branding. You can upload your letterhead, customize quote templates, and tailor the appearance to match your firm's identity. Contact us for assistance with custom branding setup.",
 		},
 		{
 			question: "What if I need to cancel my subscription?",

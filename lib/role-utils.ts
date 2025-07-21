@@ -14,7 +14,6 @@ export interface RolePermissions {
 	canAccessAPI: boolean;
 	canManageQuotes: boolean;
 	canViewReports: boolean;
-	canManageIntegrations: boolean;
 	canManageSettings: boolean;
 	canViewAuditLogs: boolean;
 }
@@ -30,7 +29,6 @@ export const getRolePermissions = (role: string): RolePermissions => {
 				canAccessAPI: true,
 				canManageQuotes: true,
 				canViewReports: true,
-				canManageIntegrations: true,
 				canManageSettings: true,
 				canViewAuditLogs: true,
 			};
@@ -43,7 +41,6 @@ export const getRolePermissions = (role: string): RolePermissions => {
 				canAccessAPI: true,
 				canManageQuotes: true,
 				canViewReports: true,
-				canManageIntegrations: true,
 				canManageSettings: false,
 				canViewAuditLogs: true,
 			};
@@ -57,7 +54,6 @@ export const getRolePermissions = (role: string): RolePermissions => {
 				canAccessAPI: true,
 				canManageQuotes: true,
 				canViewReports: false,
-				canManageIntegrations: false,
 				canManageSettings: false,
 				canViewAuditLogs: false,
 			};

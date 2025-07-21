@@ -60,7 +60,6 @@ const TermsOfServicePage: React.FC = () => {
 								<li>Automated trademark research and quotation generation</li>
 								<li>Coverage across 100+ countries and jurisdictions</li>
 								<li>Professional PDF quote generation with custom branding</li>
-								<li>API integration capabilities for existing systems</li>
 								<li>Real-time pricing calculations and fee estimates</li>
 								<li>Client management and tracking tools</li>
 							</ul>

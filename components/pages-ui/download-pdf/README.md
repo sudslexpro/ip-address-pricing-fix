@@ -32,7 +32,7 @@ A React component that generates and downloads PDF quotes with the letterhead an
 **Features:**
 
 - A4 size PDF generation
-- Professional letterhead integration
+- Professional letterhead formatting
 - Tabular quote breakdown by country
 - Services summary
 - Terms and conditions
