@@ -75,6 +75,7 @@ import {
 	UserX,
 	ChevronLeft,
 	ChevronRight,
+	RefreshCw,
 } from "lucide-react";
 import { getRoleColor } from "@/lib/role-utils";
 
@@ -132,11 +133,16 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 	const [createLoading, setCreateLoading] = useState(false);
 	const [editLoading, setEditLoading] = useState(false);
 	const [deleteLoading, setDeleteLoading] = useState(false);
+	const [refreshLoading, setRefreshLoading] = useState(false);
 
 	// Fetch users from API
-	const fetchUsers = async () => {
+	const fetchUsers = async (isManualRefresh = false) => {
 		try {
-			setLoading(true);
+			if (isManualRefresh) {
+				setRefreshLoading(true);
+			} else {
+				setLoading(true);
+			}
 			setError("");
 
 			const params = new URLSearchParams({
@@ -160,6 +166,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 			setError(err.message);
 		} finally {
 			setLoading(false);
+			setRefreshLoading(false);
 		}
 	};
 
@@ -249,6 +256,17 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 		}
 	};
 
+	// Manual refresh handler
+	const handleManualRefresh = () => {
+		// Add a visual delay to show the rotation animation
+		setRefreshLoading(true);
+
+		// Small delay to ensure the animation is visible
+		setTimeout(() => {
+			fetchUsers(true);
+		}, 1000);
+	};
+
 	// Effects
 	useEffect(() => {
 		fetchUsers();
@@ -257,6 +275,34 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 	useEffect(() => {
 		setCurrentPage(1);
 	}, [searchTerm, roleFilter, statusFilter]);
+
+	// Auto-refresh every 20 seconds
+	useEffect(() => {
+		const interval = setInterval(() => {
+			// Only auto-refresh if not loading and no dialogs are open
+			if (
+				!loading &&
+				!refreshLoading &&
+				!isCreateUserOpen &&
+				!isEditUserOpen &&
+				!deleteUserId
+			) {
+				fetchUsers();
+			}
+		}, 20000);
+
+		return () => clearInterval(interval);
+	}, [
+		loading,
+		refreshLoading,
+		isCreateUserOpen,
+		isEditUserOpen,
+		deleteUserId,
+		currentPage,
+		searchTerm,
+		roleFilter,
+		statusFilter,
+	]);
 
 	const getRoleIcon = (role: string) => {
 		switch (role) {
@@ -326,101 +372,123 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 								Manage user accounts, roles, and permissions
 							</CardDescription>
 						</div>
-						<Dialog open={isCreateUserOpen} onOpenChange={setIsCreateUserOpen}>
-							<DialogTrigger asChild>
-								<Button className="flex items-center gap-2">
-									<Plus className="h-4 w-4" />
-									Add User
-								</Button>
-							</DialogTrigger>
-							<DialogContent>
-								<DialogHeader>
-									<DialogTitle>Create New User</DialogTitle>
-									<DialogDescription>
-										Add a new user to the system with appropriate role and
-										permissions.
-									</DialogDescription>
-								</DialogHeader>
-								<form onSubmit={handleCreateUser} className="space-y-4">
-									<div className="space-y-2">
-										<Label htmlFor="name">Full Name</Label>
-										<Input
-											id="name"
-											value={createForm.name}
-											onChange={(e) =>
-												setCreateForm({ ...createForm, name: e.target.value })
-											}
-											placeholder="Enter full name"
-											required
-										/>
-									</div>
-									<div className="space-y-2">
-										<Label htmlFor="email">Email</Label>
-										<Input
-											id="email"
-											type="email"
-											value={createForm.email}
-											onChange={(e) =>
-												setCreateForm({ ...createForm, email: e.target.value })
-											}
-											placeholder="Enter email address"
-											required
-										/>
-									</div>
-									<div className="space-y-2">
-										<Label htmlFor="password">Password</Label>
-										<Input
-											id="password"
-											type="password"
-											value={createForm.password}
-											onChange={(e) =>
-												setCreateForm({
-													...createForm,
-													password: e.target.value,
-												})
-											}
-											placeholder="Enter password"
-											required
-										/>
-									</div>
-									<div className="space-y-2">
-										<Label htmlFor="role">Role</Label>
-										<Select
-											value={createForm.role}
-											onValueChange={(value) =>
-												setCreateForm({ ...createForm, role: value })
-											}>
-											<SelectTrigger>
-												<SelectValue placeholder="Select role" />
-											</SelectTrigger>
-											<SelectContent>
-												<SelectItem value="USER">User</SelectItem>
-												<SelectItem value="ADMIN">Admin</SelectItem>
-												{currentUserRole === "SUPER_ADMIN" && (
-													<SelectItem value="SUPER_ADMIN">
-														Super Admin
-													</SelectItem>
+						<div className="flex items-center gap-2">
+							<Button
+								variant="outline"
+								size="sm"
+								onClick={handleManualRefresh}
+								disabled={refreshLoading}
+								className="flex items-center gap-2 transition-all duration-200 hover:scale-105 group">
+								<RefreshCw
+									className={`h-4 w-4 transition-transform duration-500 ease-in-out ${
+										refreshLoading
+											? "animate-spin"
+											: ""
+									}`}
+								/>
+								Refresh
+							</Button>
+							<Dialog
+								open={isCreateUserOpen}
+								onOpenChange={setIsCreateUserOpen}>
+								<DialogTrigger asChild>
+									<Button className="flex items-center gap-2">
+										<Plus className="h-4 w-4" />
+										Add User
+									</Button>
+								</DialogTrigger>
+								<DialogContent>
+									<DialogHeader>
+										<DialogTitle>Create New User</DialogTitle>
+										<DialogDescription>
+											Add a new user to the system with appropriate role and
+											permissions.
+										</DialogDescription>
+									</DialogHeader>
+									<form onSubmit={handleCreateUser} className="space-y-4">
+										<div className="space-y-2">
+											<Label htmlFor="name">Full Name</Label>
+											<Input
+												id="name"
+												value={createForm.name}
+												onChange={(e) =>
+													setCreateForm({ ...createForm, name: e.target.value })
+												}
+												placeholder="Enter full name"
+												required
+											/>
+										</div>
+										<div className="space-y-2">
+											<Label htmlFor="email">Email</Label>
+											<Input
+												id="email"
+												type="email"
+												value={createForm.email}
+												onChange={(e) =>
+													setCreateForm({
+														...createForm,
+														email: e.target.value,
+													})
+												}
+												placeholder="Enter email address"
+												required
+											/>
+										</div>
+										<div className="space-y-2">
+											<Label htmlFor="password">Password</Label>
+											<Input
+												id="password"
+												type="password"
+												value={createForm.password}
+												onChange={(e) =>
+													setCreateForm({
+														...createForm,
+														password: e.target.value,
+													})
+												}
+												placeholder="Enter password"
+												required
+											/>
+										</div>
+										<div className="space-y-2">
+											<Label htmlFor="role">Role</Label>
+											<Select
+												value={createForm.role}
+												onValueChange={(value) =>
+													setCreateForm({ ...createForm, role: value })
+												}>
+												<SelectTrigger>
+													<SelectValue placeholder="Select role" />
+												</SelectTrigger>
+												<SelectContent>
+													<SelectItem value="USER">User</SelectItem>
+													<SelectItem value="ADMIN">Admin</SelectItem>
+													{currentUserRole === "SUPER_ADMIN" && (
+														<SelectItem value="SUPER_ADMIN">
+															Super Admin
+														</SelectItem>
+													)}
+												</SelectContent>
+											</Select>
+										</div>
+										<DialogFooter>
+											<Button
+												type="button"
+												variant="outline"
+												onClick={() => setIsCreateUserOpen(false)}>
+												Cancel
+											</Button>
+											<Button type="submit" disabled={createLoading}>
+												{createLoading && (
+													<Loader2 className="mr-2 h-4 w-4 animate-spin" />
 												)}
-											</SelectContent>
-										</Select>
-									</div>
-									<DialogFooter>
-										<Button
-											type="button"
-											variant="outline"
-											onClick={() => setIsCreateUserOpen(false)}>
-											Cancel
-										</Button>
-										<Button type="submit" disabled={createLoading}>
-											{createLoading && (
-												<Loader2 className="mr-2 h-4 w-4 animate-spin" />
-											)}
-											Create User
-										</Button>
-									</DialogFooter>
-								</form>
-							</DialogContent>
-						</Dialog>
+												Create User
+											</Button>
+										</DialogFooter>
+									</form>
+								</DialogContent>
+							</Dialog>
+						</div>
 					</div>
 				</CardHeader>
 				<CardContent>
