@@ -12,6 +12,7 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle, RefreshCw } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
 
 const errorMessages = {
 	Configuration: "There is a problem with the server configuration.",
@@ -22,7 +23,7 @@ const errorMessages = {
 	Default: "An unexpected error occurred during authentication.",
 };
 
-export default function AuthErrorPage() {
+function AuthErrorContent() {
 	const searchParams = useSearchParams();
 	const error = searchParams.get("error") as keyof typeof errorMessages;
 
@@ -82,5 +83,27 @@ export default function AuthErrorPage() {
 				</CardContent>
 			</Card>
 		</div>
+	);
+}
+
+export default function AuthErrorPage() {
+	return (
+		<Suspense
+			fallback={
+				<div className="min-h-screen flex items-center justify-center p-4">
+					<Card className="w-full max-w-md">
+						<CardHeader className="space-y-1">
+							<CardTitle className="text-2xl text-center">
+								Authentication Error
+							</CardTitle>
+							<CardDescription className="text-center">
+								Loading...
+							</CardDescription>
+						</CardHeader>
+					</Card>
+				</div>
+			}>
+			<AuthErrorContent />
+		</Suspense>
 	);
 }

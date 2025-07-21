@@ -35,11 +35,11 @@ async function checkUserPermission(
 // GET /api/admin/users/[id] - Get user by ID
 export async function GET(
 	request: NextRequest,
-	{ params }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ) {
 	try {
 		const session = await getServerSession(authOptions);
-		const userId = params.id;
+		const { id: userId } = await params;
 
 		if (!session?.user?.role || !checkUserPermission(session, userId)) {
 			return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
@@ -103,11 +103,11 @@ export async function GET(
 // PUT /api/admin/users/[id] - Update user
 export async function PUT(
 	request: NextRequest,
-	{ params }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ) {
 	try {
 		const session = await getServerSession(authOptions);
-		const userId = params.id;
+		const { id: userId } = await params;
 		const body = await request.json();
 
 		// Get current user to check permissions
@@ -192,11 +192,11 @@ export async function PUT(
 // DELETE /api/admin/users/[id] - Delete user
 export async function DELETE(
 	request: NextRequest,
-	{ params }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ) {
 	try {
 		const session = await getServerSession(authOptions);
-		const userId = params.id;
+		const { id: userId } = await params;
 
 		// Get current user to check permissions
 		const currentUser = await prisma.user.findUnique({
