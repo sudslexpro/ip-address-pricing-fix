@@ -234,20 +234,23 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 		}
 	};
 
-	// Delete user
+	// Delete user (Deactivate - reversible)
 	const handleDeleteUser = async (userId: string) => {
 		setDeleteLoading(true);
 		setError("");
 
 		try {
-			const response = await fetch(`/api/admin/users/${userId}`, {
-				method: "DELETE",
+			const response = await fetch(`/api/admin/users/${userId}/deactivate`, {
+				method: "PATCH",
+				headers: {
+					"Content-Type": "application/json",
+				},
 			});
 
 			const data = await response.json();
 
 			if (!response.ok) {
-				throw new Error(data.error || "Failed to delete user");
+				throw new Error(data.error || "Failed to deactivate user");
 			}
 
 			setDeleteUserId("");
@@ -265,12 +268,9 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 		setError("");
 
 		try {
-			const response = await fetch(
-				`/api/admin/users/${userId}?permanent=true`,
-				{
-					method: "DELETE",
-				}
-			);
+			const response = await fetch(`/api/admin/users/${userId}/delete`, {
+				method: "DELETE",
+			});
 
 			const data = await response.json();
 
@@ -836,18 +836,18 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 						<AlertDialogTitle>Permanently Delete User</AlertDialogTitle>
 						<AlertDialogDescription>
 							<div className="space-y-2">
-								<span className="font-medium text-destructive">
+								<p className="font-medium text-destructive">
 									⚠️ This action cannot be undone!
-								</span>
-								<span>
+								</p>
+								<p className={`text-justify`}>
 									This will permanently delete the user account and all
 									associated data. The user will be completely removed from the
 									system and cannot be restored.
-								</span>
-								<span className="text-sm text-muted-foreground">
+								</p>
+								<p className="text-sm text-muted-foreground text-justify">
 									Consider deactivating the user instead if you might need to
 									restore access later.
-								</span>
+								</p>
 							</div>
 						</AlertDialogDescription>
 					</AlertDialogHeader>
