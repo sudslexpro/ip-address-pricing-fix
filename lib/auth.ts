@@ -67,10 +67,15 @@ export const authOptions: NextAuthOptions = {
 					}
 
 					// Update last login
+					console.log(
+						"Updating lastLoginAt for credentials login:",
+						user.email
+					);
 					await prisma.user.update({
 						where: { id: user.id },
 						data: { lastLoginAt: new Date() },
 					});
+					console.log("LastLoginAt updated successfully for:", user.email);
 
 					return {
 						id: user.id,
@@ -105,8 +110,17 @@ export const authOptions: NextAuthOptions = {
 			return session;
 		},
 		async signIn({ user, account, profile, email, credentials }) {
+			console.log("SignIn callback triggered:", {
+				provider: account?.provider,
+				userEmail: user.email,
+				accountType: account?.type,
+			});
+
 			try {
 				if (account?.provider === "credentials") {
+					console.log(
+						"Credentials login detected, lastLoginAt will be updated in credentials handler"
+					);
 					return true;
 				}
 
@@ -115,26 +129,39 @@ export const authOptions: NextAuthOptions = {
 					process.env.NODE_ENV === "production" &&
 					!process.env.DATABASE_URL
 				) {
+					console.log("Skipping database operations - production build");
 					return true;
 				}
 
 				// For OAuth providers, check user status and update lastLoginAt
 				if (user.email) {
 					try {
+						console.log("Checking existing user for OAuth login:", user.email);
 						const existingUser = await prisma.user.findUnique({
 							where: { email: user.email },
 						});
 
 						if (existingUser && !existingUser.isActive) {
+							console.log("User is inactive, denying login:", user.email);
 							return false;
 						}
 
 						// Update last login for OAuth providers
 						if (existingUser) {
+							console.log("Updating lastLoginAt for OAuth user:", user.email);
 							await prisma.user.update({
 								where: { email: user.email },
 								data: { lastLoginAt: new Date() },
 							});
+							console.log(
+								"LastLoginAt updated successfully for OAuth user:",
+								user.email
+							);
+						} else {
+							console.log(
+								"No existing user found for OAuth login:",
+								user.email
+							);
 						}
 					} catch (error) {
 						console.error("SignIn error:", error);
@@ -170,21 +197,34 @@ export const authOptions: NextAuthOptions = {
 	},
 	events: {
 		async signIn({ user, account, profile, isNewUser }) {
+			console.log("SignIn event triggered:", {
+				userEmail: user.email,
+				provider: account?.provider,
+				isNewUser: isNewUser,
+			});
+
 			// Skip database operations during build time
 			if (process.env.NODE_ENV === "production" && !process.env.DATABASE_URL) {
+				console.log("Skipping database operations - production build");
 				return;
 			}
 
 			if (user.email) {
 				try {
-					// Update lastLoginAt for all successful sign-ins
+					console.log("Updating lastLoginAt in signIn event for:", user.email);
+					// Update lastLoginAt for all successful sign-ins as a fallback
 					await prisma.user.update({
 						where: { email: user.email },
 						data: { lastLoginAt: new Date() },
 					});
+					console.log(
+						"LastLoginAt updated successfully in signIn event for:",
+						user.email
+					);
 
 					// Create user profile for new users
 					if (isNewUser) {
+						console.log("Creating user profile for new user:", user.email);
 						await prisma.userProfile.create({
 							data: {
 								userId: user.id,
@@ -192,6 +232,7 @@ export const authOptions: NextAuthOptions = {
 								lastName: user.name?.split(" ").slice(1).join(" ") || "",
 							},
 						});
+						console.log("User profile created successfully for:", user.email);
 					}
 				} catch (error) {
 					console.error("User profile creation/update error:", error);
