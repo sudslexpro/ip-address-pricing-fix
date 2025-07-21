@@ -307,7 +307,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 		setCurrentPage(1);
 	}, [searchTerm, roleFilter, statusFilter]);
 
-	// Auto-refresh every 20 seconds
+	// Auto-refresh every 30 seconds
 	useEffect(() => {
 		const interval = setInterval(() => {
 			// Only auto-refresh if not loading and no dialogs are open
@@ -321,7 +321,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 			) {
 				fetchUsers();
 			}
-		}, 20000);
+		}, 30000);
 
 		return () => clearInterval(interval);
 	}, [
