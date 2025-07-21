@@ -307,7 +307,7 @@ const QuickActions: React.FC<QuickActionsProps> = ({
 					</Alert>
 				)}
 
-				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+				<div className="space-y-2">
 					{actions.map((action, index) => {
 						const Icon = action.icon;
 						const isLoading = loading === action.id;
@@ -316,15 +316,15 @@ const QuickActions: React.FC<QuickActionsProps> = ({
 							<Button
 								key={index}
 								variant={action.variant}
-								className="h-auto p-4 flex flex-col items-center gap-2 text-center"
+								className="w-full h-auto p-4 flex items-center justify-start gap-3 text-left"
 								onClick={() => handleAction(action.id, action.action)}
 								disabled={isLoading}>
 								{isLoading ? (
-									<Loader2 className="h-5 w-5 animate-spin" />
+									<Loader2 className="h-5 w-5 animate-spin flex-shrink-0" />
 								) : (
-									<Icon className="h-5 w-5" />
+									<Icon className="h-5 w-5 flex-shrink-0" />
 								)}
-								<div className="space-y-1">
+								<div className="flex flex-col gap-1 flex-1">
 									<div className="font-medium text-sm">{action.title}</div>
 									<div className="text-xs text-muted-foreground">
 										{action.description}
