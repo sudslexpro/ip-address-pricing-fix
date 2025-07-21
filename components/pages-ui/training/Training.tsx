@@ -93,19 +93,6 @@ const trainingModules: TrainingModule[] = [
 		rating: 4.7,
 	},
 	{
-		id: "api-integration",
-		title: "API Integration Guide",
-		description:
-			"Integrate Lex Protector APIs into your existing legal practice management systems.",
-		duration: "2h 15min",
-		difficulty: "Advanced",
-		category: "Integration",
-		completed: false,
-		videoUrl: "#",
-		documentsCount: 8,
-		rating: 4.6,
-	},
-	{
 		id: "pricing-strategies",
 		title: "Legal Pricing Strategies",
 		description:
@@ -151,7 +138,7 @@ const trainingModules: TrainingModule[] = [
 			"Automate repetitive tasks and streamline your legal practice workflow.",
 		duration: "2h",
 		difficulty: "Advanced",
-		category: "Integration",
+		category: "Business",
 		completed: false,
 		videoUrl: "#",
 		documentsCount: 9,
@@ -182,14 +169,6 @@ const categories: TrainingCategory[] = [
 		moduleCount: trainingModules.filter((m) => m.category === "Documents")
 			.length,
 		icon: <FileText className="h-5 w-5" />,
-	},
-	{
-		id: "Integration",
-		name: "Integration",
-		description: "API and system integration",
-		moduleCount: trainingModules.filter((m) => m.category === "Integration")
-			.length,
-		icon: <Target className="h-5 w-5" />,
 	},
 	{
 		id: "Business",
@@ -258,7 +237,7 @@ const Training: React.FC = () => {
 						<p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8">
 							Comprehensive training resources to help you maximize the
 							potential of Lex Protector. From basic operations to advanced
-							integrations.
+							features.
 						</p>
 
 						{/* Progress Overview */}
@@ -478,7 +457,7 @@ const Training: React.FC = () => {
 											</div>
 											<div className="flex items-center justify-between">
 												<span className="text-sm">
-													Integration Examples (6 videos)
+													Business Training (6 videos)
 												</span>
 												<Button size="sm" variant="outline">
 													<Play className="h-4 w-4" />
@@ -555,10 +534,10 @@ const Training: React.FC = () => {
 
 										<div className="border rounded-lg p-4">
 											<h4 className="font-semibold mb-2">
-												API Integration Workshop
+												Legal Practice Optimization
 											</h4>
 											<p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-												Hands-on workshop for integrating Lex Protector APIs
+												Workshop on streamlining legal practice workflows
 											</p>
 											<div className="flex items-center justify-between">
 												<span className="text-sm font-medium">
@@ -632,7 +611,7 @@ const Training: React.FC = () => {
 					</h2>
 					<p className="text-xl text-blue-100 mb-8">
 						Start with our fundamentals course and work your way up to advanced
-						integrations.
+						features.
 					</p>
 					<div className="flex flex-col sm:flex-row gap-4 justify-center">
 						<Button

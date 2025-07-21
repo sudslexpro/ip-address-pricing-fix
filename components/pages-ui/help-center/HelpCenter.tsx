@@ -61,14 +61,6 @@ const faqData: FAQItem[] = [
 		tags: ["pdf", "documents", "letterhead"],
 	},
 	{
-		id: "api-integration",
-		question: "Can I integrate Lex Protector with my existing systems?",
-		answer:
-			"Yes! Our platform supports integration with various legal technology platforms. You can connect Lex Protector with your case management software, CRM, and other legal tech tools through our integration partners. Contact our support team for specific integration requirements and assistance.",
-		category: "integration",
-		tags: ["integration", "systems", "support"],
-	},
-	{
 		id: "data-security",
 		question: "How secure is my client data?",
 		answer:
@@ -124,7 +116,6 @@ const categories = [
 	{ id: "features", label: "Features", icon: Settings },
 	{ id: "pricing", label: "Pricing", icon: CreditCard },
 	{ id: "security", label: "Security", icon: Shield },
-	{ id: "integration", label: "Integration", icon: FileText },
 	{ id: "support", label: "Support", icon: MessageCircle },
 ];
 
@@ -349,8 +340,8 @@ const HelpCenter: React.FC = () => {
 											variant="ghost"
 											className="w-full justify-between p-2 h-auto"
 											asChild>
-											<a href="/integration">
-												<span className="text-sm">Integration Guide</span>
+											<a href="/support">
+												<span className="text-sm">Contact Support</span>
 												<ChevronRight className="w-4 h-4" />
 											</a>
 										</Button>
@@ -367,8 +358,8 @@ const HelpCenter: React.FC = () => {
 											variant="ghost"
 											className="w-full justify-between p-2 h-auto"
 											asChild>
-											<a href="/integration">
-												<span className="text-sm">Integration Guide</span>
+											<a href="/support">
+												<span className="text-sm">Contact Support</span>
 												<ChevronRight className="w-4 h-4" />
 											</a>
 										</Button>

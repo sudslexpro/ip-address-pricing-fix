@@ -175,15 +175,15 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 							<Card>
 								<CardHeader>
 									<CardTitle className="flex items-center gap-2">
-										<Webhook className="h-5 w-5" />
-										System Integration
+										<Settings className="h-5 w-5" />
+										System Configuration
 									</CardTitle>
 								</CardHeader>
 								<CardContent>
 									<div className="space-y-3">
 										<Button variant="outline" className="w-full justify-start">
-											<Webhook className="h-4 w-4 mr-2" />
-											Webhook Configuration
+											<Shield className="h-4 w-4 mr-2" />
+											Security Configuration
 										</Button>
 										<Button variant="outline" className="w-full justify-start">
 											<Settings className="h-4 w-4 mr-2" />
