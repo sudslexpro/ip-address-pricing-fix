@@ -57,6 +57,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import OnlineStatusIndicator from "@/components/ui/online-status-indicator";
+import EnhancedOnlineStatus from "@/components/ui/enhanced-online-status";
 import {
 	Users,
 	Search,
@@ -80,6 +81,19 @@ import {
 } from "lucide-react";
 import { getRoleColor } from "@/lib/role-utils";
 import { useOnlineStatus } from "@/hooks/useOnlineStatus";
+import { useUsersOnlineStatus } from "@/hooks/useUserOnlineStatus";
+import {
+	getUserOnlineStatus,
+	getOnlineStatusLabel,
+	isUserOnline,
+	getUserStatusDescription,
+	isRecentlyActive,
+} from "@/lib/utils";
+import {
+	checkUserIsOnline,
+	filterUsersByOnlineStatus,
+	countUsersByOnlineStatus,
+} from "@/lib/user-status-utils";
 
 interface User {
 	id: string;
@@ -88,6 +102,7 @@ interface User {
 	role: string;
 	isActive: boolean;
 	lastLoginAt: string | null;
+	lastActivityAt?: string | null; // Add optional last activity tracking
 	createdAt: string;
 	image?: string;
 	profile?: {
@@ -119,9 +134,18 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [roleFilter, setRoleFilter] = useState("all");
 	const [statusFilter, setStatusFilter] = useState("all");
+	const [onlineStatusFilter, setOnlineStatusFilter] = useState("all"); // Add online status filter
 	const [currentPage, setCurrentPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(1);
 	const [error, setError] = useState<string>("");
+
+	// Online status tracking for all users
+	const {
+		getUserStatus: getUserOnlineStatusFromHook,
+		getStatusCounts,
+		getUsersByStatus,
+		updateUserStatuses,
+	} = useUsersOnlineStatus(users, 30000); // Update every 30 seconds
 
 	// Dialog states
 	const [isCreateUserOpen, setIsCreateUserOpen] = useState(false);
@@ -307,6 +331,9 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 		// Add a visual delay to show the rotation animation
 		setRefreshLoading(true);
 
+		// Update online statuses first
+		updateUserStatuses();
+
 		// Small delay to ensure the animation is visible
 		setTimeout(() => {
 			fetchUsers(true);
@@ -320,7 +347,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 
 	useEffect(() => {
 		setCurrentPage(1);
-	}, [searchTerm, roleFilter, statusFilter]);
+	}, [searchTerm, roleFilter, statusFilter, onlineStatusFilter]);
 
 	// Auto-refresh every 30 seconds
 	useEffect(() => {
@@ -426,6 +453,30 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 		const diffInMs = now.getTime() - date.getTime();
 		const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
 		return diffInMinutes < 30; // Consider logins within 30 minutes as recent
+	};
+
+	// Helper function to check if user is currently online (simplified)
+	const checkUserOnlineStatus = (user: User) => {
+		return checkUserIsOnline(user);
+	};
+
+	// Get online users count for display
+	const getOnlineUsersCount = () => {
+		const statusCounts = countUsersByOnlineStatus(users);
+		return statusCounts.online + statusCounts.away;
+	};
+
+	// Filter users based on online status
+	const getFilteredUsers = () => {
+		return filterUsersByOnlineStatus(
+			users,
+			onlineStatusFilter as
+				| "all"
+				| "online"
+				| "away"
+				| "recently-active"
+				| "offline"
+		);
 	};
 
 	return (
@@ -614,6 +665,55 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 								<SelectItem value="inactive">Inactive</SelectItem>
 							</SelectContent>
 						</Select>
+						<Select
+							value={onlineStatusFilter}
+							onValueChange={setOnlineStatusFilter}>
+							<SelectTrigger className="w-[180px]">
+								<SelectValue placeholder="Online Status" />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value="all">All Users</SelectItem>
+								<SelectItem value="online">
+									<div className="flex items-center gap-2">
+										<div className="w-2 h-2 bg-green-500 rounded-full"></div>
+										Online
+									</div>
+								</SelectItem>
+								<SelectItem value="away">
+									<div className="flex items-center gap-2">
+										<div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+										Away
+									</div>
+								</SelectItem>
+								<SelectItem value="recently-active">
+									<div className="flex items-center gap-2">
+										<div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+										Recently Active
+									</div>
+								</SelectItem>
+								<SelectItem value="offline">
+									<div className="flex items-center gap-2">
+										<div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+										Offline
+									</div>
+								</SelectItem>
+							</SelectContent>
+						</Select>
+					</div>
+
+					{/* Quick Stats */}
+					<div className="flex items-center gap-4 mb-6 text-sm text-muted-foreground">
+						<div className="flex items-center gap-2">
+							<div className="w-2 h-2 bg-green-500 rounded-full"></div>
+							<span>{getOnlineUsersCount()} online</span>
+						</div>
+						<div className="flex items-center gap-2">
+							<div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+							<span>{users.length - getOnlineUsersCount()} offline</span>
+						</div>
+						<div className="text-muted-foreground">
+							Total: {users.length} users
+						</div>
 					</div>
 
 					{/* Users Table */}
@@ -638,7 +738,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 											<p>Loading users...</p>
 										</TableCell>
 									</TableRow>
-								) : users.length === 0 ? (
+								) : getFilteredUsers().length === 0 ? (
 									<TableRow>
 										<TableCell colSpan={7} className="text-center py-8">
 											<Users className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
@@ -648,7 +748,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 										</TableCell>
 									</TableRow>
 								) : (
-									users.map((user) => (
+									getFilteredUsers().map((user) => (
 										<TableRow key={user.id}>
 											<TableCell>
 												<div className="flex items-center space-x-3">
@@ -679,11 +779,13 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 											</TableCell>
 											<TableCell>{getStatusBadge(user)}</TableCell>
 											<TableCell>
-												<OnlineStatusIndicator
+												<EnhancedOnlineStatus
+													userId={user.id}
 													lastLoginAt={user.lastLoginAt}
-													variant="dot"
-													showTimeAgo={true}
-													showLabel={false}
+													lastActivityAt={user.lastActivityAt}
+													showDetailedStatus={true}
+													size="sm"
+													showAnimation={true}
 												/>
 											</TableCell>
 											<TableCell>

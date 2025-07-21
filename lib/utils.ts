@@ -162,3 +162,40 @@ export function getOnlineStatusLabel(
 			return "Offline";
 	}
 }
+
+/**
+ * Simple check if a user is considered "online" (online or away)
+ */
+export function isUserOnline(
+	lastLoginAt: string | Date | null,
+	lastActivityAt?: string | Date | null
+): boolean {
+	const status = getUserOnlineStatus(lastLoginAt, lastActivityAt);
+	return status.isOnline;
+}
+
+/**
+ * Get a brief status description for a user
+ */
+export function getUserStatusDescription(
+	lastLoginAt: string | Date | null,
+	lastActivityAt?: string | Date | null
+): string {
+	const status = getUserOnlineStatus(lastLoginAt, lastActivityAt);
+	return `${getOnlineStatusLabel(status.status)} • ${status.timeAgo}`;
+}
+
+/**
+ * Check if user has been active recently (within last hour)
+ */
+export function isRecentlyActive(
+	lastLoginAt: string | Date | null,
+	lastActivityAt?: string | Date | null
+): boolean {
+	const status = getUserOnlineStatus(lastLoginAt, lastActivityAt);
+	return (
+		status.status === "online" ||
+		status.status === "away" ||
+		status.status === "recently-active"
+	);
+}
