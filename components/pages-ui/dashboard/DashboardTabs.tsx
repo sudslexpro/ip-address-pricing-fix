@@ -64,11 +64,6 @@ const DashboardTabs: React.FC<DashboardTabsProps> = ({
 				icon: FileText,
 			},
 			{
-				id: "api",
-				label: "API Keys",
-				icon: Key,
-			},
-			{
 				id: "settings",
 				label: "Settings",
 				icon: Settings,

@@ -143,33 +143,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 				}
 				return null;
 
-			case "api":
-				return (
-					<Card>
-						<CardHeader>
-							<CardTitle className="flex items-center gap-2">
-								<Key className="h-5 w-5" />
-								API Key Management
-							</CardTitle>
-							<CardDescription>
-								Manage your API keys and access tokens
-							</CardDescription>
-						</CardHeader>
-						<CardContent>
-							<div className="text-center py-8">
-								<Key className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-								<p className="text-muted-foreground">
-									API key management interface would be implemented here...
-								</p>
-								<div className="mt-4 space-x-2">
-									<Button>Generate New Key</Button>
-									<Button variant="outline">View Documentation</Button>
-								</div>
-							</div>
-						</CardContent>
-					</Card>
-				);
-
 			case "system":
 				if (role === "SUPER_ADMIN") {
 					return (

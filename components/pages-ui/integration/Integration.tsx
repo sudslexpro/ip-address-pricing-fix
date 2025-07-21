@@ -23,6 +23,7 @@ import {
 	FileText,
 	GitBranch,
 	Globe,
+	HelpCircle,
 	Key,
 	Layers,
 	Menu,
@@ -777,17 +778,6 @@ const Integration: React.FC = () => {
 																variant="outline"
 																className="w-full justify-start"
 																asChild>
-																<a
-																	href="/api-docs"
-																	className="flex items-center gap-2">
-																	<FileText className="h-4 w-4" />
-																	API Reference
-																</a>
-															</Button>
-															<Button
-																variant="outline"
-																className="w-full justify-start"
-																asChild>
 																<a href="#" className="flex items-center gap-2">
 																	<Download className="h-4 w-4" />
 																	SDK Documentation
@@ -835,15 +825,15 @@ const Integration: React.FC = () => {
 										</CardDescription>
 									</CardHeader>
 									<CardContent>
-										<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+										<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 											<Button variant="outline" className="h-auto p-4" asChild>
-												<a href="/api-docs" className="block">
+												<a href="/help-center" className="block">
 													<div className="space-y-2">
-														<FileText className="h-6 w-6 mx-auto" />
+														<HelpCircle className="h-6 w-6 mx-auto" />
 														<div>
-															<h4 className="font-medium">API Docs</h4>
+															<h4 className="font-medium">Help Center</h4>
 															<p className="text-sm text-muted-foreground">
-																Explore all endpoints
+																Get support and tutorials
 															</p>
 														</div>
 													</div>

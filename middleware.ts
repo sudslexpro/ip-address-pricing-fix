@@ -16,7 +16,6 @@ export default withAuth(
 					"/auth/reset-password",
 					"/auth/error",
 					"/api/auth",
-					"/api-docs",
 					"/pricing",
 					"/help-center",
 					"/legal-resources",

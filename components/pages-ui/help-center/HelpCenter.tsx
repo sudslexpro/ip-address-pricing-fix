@@ -64,9 +64,9 @@ const faqData: FAQItem[] = [
 		id: "api-integration",
 		question: "Can I integrate Lex Protector with my existing systems?",
 		answer:
-			"Yes! We provide comprehensive API documentation and integration guides. Our RESTful API allows you to connect Lex Protector with your case management software, CRM, and other legal tech tools. Visit our API documentation for detailed implementation guides.",
+			"Yes! Our platform supports integration with various legal technology platforms. You can connect Lex Protector with your case management software, CRM, and other legal tech tools through our integration partners. Contact our support team for specific integration requirements and assistance.",
 		category: "integration",
-		tags: ["api", "integration", "systems"],
+		tags: ["integration", "systems", "support"],
 	},
 	{
 		id: "data-security",
@@ -349,8 +349,8 @@ const HelpCenter: React.FC = () => {
 											variant="ghost"
 											className="w-full justify-between p-2 h-auto"
 											asChild>
-											<a href="/api-docs">
-												<span className="text-sm">API Documentation</span>
+											<a href="/integration">
+												<span className="text-sm">Integration Guide</span>
 												<ChevronRight className="w-4 h-4" />
 											</a>
 										</Button>

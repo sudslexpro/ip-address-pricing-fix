@@ -10,18 +10,17 @@ Next.js 15 application for a legal quotation portal with React 19, TypeScript, a
 
 All routes are located in the `app/` directory using Next.js App Router:
 
-| Route              | Component              | Description                             |
-| ------------------ | ---------------------- | --------------------------------------- |
-| `/`                | `LandingPage`          | Home/Landing page with hero section     |
-| `/pricing`         | `PricingPage`          | Pricing plans and commission calculator |
-| `/get-started`     | `GetStartedPage`       | Onboarding and setup flow               |
-| `/integration`     | `IntegrationPage`      | API integration guides                  |
-| `/api-docs`        | `ApiDocumentationPage` | API documentation and references        |
-| `/training`        | `TrainingPage`         | Training resources and materials        |
-| `/help-center`     | `HelpCenterPage`       | Help and support documentation          |
-| `/support`         | `SupportPage`          | Customer support and ticketing          |
-| `/legal-resources` | `LegalResourcesPage`   | Legal resource library                  |
-| `/system-status`   | `SystemStatusPage`     | System monitoring dashboard             |
+| Route              | Component            | Description                             |
+| ------------------ | -------------------- | --------------------------------------- |
+| `/`                | `LandingPage`        | Home/Landing page with hero section     |
+| `/pricing`         | `PricingPage`        | Pricing plans and commission calculator |
+| `/get-started`     | `GetStartedPage`     | Onboarding and setup flow               |
+| `/integration`     | `IntegrationPage`    | Integration guides and partners         |
+| `/training`        | `TrainingPage`       | Training resources and materials        |
+| `/help-center`     | `HelpCenterPage`     | Help and support documentation          |
+| `/support`         | `SupportPage`        | Customer support and ticketing          |
+| `/legal-resources` | `LegalResourcesPage` | Legal resource library                  |
+| `/system-status`   | `SystemStatusPage`   | System monitoring dashboard             |
 
 ### Legal & Compliance Routes
 

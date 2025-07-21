@@ -63,13 +63,6 @@ const QuickAccessMenu = () => {
 			href: "/legal-resources",
 		},
 		{
-			id: "api-docs",
-			label: "API Documentation",
-			description: "Integration guides",
-			icon: "Code",
-			href: "/api-docs",
-		},
-		{
 			id: "help",
 			label: "Help Center",
 			description: "Support & tutorials",
