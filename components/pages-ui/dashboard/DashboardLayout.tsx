@@ -25,9 +25,9 @@ import {
 import DashboardStats from "./DashboardStats";
 import QuickActions from "./QuickActions";
 import RecentActivity from "./RecentActivity";
-import UserProfileCard from "./UserProfileCard";
 import UserManagement from "./UserManagement";
 import DashboardSidebar from "./DashboardSidebar";
+import ProfileSettings from "./ProfileSettings";
 
 interface DashboardLayoutProps {
 	role: string;
@@ -63,18 +63,28 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 						<DashboardStats role={role} />
 
 						{/* Main Content Grid */}
-						<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-							{/* User Profile Card */}
-							<UserProfileCard user={user} onSignOut={onSignOut} />
-
+						<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 							{/* Quick Actions */}
-							<div className="space-y-6">
-								<QuickActions
-									role={role}
-									permissions={permissions}
-									onUserManagementClick={handleUserManagementClick}
-								/>
-							</div>
+							<QuickActions
+								role={role}
+								permissions={permissions}
+								onUserManagementClick={handleUserManagementClick}
+							/>
+
+							{/* Additional dashboard widgets can go here */}
+							<Card>
+								<CardHeader>
+									<CardTitle>Welcome Back!</CardTitle>
+									<CardDescription>
+										Here's what's happening with your account today.
+									</CardDescription>
+								</CardHeader>
+								<CardContent>
+									<p className="text-muted-foreground">
+										Check the settings tab to manage your profile information.
+									</p>
+								</CardContent>
+							</Card>
 						</div>
 
 						{/* Recent Activity */}
@@ -264,30 +274,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
 			case "settings":
 				return (
-					<Card>
-						<CardHeader>
-							<CardTitle className="flex items-center gap-2">
-								<Settings className="h-5 w-5" />
-								Account Settings
-							</CardTitle>
-							<CardDescription>
-								Manage your account preferences and settings
-							</CardDescription>
-						</CardHeader>
-						<CardContent>
-							<div className="text-center py-8">
-								<Settings className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-								<p className="text-muted-foreground">
-									Account settings interface would be implemented here...
-								</p>
-								<div className="mt-4 space-x-2">
-									<Button variant="outline">Profile Settings</Button>
-									<Button variant="outline">Notification Preferences</Button>
-									<Button variant="outline">Privacy Settings</Button>
-								</div>
-							</div>
-						</CardContent>
-					</Card>
+					<ProfileSettings user={user} role={role} onSignOut={onSignOut} />
 				);
 
 			default:

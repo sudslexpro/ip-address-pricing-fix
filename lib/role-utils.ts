@@ -80,7 +80,9 @@ export const isSuperAdmin = (session: Session | null): boolean => {
 	return session?.user?.role === UserRole.SUPER_ADMIN;
 };
 
-export const getRoleColor = (role: string): string => {
+export const getRoleColor = (
+	role: string
+): "default" | "destructive" | "outline" | "secondary" => {
 	switch (role) {
 		case UserRole.SUPER_ADMIN:
 			return "destructive";
