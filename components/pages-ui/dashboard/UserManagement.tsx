@@ -134,6 +134,9 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 	const [editLoading, setEditLoading] = useState(false);
 	const [deleteLoading, setDeleteLoading] = useState(false);
 	const [refreshLoading, setRefreshLoading] = useState(false);
+	const [permanentDeleteUserId, setPermanentDeleteUserId] =
+		useState<string>("");
+	const [permanentDeleteLoading, setPermanentDeleteLoading] = useState(false);
 
 	// Fetch users from API
 	const fetchUsers = async (isManualRefresh = false) => {
@@ -256,6 +259,34 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 		}
 	};
 
+	// Permanent delete user (Super Admin only)
+	const handlePermanentDeleteUser = async (userId: string) => {
+		setPermanentDeleteLoading(true);
+		setError("");
+
+		try {
+			const response = await fetch(
+				`/api/admin/users/${userId}?permanent=true`,
+				{
+					method: "DELETE",
+				}
+			);
+
+			const data = await response.json();
+
+			if (!response.ok) {
+				throw new Error(data.error || "Failed to permanently delete user");
+			}
+
+			setPermanentDeleteUserId("");
+			fetchUsers();
+		} catch (err: any) {
+			setError(err.message);
+		} finally {
+			setPermanentDeleteLoading(false);
+		}
+	};
+
 	// Manual refresh handler
 	const handleManualRefresh = () => {
 		// Add a visual delay to show the rotation animation
@@ -285,7 +316,8 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 				!refreshLoading &&
 				!isCreateUserOpen &&
 				!isEditUserOpen &&
-				!deleteUserId
+				!deleteUserId &&
+				!permanentDeleteUserId
 			) {
 				fetchUsers();
 			}
@@ -298,6 +330,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 		isCreateUserOpen,
 		isEditUserOpen,
 		deleteUserId,
+		permanentDeleteUserId,
 		currentPage,
 		searchTerm,
 		roleFilter,
@@ -381,9 +414,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 								className="flex items-center gap-2 transition-all duration-200 hover:scale-105 group">
 								<RefreshCw
 									className={`h-4 w-4 transition-transform duration-500 ease-in-out ${
-										refreshLoading
-											? "animate-spin"
-											: ""
+										refreshLoading ? "animate-spin" : ""
 									}`}
 								/>
 								Refresh
@@ -584,7 +615,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 											<TableCell>
 												<Badge
 													variant={getRoleColor(user.role) as any}
-													className="flex items-center gap-1 w-fit">
+													className="flex items-center gap-1 text-white w-fit">
 													{getRoleIcon(user.role)}
 													{user.role}
 												</Badge>
@@ -634,6 +665,16 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 																	<UserX className="mr-2 h-4 w-4" />
 																	Deactivate User
 																</DropdownMenuItem>
+																{currentUserRole === "SUPER_ADMIN" && (
+																	<DropdownMenuItem
+																		onClick={() =>
+																			setPermanentDeleteUserId(user.id)
+																		}
+																		className="text-destructive">
+																		<Trash2 className="mr-2 h-4 w-4" />
+																		Delete User
+																	</DropdownMenuItem>
+																)}
 															</>
 														)}
 													</DropdownMenuContent>
@@ -781,6 +822,45 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 								<Loader2 className="mr-2 h-4 w-4 animate-spin" />
 							)}
 							Deactivate
+						</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
+
+			{/* Permanent Delete Confirmation Dialog */}
+			<AlertDialog
+				open={!!permanentDeleteUserId}
+				onOpenChange={() => setPermanentDeleteUserId("")}>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>Permanently Delete User</AlertDialogTitle>
+						<AlertDialogDescription>
+							<div className="space-y-2">
+								<p className="font-medium text-destructive">
+									⚠️ This action cannot be undone!
+								</p>
+								<p>
+									This will permanently delete the user account and all
+									associated data. The user will be completely removed from the
+									system and cannot be restored.
+								</p>
+								<p className="text-sm text-muted-foreground">
+									Consider deactivating the user instead if you might need to
+									restore access later.
+								</p>
+							</div>
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>Cancel</AlertDialogCancel>
+						<AlertDialogAction
+							onClick={() => handlePermanentDeleteUser(permanentDeleteUserId)}
+							disabled={permanentDeleteLoading}
+							className="bg-red-600 text-white hover:bg-red-700">
+							{permanentDeleteLoading && (
+								<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+							)}
+							Permanently Delete
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>
