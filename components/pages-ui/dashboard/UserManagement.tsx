@@ -361,7 +361,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 			);
 		} else {
 			return (
-				<Badge variant="secondary">
+				<Badge variant="secondary" className={`text-white`}>
 					<XCircle className="h-3 w-3 mr-1" />
 					Inactive
 				</Badge>
@@ -836,18 +836,18 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 						<AlertDialogTitle>Permanently Delete User</AlertDialogTitle>
 						<AlertDialogDescription>
 							<div className="space-y-2">
-								<p className="font-medium text-destructive">
+								<span className="font-medium text-destructive">
 									⚠️ This action cannot be undone!
-								</p>
-								<p>
+								</span>
+								<span>
 									This will permanently delete the user account and all
 									associated data. The user will be completely removed from the
 									system and cannot be restored.
-								</p>
-								<p className="text-sm text-muted-foreground">
+								</span>
+								<span className="text-sm text-muted-foreground">
 									Consider deactivating the user instead if you might need to
 									restore access later.
-								</p>
+								</span>
 							</div>
 						</AlertDialogDescription>
 					</AlertDialogHeader>
