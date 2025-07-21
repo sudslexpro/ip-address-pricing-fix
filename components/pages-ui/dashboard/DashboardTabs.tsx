@@ -46,6 +46,11 @@ const DashboardTabs: React.FC<DashboardTabsProps> = ({
 }) => {
 	const [activeTab, setActiveTab] = useState("overview");
 
+	// Handler for UserManagement click from QuickActions
+	const handleUserManagementClick = () => {
+		setActiveTab("users");
+	};
+
 	const getTabsForRole = () => {
 		const baseTabs = [
 			{
@@ -135,7 +140,11 @@ const DashboardTabs: React.FC<DashboardTabsProps> = ({
 
 						{/* Quick Actions */}
 						<div className="space-y-6">
-							<QuickActions role={role} permissions={permissions} />
+							<QuickActions
+								role={role}
+								permissions={permissions}
+								onUserManagementClick={handleUserManagementClick}
+							/>
 						</div>
 					</div>
 
@@ -144,7 +153,7 @@ const DashboardTabs: React.FC<DashboardTabsProps> = ({
 				</TabsContent>
 
 				<TabsContent value="quotes" className="space-y-6">
-					<Card>
+					<Card className={`mt-8`}>
 						<CardHeader>
 							<CardTitle className="flex items-center gap-2">
 								<FileText className="h-5 w-5" />
@@ -174,7 +183,7 @@ const DashboardTabs: React.FC<DashboardTabsProps> = ({
 
 				{(role === "ADMIN" || role === "SUPER_ADMIN") && (
 					<TabsContent value="analytics" className="space-y-6">
-						<Card>
+						<Card className={`mt-8`}>
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
 									<BarChart3 className="h-5 w-5" />
@@ -202,7 +211,7 @@ const DashboardTabs: React.FC<DashboardTabsProps> = ({
 				)}
 
 				<TabsContent value="api" className="space-y-6">
-					<Card>
+					<Card className={`mt-8`}>
 						<CardHeader>
 							<CardTitle className="flex items-center gap-2">
 								<Key className="h-5 w-5" />
@@ -230,7 +239,7 @@ const DashboardTabs: React.FC<DashboardTabsProps> = ({
 				{role === "SUPER_ADMIN" && (
 					<TabsContent value="system" className="space-y-6">
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-							<Card>
+							<Card className={`mt-8`}>
 								<CardHeader>
 									<CardTitle className="flex items-center gap-2">
 										<Database className="h-5 w-5" />
@@ -255,7 +264,7 @@ const DashboardTabs: React.FC<DashboardTabsProps> = ({
 								</CardContent>
 							</Card>
 
-							<Card>
+							<Card className={`mt-8`}>
 								<CardHeader>
 									<CardTitle className="flex items-center gap-2">
 										<Webhook className="h-5 w-5" />
@@ -285,7 +294,7 @@ const DashboardTabs: React.FC<DashboardTabsProps> = ({
 
 				{role === "SUPER_ADMIN" && (
 					<TabsContent value="security" className="space-y-6">
-						<Card>
+						<Card className={`mt-8`}>
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
 									<Shield className="h-5 w-5" />

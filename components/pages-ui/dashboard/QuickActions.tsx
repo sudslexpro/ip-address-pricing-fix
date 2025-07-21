@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
 	Card,
 	CardContent,
@@ -9,6 +9,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
 	Users,
 	Settings,
@@ -25,145 +26,253 @@ import {
 	UserCheck,
 	Activity,
 	Zap,
+	Loader2,
+	AlertCircle,
 } from "lucide-react";
 
 interface QuickActionsProps {
 	role: string;
 	permissions: any;
+	onUserManagementClick?: () => void;
 }
 
-const QuickActions: React.FC<QuickActionsProps> = ({ role, permissions }) => {
+const QuickActions: React.FC<QuickActionsProps> = ({
+	role,
+	permissions,
+	onUserManagementClick,
+}) => {
+	const [loading, setLoading] = useState<string>("");
+	const [error, setError] = useState<string>("");
+
+	const handleAction = async (
+		actionId: string,
+		action: () => void | Promise<void>
+	) => {
+		try {
+			setLoading(actionId);
+			setError("");
+			await action();
+		} catch (err: any) {
+			setError(err.message || "An error occurred");
+		} finally {
+			setLoading("");
+		}
+	};
+
 	const getUserActions = () => [
 		{
+			id: "generate-quote",
 			title: "Generate Quote",
 			description: "Create a new trademark quote",
 			icon: FileText,
-			action: () => console.log("Generate quote"),
+			action: () => {
+				window.location.href = "/get-started";
+			},
 			variant: "default" as const,
 		},
 		{
+			id: "api-keys",
 			title: "API Keys",
 			description: "Manage your API access",
 			icon: Key,
-			action: () => console.log("API keys"),
+			action: () => {
+				window.location.href = "/integration";
+			},
 			variant: "outline" as const,
 		},
 		{
+			id: "account-settings",
 			title: "Account Settings",
 			description: "Update your preferences",
 			icon: Settings,
-			action: () => console.log("Account settings"),
+			action: () => {
+				console.log("Opening account settings...");
+			},
 			variant: "outline" as const,
 		},
 		{
+			id: "view-reports",
 			title: "View Reports",
 			description: "Check your quote history",
 			icon: BarChart3,
-			action: () => console.log("View reports"),
+			action: () => {
+				console.log("Opening reports...");
+			},
 			variant: "outline" as const,
 		},
 	];
 
 	const getAdminActions = () => [
 		{
+			id: "user-management",
 			title: "User Management",
 			description: "Manage user accounts",
 			icon: Users,
-			action: () => console.log("User management"),
+			action: () => {
+				if (onUserManagementClick) {
+					onUserManagementClick();
+				} else {
+					console.log("User management clicked");
+				}
+			},
 			variant: "default" as const,
 		},
 		{
+			id: "analytics",
 			title: "Analytics Dashboard",
 			description: "View system analytics",
 			icon: BarChart3,
-			action: () => console.log("Analytics"),
+			action: async () => {
+				const response = await fetch("/api/admin/analytics");
+				if (response.ok) {
+					console.log("Analytics data refreshed");
+				} else {
+					throw new Error("Failed to fetch analytics");
+				}
+			},
 			variant: "outline" as const,
 		},
 		{
+			id: "quote-reviews",
 			title: "Quote Reviews",
 			description: "Review pending quotes",
 			icon: FileText,
-			action: () => console.log("Quote reviews"),
+			action: () => {
+				console.log("Opening quote reviews...");
+			},
 			variant: "outline" as const,
 		},
 		{
+			id: "integrations",
 			title: "Integration Settings",
 			description: "Configure integrations",
 			icon: Webhook,
-			action: () => console.log("Integrations"),
+			action: () => {
+				window.location.href = "/integration";
+			},
 			variant: "outline" as const,
 		},
 		{
+			id: "audit-logs",
 			title: "Audit Logs",
 			description: "View system activity",
 			icon: Activity,
-			action: () => console.log("Audit logs"),
+			action: () => {
+				console.log("Opening audit logs...");
+			},
 			variant: "outline" as const,
 		},
 		{
+			id: "email-campaigns",
 			title: "Email Campaigns",
 			description: "Manage communications",
 			icon: Mail,
-			action: () => console.log("Email campaigns"),
+			action: () => {
+				console.log("Opening email campaigns...");
+			},
 			variant: "outline" as const,
 		},
 	];
 
 	const getSuperAdminActions = () => [
 		{
+			id: "system-admin",
 			title: "System Administration",
 			description: "Full system control",
 			icon: Crown,
-			action: () => console.log("System admin"),
+			action: () => {
+				console.log("Opening system administration...");
+			},
 			variant: "default" as const,
 		},
 		{
+			id: "user-role-management",
 			title: "User & Role Management",
 			description: "Manage all users and roles",
 			icon: UserCheck,
-			action: () => console.log("User role management"),
+			action: () => {
+				if (onUserManagementClick) {
+					onUserManagementClick();
+				} else {
+					console.log("User role management clicked");
+				}
+			},
 			variant: "outline" as const,
 		},
 		{
+			id: "database-management",
 			title: "Database Management",
 			description: "Database operations",
 			icon: Database,
-			action: () => console.log("Database management"),
+			action: () => {
+				console.log("Opening database management...");
+			},
 			variant: "outline" as const,
 		},
 		{
+			id: "system-monitoring",
 			title: "System Monitoring",
 			description: "Monitor system health",
 			icon: Eye,
-			action: () => console.log("System monitoring"),
+			action: async () => {
+				const response = await fetch("/api/admin/analytics");
+				if (response.ok) {
+					const data = await response.json();
+					console.log("System health check completed:", data.system);
+				} else {
+					throw new Error("System health check failed");
+				}
+			},
 			variant: "outline" as const,
 		},
 		{
+			id: "security-center",
 			title: "Security Center",
 			description: "Security settings & logs",
 			icon: Shield,
-			action: () => console.log("Security center"),
+			action: () => {
+				console.log("Opening security center...");
+			},
 			variant: "outline" as const,
 		},
 		{
+			id: "performance-analytics",
 			title: "Performance Analytics",
 			description: "System performance metrics",
 			icon: Zap,
-			action: () => console.log("Performance analytics"),
+			action: async () => {
+				const response = await fetch("/api/admin/analytics");
+				if (response.ok) {
+					const data = await response.json();
+					console.log("Performance metrics:", {
+						uptime: data.system.uptime,
+						responseTime: data.system.responseTime,
+						errorRate: data.system.errorRate,
+					});
+				} else {
+					throw new Error("Failed to fetch performance metrics");
+				}
+			},
 			variant: "outline" as const,
 		},
 		{
+			id: "audit-compliance",
 			title: "Audit & Compliance",
 			description: "Compliance monitoring",
 			icon: Clock,
-			action: () => console.log("Audit compliance"),
+			action: () => {
+				console.log("Opening audit & compliance...");
+			},
 			variant: "outline" as const,
 		},
 		{
+			id: "api-management",
 			title: "API Management",
 			description: "Global API settings",
 			icon: Key,
-			action: () => console.log("API management"),
+			action: () => {
+				window.location.href = "/integration";
+			},
 			variant: "outline" as const,
 		},
 	];
@@ -185,33 +294,42 @@ const QuickActions: React.FC<QuickActionsProps> = ({ role, permissions }) => {
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle className="flex items-center gap-2">
-					<Activity className="h-5 w-5" />
-					Quick Actions
-				</CardTitle>
+				<CardTitle>Quick Actions</CardTitle>
 				<CardDescription>
-					{role === "SUPER_ADMIN" && "Full system administration tools"}
-					{role === "ADMIN" && "User and system management tools"}
-					{role === "USER" && "Manage your account and quotes"}
+					Common tasks and shortcuts for your role
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+				{error && (
+					<Alert variant="destructive" className="mb-4">
+						<AlertCircle className="h-4 w-4" />
+						<AlertDescription>{error}</AlertDescription>
+					</Alert>
+				)}
+
+				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
 					{actions.map((action, index) => {
-						const IconComponent = action.icon;
+						const Icon = action.icon;
+						const isLoading = loading === action.id;
+
 						return (
 							<Button
 								key={index}
 								variant={action.variant}
-								className="justify-start h-auto p-4 flex-col items-start gap-2"
-								onClick={action.action}>
-								<div className="flex items-center gap-2 w-full">
-									<IconComponent className="h-4 w-4" />
-									<span className="font-medium text-sm">{action.title}</span>
+								className="h-auto p-4 flex flex-col items-center gap-2 text-center"
+								onClick={() => handleAction(action.id, action.action)}
+								disabled={isLoading}>
+								{isLoading ? (
+									<Loader2 className="h-5 w-5 animate-spin" />
+								) : (
+									<Icon className="h-5 w-5" />
+								)}
+								<div className="space-y-1">
+									<div className="font-medium text-sm">{action.title}</div>
+									<div className="text-xs text-muted-foreground">
+										{action.description}
+									</div>
 								</div>
-								<span className="text-xs text-muted-foreground text-left">
-									{action.description}
-								</span>
 							</Button>
 						);
 					})}

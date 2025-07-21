@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	Card,
 	CardContent,
@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
 	Select,
 	SelectContent,
@@ -31,10 +32,30 @@ import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
+	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
 	Users,
 	Search,
@@ -48,80 +69,194 @@ import {
 	CheckCircle,
 	XCircle,
 	Filter,
+	Loader2,
+	AlertCircle,
+	Eye,
+	UserX,
+	ChevronLeft,
+	ChevronRight,
 } from "lucide-react";
 import { getRoleColor } from "@/lib/role-utils";
+
+interface User {
+	id: string;
+	name: string;
+	email: string;
+	role: string;
+	isActive: boolean;
+	lastLoginAt: string | null;
+	createdAt: string;
+	image?: string;
+	profile?: {
+		firstName: string;
+		lastName: string;
+		company: string;
+		position: string;
+	};
+}
 
 interface UserManagementProps {
 	currentUserRole: string;
 }
 
-interface MockUser {
-	id: string;
+interface CreateUserForm {
 	name: string;
 	email: string;
+	password: string;
 	role: string;
-	status: "active" | "inactive" | "suspended";
-	lastLogin: string;
-	created: string;
-	image?: string;
 }
 
 const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
+	const [users, setUsers] = useState<User[]>([]);
+	const [loading, setLoading] = useState(true);
 	const [searchTerm, setSearchTerm] = useState("");
 	const [roleFilter, setRoleFilter] = useState("all");
 	const [statusFilter, setStatusFilter] = useState("all");
-	const [isCreateUserOpen, setIsCreateUserOpen] = useState(false);
+	const [currentPage, setCurrentPage] = useState(1);
+	const [totalPages, setTotalPages] = useState(1);
+	const [error, setError] = useState<string>("");
 
-	// Mock data - in real app, this would come from API
-	const mockUsers: MockUser[] = [
-		{
-			id: "1",
-			name: "John Doe",
-			email: "john.doe@example.com",
-			role: "USER",
-			status: "active",
-			lastLogin: "2024-01-15",
-			created: "2023-06-15",
-			image:
-				"https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-		},
-		{
-			id: "2",
-			name: "Sarah Wilson",
-			email: "sarah.wilson@example.com",
-			role: "ADMIN",
-			status: "active",
-			lastLogin: "2024-01-14",
-			created: "2023-03-10",
-		},
-		{
-			id: "3",
-			name: "Mike Johnson",
-			email: "mike.johnson@example.com",
-			role: "USER",
-			status: "inactive",
-			lastLogin: "2024-01-10",
-			created: "2023-08-22",
-		},
-		{
-			id: "4",
-			name: "Emily Chen",
-			email: "emily.chen@example.com",
-			role: "USER",
-			status: "suspended",
-			lastLogin: "2024-01-05",
-			created: "2023-11-30",
-		},
-		{
-			id: "5",
-			name: "David Brown",
-			email: "david.brown@example.com",
-			role: "SUPER_ADMIN",
-			status: "active",
-			lastLogin: "2024-01-15",
-			created: "2023-01-01",
-		},
-	];
+	// Dialog states
+	const [isCreateUserOpen, setIsCreateUserOpen] = useState(false);
+	const [isEditUserOpen, setIsEditUserOpen] = useState(false);
+	const [selectedUser, setSelectedUser] = useState<User | null>(null);
+	const [deleteUserId, setDeleteUserId] = useState<string>("");
+
+	// Form states
+	const [createForm, setCreateForm] = useState<CreateUserForm>({
+		name: "",
+		email: "",
+		password: "",
+		role: "USER",
+	});
+	const [createLoading, setCreateLoading] = useState(false);
+	const [editLoading, setEditLoading] = useState(false);
+	const [deleteLoading, setDeleteLoading] = useState(false);
+
+	// Fetch users from API
+	const fetchUsers = async () => {
+		try {
+			setLoading(true);
+			setError("");
+
+			const params = new URLSearchParams({
+				page: currentPage.toString(),
+				limit: "10",
+				...(searchTerm && { search: searchTerm }),
+				...(roleFilter !== "all" && { role: roleFilter }),
+				...(statusFilter !== "all" && { status: statusFilter }),
+			});
+
+			const response = await fetch(`/api/admin/users?${params}`);
+			const data = await response.json();
+
+			if (!response.ok) {
+				throw new Error(data.error || "Failed to fetch users");
+			}
+
+			setUsers(data.users);
+			setTotalPages(data.pagination.totalPages);
+		} catch (err: any) {
+			setError(err.message);
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	// Create user
+	const handleCreateUser = async (e: React.FormEvent) => {
+		e.preventDefault();
+		setCreateLoading(true);
+		setError("");
+
+		try {
+			const response = await fetch("/api/admin/users", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(createForm),
+			});
+
+			const data = await response.json();
+
+			if (!response.ok) {
+				throw new Error(data.error || "Failed to create user");
+			}
+
+			setIsCreateUserOpen(false);
+			setCreateForm({ name: "", email: "", password: "", role: "USER" });
+			fetchUsers();
+		} catch (err: any) {
+			setError(err.message);
+		} finally {
+			setCreateLoading(false);
+		}
+	};
+
+	// Update user
+	const handleUpdateUser = async (userId: string, updates: Partial<User>) => {
+		setEditLoading(true);
+		setError("");
+
+		try {
+			const response = await fetch(`/api/admin/users/${userId}`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(updates),
+			});
+
+			const data = await response.json();
+
+			if (!response.ok) {
+				throw new Error(data.error || "Failed to update user");
+			}
+
+			setIsEditUserOpen(false);
+			setSelectedUser(null);
+			fetchUsers();
+		} catch (err: any) {
+			setError(err.message);
+		} finally {
+			setEditLoading(false);
+		}
+	};
+
+	// Delete user
+	const handleDeleteUser = async (userId: string) => {
+		setDeleteLoading(true);
+		setError("");
+
+		try {
+			const response = await fetch(`/api/admin/users/${userId}`, {
+				method: "DELETE",
+			});
+
+			const data = await response.json();
+
+			if (!response.ok) {
+				throw new Error(data.error || "Failed to delete user");
+			}
+
+			setDeleteUserId("");
+			fetchUsers();
+		} catch (err: any) {
+			setError(err.message);
+		} finally {
+			setDeleteLoading(false);
+		}
+	};
+
+	// Effects
+	useEffect(() => {
+		fetchUsers();
+	}, [currentPage, searchTerm, roleFilter, statusFilter]);
+
+	useEffect(() => {
+		setCurrentPage(1);
+	}, [searchTerm, roleFilter, statusFilter]);
 
 	const getRoleIcon = (role: string) => {
 		switch (role) {
@@ -135,46 +270,25 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 		}
 	};
 
-	const getStatusBadge = (status: string) => {
-		switch (status) {
-			case "active":
-				return (
-					<Badge
-						variant="default"
-						className="bg-green-100 text-green-800 border-green-200">
-						<CheckCircle className="h-3 w-3 mr-1" />
-						Active
-					</Badge>
-				);
-			case "inactive":
-				return (
-					<Badge variant="secondary">
-						<XCircle className="h-3 w-3 mr-1" />
-						Inactive
-					</Badge>
-				);
-			case "suspended":
-				return (
-					<Badge variant="destructive">
-						<XCircle className="h-3 w-3 mr-1" />
-						Suspended
-					</Badge>
-				);
-			default:
-				return <Badge variant="secondary">{status}</Badge>;
+	const getStatusBadge = (user: User) => {
+		if (user.isActive) {
+			return (
+				<Badge
+					variant="default"
+					className="bg-green-100 text-green-800 border-green-200">
+					<CheckCircle className="h-3 w-3 mr-1" />
+					Active
+				</Badge>
+			);
+		} else {
+			return (
+				<Badge variant="secondary">
+					<XCircle className="h-3 w-3 mr-1" />
+					Inactive
+				</Badge>
+			);
 		}
 	};
-
-	const filteredUsers = mockUsers.filter((user) => {
-		const matchesSearch =
-			user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			user.email.toLowerCase().includes(searchTerm.toLowerCase());
-		const matchesRole = roleFilter === "all" || user.role === roleFilter;
-		const matchesStatus =
-			statusFilter === "all" || user.status === statusFilter;
-
-		return matchesSearch && matchesRole && matchesStatus;
-	});
 
 	const canManageUser = (userRole: string) => {
 		if (currentUserRole === "SUPER_ADMIN") return true;
@@ -182,8 +296,24 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 		return false;
 	};
 
+	const formatDate = (dateString: string) => {
+		return new Date(dateString).toLocaleDateString();
+	};
+
+	const formatDateTime = (dateString: string | null) => {
+		if (!dateString) return "Never";
+		return new Date(dateString).toLocaleString();
+	};
+
 	return (
 		<div className="space-y-6">
+			{error && (
+				<Alert variant="destructive">
+					<AlertCircle className="h-4 w-4" />
+					<AlertDescription>{error}</AlertDescription>
+				</Alert>
+			)}
+
 			<Card>
 				<CardHeader>
 					<div className="flex items-center justify-between">
@@ -211,12 +341,84 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 										permissions.
 									</DialogDescription>
 								</DialogHeader>
-								{/* Add form content here */}
-								<div className="space-y-4">
-									<p className="text-sm text-muted-foreground">
-										User creation form would be implemented here...
-									</p>
-								</div>
+								<form onSubmit={handleCreateUser} className="space-y-4">
+									<div className="space-y-2">
+										<Label htmlFor="name">Full Name</Label>
+										<Input
+											id="name"
+											value={createForm.name}
+											onChange={(e) =>
+												setCreateForm({ ...createForm, name: e.target.value })
+											}
+											placeholder="Enter full name"
+											required
+										/>
+									</div>
+									<div className="space-y-2">
+										<Label htmlFor="email">Email</Label>
+										<Input
+											id="email"
+											type="email"
+											value={createForm.email}
+											onChange={(e) =>
+												setCreateForm({ ...createForm, email: e.target.value })
+											}
+											placeholder="Enter email address"
+											required
+										/>
+									</div>
+									<div className="space-y-2">
+										<Label htmlFor="password">Password</Label>
+										<Input
+											id="password"
+											type="password"
+											value={createForm.password}
+											onChange={(e) =>
+												setCreateForm({
+													...createForm,
+													password: e.target.value,
+												})
+											}
+											placeholder="Enter password"
+											required
+										/>
+									</div>
+									<div className="space-y-2">
+										<Label htmlFor="role">Role</Label>
+										<Select
+											value={createForm.role}
+											onValueChange={(value) =>
+												setCreateForm({ ...createForm, role: value })
+											}>
+											<SelectTrigger>
+												<SelectValue placeholder="Select role" />
+											</SelectTrigger>
+											<SelectContent>
+												<SelectItem value="USER">User</SelectItem>
+												<SelectItem value="ADMIN">Admin</SelectItem>
+												{currentUserRole === "SUPER_ADMIN" && (
+													<SelectItem value="SUPER_ADMIN">
+														Super Admin
+													</SelectItem>
+												)}
+											</SelectContent>
+										</Select>
+									</div>
+									<DialogFooter>
+										<Button
+											type="button"
+											variant="outline"
+											onClick={() => setIsCreateUserOpen(false)}>
+											Cancel
+										</Button>
+										<Button type="submit" disabled={createLoading}>
+											{createLoading && (
+												<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+											)}
+											Create User
+										</Button>
+									</DialogFooter>
+								</form>
 							</DialogContent>
 						</Dialog>
 					</div>
@@ -255,7 +457,6 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 								<SelectItem value="all">All Status</SelectItem>
 								<SelectItem value="active">Active</SelectItem>
 								<SelectItem value="inactive">Inactive</SelectItem>
-								<SelectItem value="suspended">Suspended</SelectItem>
 							</SelectContent>
 						</Select>
 					</div>
@@ -274,78 +475,248 @@ const UserManagement: React.FC<UserManagementProps> = ({ currentUserRole }) => {
 								</TableRow>
 							</TableHeader>
 							<TableBody>
-								{filteredUsers.map((user) => (
-									<TableRow key={user.id}>
-										<TableCell>
-											<div className="flex items-center space-x-3">
-												<Avatar className="h-8 w-8">
-													<AvatarImage src={user.image} alt={user.name} />
-													<AvatarFallback>
-														{user.name
-															.split(" ")
-															.map((n) => n[0])
-															.join("")}
-													</AvatarFallback>
-												</Avatar>
-												<div>
-													<div className="font-medium">{user.name}</div>
-													<div className="text-sm text-muted-foreground">
-														{user.email}
-													</div>
-												</div>
-											</div>
-										</TableCell>
-										<TableCell>
-											<Badge
-												variant={getRoleColor(user.role) as any}
-												className="flex items-center gap-1 w-fit">
-												{getRoleIcon(user.role)}
-												{user.role}
-											</Badge>
-										</TableCell>
-										<TableCell>{getStatusBadge(user.status)}</TableCell>
-										<TableCell>
-											<div className="text-sm">{user.lastLogin}</div>
-										</TableCell>
-										<TableCell>
-											<div className="text-sm">{user.created}</div>
-										</TableCell>
-										<TableCell className="text-right">
-											<div className="flex items-center justify-end space-x-2">
-												{canManageUser(user.role) && (
-													<>
-														<Button variant="ghost" size="sm">
-															<Edit className="h-4 w-4" />
-														</Button>
-														<Button
-															variant="ghost"
-															size="sm"
-															className="text-destructive hover:text-destructive">
-															<Trash2 className="h-4 w-4" />
-														</Button>
-													</>
-												)}
-												<Button variant="ghost" size="sm">
-													<MoreHorizontal className="h-4 w-4" />
-												</Button>
-											</div>
+								{loading ? (
+									<TableRow>
+										<TableCell colSpan={6} className="text-center py-8">
+											<Loader2 className="h-8 w-8 animate-spin mx-auto mb-2" />
+											<p>Loading users...</p>
 										</TableCell>
 									</TableRow>
-								))}
+								) : users.length === 0 ? (
+									<TableRow>
+										<TableCell colSpan={6} className="text-center py-8">
+											<Users className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+											<p className="text-muted-foreground">
+												No users found matching your criteria.
+											</p>
+										</TableCell>
+									</TableRow>
+								) : (
+									users.map((user) => (
+										<TableRow key={user.id}>
+											<TableCell>
+												<div className="flex items-center space-x-3">
+													<Avatar className="h-8 w-8">
+														<AvatarImage src={user.image} alt={user.name} />
+														<AvatarFallback>
+															{user.name
+																.split(" ")
+																.map((n) => n[0])
+																.join("")}
+														</AvatarFallback>
+													</Avatar>
+													<div>
+														<div className="font-medium">{user.name}</div>
+														<div className="text-sm text-muted-foreground">
+															{user.email}
+														</div>
+													</div>
+												</div>
+											</TableCell>
+											<TableCell>
+												<Badge
+													variant={getRoleColor(user.role) as any}
+													className="flex items-center gap-1 w-fit">
+													{getRoleIcon(user.role)}
+													{user.role}
+												</Badge>
+											</TableCell>
+											<TableCell>{getStatusBadge(user)}</TableCell>
+											<TableCell>
+												<div className="text-sm">
+													{formatDateTime(user.lastLoginAt)}
+												</div>
+											</TableCell>
+											<TableCell>
+												<div className="text-sm">
+													{formatDate(user.createdAt)}
+												</div>
+											</TableCell>
+											<TableCell className="text-right">
+												<DropdownMenu>
+													<DropdownMenuTrigger asChild>
+														<Button variant="ghost" size="sm">
+															<MoreHorizontal className="h-4 w-4" />
+														</Button>
+													</DropdownMenuTrigger>
+													<DropdownMenuContent align="end">
+														<DropdownMenuLabel>Actions</DropdownMenuLabel>
+														<DropdownMenuItem
+															onClick={() => {
+																setSelectedUser(user);
+																setIsEditUserOpen(true);
+															}}>
+															<Eye className="mr-2 h-4 w-4" />
+															View Details
+														</DropdownMenuItem>
+														{canManageUser(user.role) && (
+															<>
+																<DropdownMenuItem
+																	onClick={() => {
+																		setSelectedUser(user);
+																		setIsEditUserOpen(true);
+																	}}>
+																	<Edit className="mr-2 h-4 w-4" />
+																	Edit User
+																</DropdownMenuItem>
+																<DropdownMenuSeparator />
+																<DropdownMenuItem
+																	onClick={() => setDeleteUserId(user.id)}
+																	className="text-destructive">
+																	<UserX className="mr-2 h-4 w-4" />
+																	Deactivate User
+																</DropdownMenuItem>
+															</>
+														)}
+													</DropdownMenuContent>
+												</DropdownMenu>
+											</TableCell>
+										</TableRow>
+									))
+								)}
 							</TableBody>
 						</Table>
 					</div>
 
-					{filteredUsers.length === 0 && (
-						<div className="text-center py-8">
-							<Users className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-							<p className="text-muted-foreground">
-								No users found matching your criteria.
-							</p>
+					{/* Pagination */}
+					{totalPages > 1 && (
+						<div className="flex items-center justify-between mt-4">
+							<div className="text-sm text-muted-foreground">
+								Page {currentPage} of {totalPages}
+							</div>
+							<div className="flex items-center gap-2">
+								<Button
+									variant="outline"
+									size="sm"
+									onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+									disabled={currentPage === 1}>
+									<ChevronLeft className="h-4 w-4" />
+									Previous
+								</Button>
+								<Button
+									variant="outline"
+									size="sm"
+									onClick={() =>
+										setCurrentPage(Math.min(totalPages, currentPage + 1))
+									}
+									disabled={currentPage === totalPages}>
+									Next
+									<ChevronRight className="h-4 w-4" />
+								</Button>
+							</div>
 						</div>
 					)}
 				</CardContent>
 			</Card>
+
+			{/* Edit User Dialog */}
+			<Dialog open={isEditUserOpen} onOpenChange={setIsEditUserOpen}>
+				<DialogContent>
+					<DialogHeader>
+						<DialogTitle>Edit User</DialogTitle>
+						<DialogDescription>
+							Update user information and permissions.
+						</DialogDescription>
+					</DialogHeader>
+					{selectedUser && (
+						<div className="space-y-4">
+							<div className="space-y-2">
+								<Label>Name</Label>
+								<Input
+									value={selectedUser.name}
+									onChange={(e) =>
+										setSelectedUser({ ...selectedUser, name: e.target.value })
+									}
+								/>
+							</div>
+							<div className="space-y-2">
+								<Label>Email</Label>
+								<Input
+									type="email"
+									value={selectedUser.email}
+									onChange={(e) =>
+										setSelectedUser({ ...selectedUser, email: e.target.value })
+									}
+								/>
+							</div>
+							<div className="space-y-2">
+								<Label>Role</Label>
+								<Select
+									value={selectedUser.role}
+									onValueChange={(value) =>
+										setSelectedUser({ ...selectedUser, role: value })
+									}>
+									<SelectTrigger>
+										<SelectValue />
+									</SelectTrigger>
+									<SelectContent>
+										<SelectItem value="USER">User</SelectItem>
+										<SelectItem value="ADMIN">Admin</SelectItem>
+										{currentUserRole === "SUPER_ADMIN" && (
+											<SelectItem value="SUPER_ADMIN">Super Admin</SelectItem>
+										)}
+									</SelectContent>
+								</Select>
+							</div>
+							<div className="flex items-center space-x-2">
+								<input
+									type="checkbox"
+									id="isActive"
+									checked={selectedUser.isActive}
+									onChange={(e) =>
+										setSelectedUser({
+											...selectedUser,
+											isActive: e.target.checked,
+										})
+									}
+								/>
+								<Label htmlFor="isActive">Active</Label>
+							</div>
+						</div>
+					)}
+					<DialogFooter>
+						<Button variant="outline" onClick={() => setIsEditUserOpen(false)}>
+							Cancel
+						</Button>
+						<Button
+							onClick={() =>
+								selectedUser && handleUpdateUser(selectedUser.id, selectedUser)
+							}
+							disabled={editLoading}>
+							{editLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+							Update User
+						</Button>
+					</DialogFooter>
+				</DialogContent>
+			</Dialog>
+
+			{/* Delete Confirmation Dialog */}
+			<AlertDialog
+				open={!!deleteUserId}
+				onOpenChange={() => setDeleteUserId("")}>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>Deactivate User</AlertDialogTitle>
+						<AlertDialogDescription>
+							This will deactivate the user account. The user will no longer be
+							able to sign in, but their data will be preserved. This action can
+							be reversed.
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>Cancel</AlertDialogCancel>
+						<AlertDialogAction
+							onClick={() => handleDeleteUser(deleteUserId)}
+							disabled={deleteLoading}
+							className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+							{deleteLoading && (
+								<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+							)}
+							Deactivate
+						</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
 		</div>
 	);
 };
