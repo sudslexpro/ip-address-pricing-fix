@@ -651,7 +651,7 @@ const InteractiveCoverageMap = () => {
 				</div>
 
 				{/* Generate Quote Button */}
-				<div className="flex justify-center mt-8">
+				<div className="flex justify-center items-center gap-4 mt-8">
 					<Button
 						variant="default"
 						size="lg"
@@ -662,6 +662,17 @@ const InteractiveCoverageMap = () => {
 						className="px-8 py-4 flex items-center gap-2">
 						<Icon name="Calculator" size={16} />
 						Generate Multi-Country Quote
+					</Button>
+					<Button
+						variant="default"
+						size="lg"
+						onClick={() => {
+							// Function will be added later
+							console.log("Sample Quotation Demo clicked");
+						}}
+						className="px-8 py-4 flex items-center gap-2">
+						<Icon name="FileText" size={16} />
+						Sample Quotation Demo
 					</Button>
 				</div>
 			</div>
