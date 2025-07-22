@@ -548,7 +548,7 @@ const HeroSection: React.FC = () => {
 							</h1>
 
 							<p className="text-xl text-text-secondary leading-relaxed max-w-2xl">
-								Transform your IP & boutique law firm with the only white-label
+								Transform your IP lawyer & boutique law firm with the only white-label
 								platform that turns 2-hour manual research into 2-minute
 								professional quotes. Select countries, choose services, and
 								generate multi-country quotes with detailed schedules and

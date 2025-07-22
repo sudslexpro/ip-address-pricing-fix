@@ -128,7 +128,7 @@ const ProblemSection = () => {
 						<span className="text-destructive">Killing Your Productivity</span>
 					</h2>
 					<p className="text-xl text-text-secondary max-w-3xl mx-auto">
-						Boutique law firms waste 2+ hours per quote, lose clients to faster
+						IP Lawyer & Boutique law firms waste 2+ hours per quote, lose clients to faster
 						competitors, and struggle with international trademark complexity.
 					</p>
 				</div>
