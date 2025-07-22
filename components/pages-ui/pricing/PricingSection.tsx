@@ -3,10 +3,16 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/icon/AppIcon";
 import Link from "next/link";
+import { CalendlyBookingModal } from "@/components/scheduling";
+import { getCalendlyUrl, CALENDLY_EVENT_TYPES } from "@/lib/calendly-config";
 
 const PricingSection = () => {
 	const [billingCycle, setBillingCycle] = useState("monthly");
 	const [selectedPlan, setSelectedPlan] = useState("professional");
+	const [isCalendlyModalOpen, setIsCalendlyModalOpen] = useState(false);
+
+	// Get Calendly URL for demo bookings
+	const calendlyUrl = getCalendlyUrl(CALENDLY_EVENT_TYPES.DEMO);
 
 	const plans = {
 		starter: {
@@ -146,11 +152,8 @@ const PricingSection = () => {
 		setSelectedPlan(planKey);
 
 		if (planKey === "enterprise") {
-			// Scroll to contact form or open contact modal
-			const element = document.querySelector("#demo-form");
-			if (element) {
-				element.scrollIntoView({ behavior: "smooth", block: "start" });
-			}
+			// Open Calendly modal for enterprise plan
+			setIsCalendlyModalOpen(true);
 		} else {
 			// Handle trial signup
 			const element = document.querySelector("#get-started");
@@ -158,6 +161,10 @@ const PricingSection = () => {
 				element.scrollIntoView({ behavior: "smooth", block: "start" });
 			}
 		}
+	};
+
+	const handleScheduleDemo = () => {
+		setIsCalendlyModalOpen(true);
 	};
 
 	return (
@@ -402,11 +409,12 @@ const PricingSection = () => {
 							faster, more accurate quotes and increase their revenue.
 						</p>
 						<div className="flex flex-col sm:flex-row gap-4 justify-center">
-							<Link href="https://partner.lexprotector.com/signup">
+							<Link href="/get-started">
 								<Button
 									variant="default"
 									size="lg"
-									className="bg-primary hover:bg-blue-900 text-white">
+									className="bg-primary hover:bg-blue-900 text-white"
+									onClick={() => handlePlanSelect("professional")}>
 									<Icon name="Play" size={16} className="mr-2" />
 									Start 14-Day Free Trial
 								</Button>
@@ -415,15 +423,7 @@ const PricingSection = () => {
 								variant="outline"
 								size="lg"
 								className={`hover:bg-primary hover:text-white`}
-								onClick={() => {
-									const element = document.querySelector("#demo-form");
-									if (element) {
-										element.scrollIntoView({
-											behavior: "smooth",
-											block: "start",
-										});
-									}
-								}}>
+								onClick={handleScheduleDemo}>
 								<Icon name="Calendar" size={16} className="mr-2" />
 								Schedule Demo
 							</Button>
@@ -433,6 +433,13 @@ const PricingSection = () => {
 						</p>
 					</div>
 				</div>
+
+				{/* Calendly Booking Modal */}
+				<CalendlyBookingModal
+					isOpen={isCalendlyModalOpen}
+					onClose={() => setIsCalendlyModalOpen(false)}
+					calendlyUrl={calendlyUrl}
+				/>
 			</div>
 		</section>
 	);
