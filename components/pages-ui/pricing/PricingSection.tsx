@@ -298,17 +298,32 @@ const PricingSection = () => {
 								</div>
 
 								{/* CTA Button */}
-								<Button
-									variant={plan.popular ? "default" : "outline"}
-									size="lg"
-									onClick={() => handlePlanSelect(key)}
-									className={`w-full ${
-										plan.popular
-											? "bg-accent hover:bg-accent/90 text-white"
-											: "hover:text-white"
-									}`}>
-									{plan.cta}
-								</Button>
+								{plan.cta === "Start Free Trial" ? (
+									<Link href="https://partner.lexprotector.com/signup">
+										<Button
+											variant={plan.popular ? "default" : "outline"}
+											size="lg"
+											className={`w-full ${
+												plan.popular
+													? "bg-accent hover:bg-accent/90 text-white"
+													: "hover:text-white"
+											}`}>
+											{plan.cta}
+										</Button>
+									</Link>
+								) : (
+									<Button
+										variant={plan.popular ? "default" : "outline"}
+										size="lg"
+										onClick={() => handlePlanSelect(key)}
+										className={`w-full ${
+											plan.popular
+												? "bg-accent hover:bg-accent/90 text-white"
+												: "hover:text-white"
+										}`}>
+										{plan.cta}
+									</Button>
+								)}
 							</div>
 						</div>
 					))}
@@ -387,12 +402,11 @@ const PricingSection = () => {
 							faster, more accurate quotes and increase their revenue.
 						</p>
 						<div className="flex flex-col sm:flex-row gap-4 justify-center">
-							<Link href="/get-started">
+							<Link href="https://partner.lexprotector.com/signup">
 								<Button
 									variant="default"
 									size="lg"
-									className="bg-primary hover:bg-blue-900 text-white"
-									onClick={() => handlePlanSelect("professional")}>
+									className="bg-primary hover:bg-blue-900 text-white">
 									<Icon name="Play" size={16} className="mr-2" />
 									Start 14-Day Free Trial
 								</Button>
