@@ -13,14 +13,15 @@ interface LayoutClientProps {
 export default function LayoutClient({ children }: LayoutClientProps) {
 	const pathname = usePathname();
 	const isDashboardRoute = pathname?.startsWith("/dashboard");
+	const isDevRoute = pathname === "/dev";
 
 	return (
 		<>
-			{/* Only show header if not on dashboard route */}
-			{!isDashboardRoute && <Header />}
+			{/* Show header on all routes except dashboard and dev (dev has its own header) */}
+			{!isDashboardRoute && !isDevRoute && <Header isDevRoute={isDevRoute} />}
 
-			{/* Only show floating elements if not on dashboard route */}
-			{!isDashboardRoute && (
+			{/* Only show floating elements if not on dashboard or dev route */}
+			{!isDashboardRoute && !isDevRoute && (
 				<>
 					<FloatingCTA />
 					<QuickAccessMenu />
@@ -28,10 +29,12 @@ export default function LayoutClient({ children }: LayoutClientProps) {
 			)}
 
 			{/* Main content with conditional padding */}
-			<div className={isDashboardRoute ? "" : "pt-16"}>{children}</div>
+			<div className={isDashboardRoute || isDevRoute ? "" : "pt-16"}>
+				{children}
+			</div>
 
-			{/* Only show footer if not on dashboard route */}
-			{!isDashboardRoute && <Footer />}
+			{/* Only show footer if not on dashboard or dev route */}
+			{!isDashboardRoute && !isDevRoute && <Footer />}
 		</>
 	);
 }

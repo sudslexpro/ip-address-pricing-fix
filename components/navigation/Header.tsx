@@ -15,7 +15,11 @@ import {
 import { ArrowRight, X, User, Settings, LogOut, Shield } from "lucide-react";
 import Icon from "../icon/AppIcon";
 
-const Header: React.FC = () => {
+interface HeaderProps {
+	isDevRoute?: boolean;
+}
+
+const Header: React.FC<HeaderProps> = ({ isDevRoute = false }) => {
 	const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 	const [activeSection, setActiveSection] = React.useState("");
 	const [scrollProgress, setScrollProgress] = React.useState(0);
@@ -93,7 +97,7 @@ const Header: React.FC = () => {
 						<div className="flex items-center justify-center">
 							<Image
 								src="/assets/images/LP_Logo_Only-1751558392904.jpeg"
-								alt="Lex Quotes Logo"
+								alt="Lex Protector Logo"
 								width={100}
 								height={100}
 								className="w-12 h-12 object-contain"
@@ -101,10 +105,10 @@ const Header: React.FC = () => {
 						</div>
 						<div className="flex flex-col">
 							<span className="text-xl font-bold text-primary font-inter">
-								Lex Quotes
+								Lex Protector
 							</span>
 							<span className="text-xs text-text-secondary font-medium">
-								Professional Platform
+								Partner Portal
 							</span>
 						</div>
 					</Link>
@@ -174,23 +178,55 @@ const Header: React.FC = () => {
 						) : (
 							// Unauthenticated user buttons
 							<>
-								<Link href="/auth/signin">
-									<Button
-										variant="outline"
-										size="sm"
-										className="text-[#1a365d] border-[#1a365d] hover:bg-[#1a365d] hover:text-white px-8 py-5">
-										Sign In
-									</Button>
-								</Link>
-								<Link href="/auth/signup">
-									<Button
-										variant="default"
-										size="sm"
-										className={`bg-[#1a365d] text-white hover:bg-[#1b3f6f] border border-[#8f9297] px-12 py-5`}>
-										Get Started
-										<ArrowRight className="ml-0.5 size-4" />
-									</Button>
-								</Link>
+								{isDevRoute ? (
+									// Dev route - internal authentication
+									<>
+										<Link href="/auth/signin">
+											<Button
+												variant="outline"
+												size="sm"
+												className="text-[#1a365d] border-[#1a365d] hover:bg-[#1a365d] hover:text-white px-8 py-5">
+												Sign In
+											</Button>
+										</Link>
+										<Link href="/auth/signup">
+											<Button
+												variant="default"
+												size="sm"
+												className={`bg-[#1a365d] text-white hover:bg-[#1b3f6f] border border-[#8f9297] px-12 py-5`}>
+												Get Started
+												<ArrowRight className="ml-0.5 size-4" />
+											</Button>
+										</Link>
+									</>
+								) : (
+									// All other routes - external authentication
+									<>
+										<a
+											href="https://partner.lexprotector.com/login"
+											target="_blank"
+											rel="noopener noreferrer">
+											<Button
+												variant="outline"
+												size="sm"
+												className="text-[#1a365d] border-[#1a365d] hover:bg-[#1a365d] hover:text-white px-8 py-5">
+												Sign In
+											</Button>
+										</a>
+										<a
+											href="https://partner.lexprotector.com/signup"
+											target="_blank"
+											rel="noopener noreferrer">
+											<Button
+												variant="default"
+												size="sm"
+												className={`bg-[#1a365d] text-white hover:bg-[#1b3f6f] border border-[#8f9297] px-12 py-5`}>
+												Get Started
+												<ArrowRight className="ml-0.5 size-4" />
+											</Button>
+										</a>
+									</>
+								)}
 							</>
 						)}
 					</div>
@@ -251,19 +287,47 @@ const Header: React.FC = () => {
 								</div>
 							) : (
 								<>
-									<Link href="/auth/signin">
-										<Button
-											variant="outline"
-											size="sm"
-											className="text-primary border-primary hover:bg-primary hover:text-white">
-											Sign In
-										</Button>
-									</Link>
-									<Link href="/auth/signup">
-										<Button variant="default" size="sm">
-											Get Started
-										</Button>
-									</Link>
+									{isDevRoute ? (
+										// Dev route - internal authentication
+										<>
+											<Link href="/auth/signin">
+												<Button
+													variant="outline"
+													size="sm"
+													className="text-primary border-primary hover:bg-primary hover:text-white">
+													Sign In
+												</Button>
+											</Link>
+											<Link href="/auth/signup">
+												<Button variant="default" size="sm">
+													Get Started
+												</Button>
+											</Link>
+										</>
+									) : (
+										// All other routes - external authentication
+										<>
+											<a
+												href="https://partner.lexprotector.com/login"
+												target="_blank"
+												rel="noopener noreferrer">
+												<Button
+													variant="outline"
+													size="sm"
+													className="text-primary border-primary hover:bg-primary hover:text-white">
+													Sign In
+												</Button>
+											</a>
+											<a
+												href="https://partner.lexprotector.com/signup"
+												target="_blank"
+												rel="noopener noreferrer">
+												<Button variant="default" size="sm">
+													Get Started
+												</Button>
+											</a>
+										</>
+									)}
 								</>
 							)}
 						</div>
