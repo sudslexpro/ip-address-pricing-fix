@@ -157,6 +157,11 @@ const Footer: React.FC = () => {
 									className="hover:text-accent transition-colors">
 									GDPR Compliance
 								</Link>
+								<Link
+									href="/dev"
+									className="hover:text-accent transition-colors">
+									Developer Portal
+								</Link>
 							</div>
 						</div>
 					</div>
