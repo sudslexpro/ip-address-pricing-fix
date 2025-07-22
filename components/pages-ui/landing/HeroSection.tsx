@@ -29,7 +29,7 @@ const HeroSection: React.FC = () => {
 	const [hoveredCountry, setHoveredCountry] = useState<CountryData | null>(
 		null
 	);
-	const [quotesGenerated, setQuotesGenerated] = useState(10000);
+	const [quotesGenerated, setQuotesGenerated] = useState(888);
 	const [isMapLoaded, setIsMapLoaded] = useState(false);
 	const mapRef = useRef<HTMLDivElement>(null);
 	const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -537,7 +537,7 @@ const HeroSection: React.FC = () => {
 						<div className="space-y-6">
 							<div className="inline-flex items-center space-x-2 bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium">
 								<Icon name="Zap" size={16} />
-								<span>White-Label Trademark Platform</span>
+								<span>White-Label Trademark Quotation</span>
 							</div>
 
 							<h1 className="text-4xl lg:text-6xl font-bold text-primary leading-tight">
@@ -548,7 +548,7 @@ const HeroSection: React.FC = () => {
 							</h1>
 
 							<p className="text-xl text-text-secondary leading-relaxed max-w-2xl">
-								Transform your boutique law firm with the only white-label
+								Transform your IP & boutique law firm with the only white-label
 								platform that turns 2-hour manual research into 2-minute
 								professional quotes. Select countries, choose services, and
 								generate multi-country quotes with detailed schedules and
@@ -565,7 +565,7 @@ const HeroSection: React.FC = () => {
 								<Icon name="Play" size={16} />
 								Request Live Demo
 							</Button>
-							<Link href="/get-started">
+							<Link href="https://partner.lexprotector.com/signup">
 								<Button
 									variant="outline"
 									size="lg"
@@ -595,7 +595,7 @@ const HeroSection: React.FC = () => {
 								<div className="flex items-center space-x-2">
 									<Icon name="Users" size={16} className="text-primary" />
 									<span className="text-sm font-medium text-text-secondary">
-										500+ Partner Firms
+										100+ Partner Firms
 									</span>
 								</div>
 							</div>
