@@ -29,6 +29,7 @@ const Header: React.FC<HeaderProps> = ({ isDevRoute = false }) => {
 		{ id: "solution-demo", name: "Solution Demo", href: "/#solution-demo" },
 		{ id: "coverage", name: "Coverage", href: "/#coverage" },
 		{ id: "pricing", name: "Pricing", href: "/pricing" },
+		{ id: "success-stories", name: "Success Stories", href: "/success-stories" },
 		{ id: "get-started", name: "Get Started", href: "/get-started" },
 	];
 
