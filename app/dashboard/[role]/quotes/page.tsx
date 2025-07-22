@@ -1,14 +1,12 @@
 import UserQuotesPage from "@/components/pages-ui/dashboard/user/UserQuotesPage";
 import { notFound } from "next/navigation";
 
-interface QuotesPageProps {
-	params: {
-		role: string;
-	};
-}
-
-export default function Quotes({ params }: QuotesPageProps) {
-	const { role } = params;
+export default async function Quotes({
+	params,
+}: {
+	params: Promise<{ role: string }>;
+}) {
+	const { role } = await params;
 
 	// Only user role has quotes functionality in this implementation
 	switch (role) {

@@ -3,14 +3,12 @@ import AdminSettingsPage from "@/components/pages-ui/dashboard/admin/AdminSettin
 import SuperAdminSettingsPage from "@/components/pages-ui/dashboard/super-admin/SuperAdminSettingsPage";
 import { notFound } from "next/navigation";
 
-interface SettingsPageProps {
-	params: {
-		role: string;
-	};
-}
-
-export default function Settings({ params }: SettingsPageProps) {
-	const { role } = params;
+export default async function Settings({
+	params,
+}: {
+	params: Promise<{ role: string }>;
+}) {
+	const { role } = await params;
 
 	switch (role) {
 		case "user":

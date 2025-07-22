@@ -8,20 +8,16 @@ export const metadata: Metadata = {
 		"Lex Protector Dashboard - Manage your account and access administrative features",
 };
 
-interface DashboardRoleLayoutProps {
-	children: React.ReactNode;
-	params: {
-		role: string;
-	};
-}
-
 const validRoles = ["user", "admin", "super-admin"];
 
-export default function DashboardRoleLayout({
+export default async function DashboardRoleLayout({
 	children,
 	params,
-}: DashboardRoleLayoutProps) {
-	const { role } = params;
+}: {
+	children: React.ReactNode;
+	params: Promise<{ role: string }>;
+}) {
+	const { role } = await params;
 
 	// Validate the role parameter
 	if (!validRoles.includes(role)) {

@@ -1,14 +1,12 @@
 import SuperAdminSecurityPage from "@/components/pages-ui/dashboard/super-admin/SuperAdminSecurityPage";
 import { notFound } from "next/navigation";
 
-interface SecurityPageProps {
-	params: {
-		role: string;
-	};
-}
-
-export default function Security({ params }: SecurityPageProps) {
-	const { role } = params;
+export default async function Security({
+	params,
+}: {
+	params: Promise<{ role: string }>;
+}) {
+	const { role } = await params;
 
 	// Only super-admin has security management
 	if (role !== "super-admin") {

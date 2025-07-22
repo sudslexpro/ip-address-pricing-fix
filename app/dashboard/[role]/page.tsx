@@ -1,13 +1,11 @@
 import { redirect } from "next/navigation";
 
-interface DashboardRolePageProps {
-	params: {
-		role: string;
-	};
-}
-
-export default function DashboardRolePage({ params }: DashboardRolePageProps) {
-	const { role } = params;
+export default async function DashboardRolePage({
+	params,
+}: {
+	params: Promise<{ role: string }>;
+}) {
+	const { role } = await params;
 
 	// Redirect to overview for the specific role
 	redirect(`/dashboard/${role}/overview`);

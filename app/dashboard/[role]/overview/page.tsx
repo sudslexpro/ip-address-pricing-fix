@@ -3,14 +3,12 @@ import AdminOverviewPage from "@/components/pages-ui/dashboard/admin/AdminOvervi
 import SuperAdminOverviewPage from "@/components/pages-ui/dashboard/super-admin/SuperAdminOverviewPage";
 import { notFound } from "next/navigation";
 
-interface OverviewPageProps {
-	params: {
-		role: string;
-	};
-}
-
-export default function Overview({ params }: OverviewPageProps) {
-	const { role } = params;
+export default async function Overview({
+	params,
+}: {
+	params: Promise<{ role: string }>;
+}) {
+	const { role } = await params;
 
 	switch (role) {
 		case "user":
