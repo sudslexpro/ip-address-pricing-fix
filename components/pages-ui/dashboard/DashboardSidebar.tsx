@@ -32,6 +32,7 @@ interface SidebarItem {
 
 interface DashboardSidebarProps {
 	role: string;
+	roleRoute?: string;
 	activeSection: string;
 	onSectionChange: (section: string) => void;
 	collapsed?: boolean;
@@ -40,6 +41,7 @@ interface DashboardSidebarProps {
 
 const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
 	role,
+	roleRoute,
 	activeSection,
 	onSectionChange,
 	collapsed = false,
