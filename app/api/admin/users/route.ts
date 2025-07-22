@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { UserRole } from "@/lib/role-utils";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
+import { generateLPPUserId } from "@/lib/user-id-generator";
 
 const createUserSchema = z.object({
 	name: z.string().min(2, "Name must be at least 2 characters"),
@@ -157,9 +158,37 @@ export async function POST(request: NextRequest) {
 		// Hash password
 		const hashedPassword = await bcrypt.hash(password, 12);
 
+		// Generate unique LPP user ID
+		let userId = generateLPPUserId();
+
+		// Ensure the generated ID is unique (retry if collision occurs)
+		let attempts = 0;
+		const maxAttempts = 10;
+
+		while (attempts < maxAttempts) {
+			const existingUserWithId = await prisma.user.findUnique({
+				where: { id: userId },
+			});
+
+			if (!existingUserWithId) {
+				break; // ID is unique
+			}
+
+			userId = generateLPPUserId();
+			attempts++;
+		}
+
+		if (attempts >= maxAttempts) {
+			return NextResponse.json(
+				{ error: "Unable to generate unique user ID. Please try again." },
+				{ status: 500 }
+			);
+		}
+
 		// Create user
 		const user = await prisma.user.create({
 			data: {
+				id: userId,
 				name,
 				email,
 				password: hashedPassword,

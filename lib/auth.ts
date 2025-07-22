@@ -7,9 +7,11 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import type { Adapter } from "next-auth/adapters";
+import { generateLPPUserId } from "@/lib/user-id-generator";
+import { CustomPrismaAdapter } from "@/lib/custom-prisma-adapter";
 
 export const authOptions: NextAuthOptions = {
-	adapter: PrismaAdapter(prisma) as Adapter,
+	adapter: CustomPrismaAdapter(prisma) as Adapter,
 	providers: [
 		GoogleProvider({
 			clientId: process.env.GOOGLE_CLIENT_ID!,
