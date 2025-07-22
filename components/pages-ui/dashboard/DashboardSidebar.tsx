@@ -61,21 +61,12 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
 			},
 		];
 
-		// User-specific items (always available)
-		if (targetRole === "USER" || !roleRoute) {
-			baseItems.push(
-				{
-					id: "quotes",
-					label: "Quotes",
-					icon: FileText,
-				},
-				{
-					id: "settings",
-					label: "Settings",
-					icon: Settings,
-				}
-			);
-		}
+		// Quotes are available for all roles
+		baseItems.push({
+			id: "quotes",
+			label: "Quotes",
+			icon: FileText,
+		});
 
 		// Admin-specific items
 		if (targetRole === "ADMIN" || targetRole === "SUPER_ADMIN") {
@@ -119,14 +110,12 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
 			);
 		}
 
-		// Add settings at the end for admin/super-admin routes
-		if (targetRole === "ADMIN" || targetRole === "SUPER_ADMIN") {
-			baseItems.push({
-				id: "settings",
-				label: "Settings",
-				icon: Settings,
-			});
-		}
+		// Add settings at the end for all roles (but only once)
+		baseItems.push({
+			id: "settings",
+			label: "Settings",
+			icon: Settings,
+		});
 
 		return baseItems;
 	};

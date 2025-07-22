@@ -21,6 +21,11 @@ const DashboardLayoutClient: React.FC<DashboardLayoutClientProps> = ({
 		useRole();
 	const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
+	// Check if we're on a role-based route (e.g., /dashboard/user/*, /dashboard/admin/*)
+	const isRoleBasedRoute = /^\/dashboard\/(user|admin|super-admin)/.test(
+		pathname
+	);
+
 	if (isLoading) {
 		return (
 			<div className="h-full flex items-center justify-center">
@@ -40,6 +45,11 @@ const DashboardLayoutClient: React.FC<DashboardLayoutClientProps> = ({
 				</Alert>
 			</div>
 		);
+	}
+
+	// If we're on a role-based route, just render the children (which will have their own layout)
+	if (isRoleBasedRoute) {
+		return <>{children}</>;
 	}
 
 	const handleSignOut = () => {
