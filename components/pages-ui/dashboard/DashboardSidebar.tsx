@@ -114,11 +114,11 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
 	return (
 		<div
 			className={cn(
-				"bg-card border-r border-border flex flex-col transition-all duration-300",
+				"bg-card border-r border-border flex flex-col h-full transition-all duration-300",
 				collapsed ? "w-16" : "w-64"
 			)}>
 			{/* Sidebar Header */}
-			<div className="p-4 border-b border-border">
+			<div className="p-4 border-b border-border flex-shrink-0">
 				<div className="flex items-center justify-between">
 					{!collapsed && (
 						<h2 className="text-lg font-semibold text-foreground">Dashboard</h2>
@@ -140,76 +140,78 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
 			</div>
 
 			{/* Sidebar Navigation */}
-			<ScrollArea className="flex-1 px-3 py-4">
-				<nav className="space-y-2">
-					{sidebarItems.map((item, index) => {
-						const IconComponent = item.icon;
-						const isActive = activeSection === item.id;
-						const isAccessible =
-							!item.requiredRole ||
-							role === item.requiredRole ||
-							(item.requiredRole === "ADMIN" && role === "SUPER_ADMIN");
+			<div className="flex-1 overflow-hidden">
+				<ScrollArea className="h-full px-3 py-4">
+					<nav className="space-y-2">
+						{sidebarItems.map((item, index) => {
+							const IconComponent = item.icon;
+							const isActive = activeSection === item.id;
+							const isAccessible =
+								!item.requiredRole ||
+								role === item.requiredRole ||
+								(item.requiredRole === "ADMIN" && role === "SUPER_ADMIN");
 
-						if (!isAccessible) return null;
+							if (!isAccessible) return null;
 
-						return (
-							<div key={item.id}>
-								{/* Add separator before admin sections */}
-								{((item.requiredRole === "ADMIN" && index > 0) ||
-									(item.requiredRole === "SUPER_ADMIN" && index > 0)) && (
-									<Separator className="my-2" />
-								)}
-
-								<Button
-									variant={isActive ? "secondary" : "ghost"}
-									className={cn(
-										"w-full justify-start gap-3 h-10",
-										collapsed ? "px-2" : "px-3",
-										isActive && "bg-primary/10 text-primary border-primary/20"
+							return (
+								<div key={item.id}>
+									{/* Add separator before admin sections */}
+									{((item.requiredRole === "ADMIN" && index > 0) ||
+										(item.requiredRole === "SUPER_ADMIN" && index > 0)) && (
+										<Separator className="my-2" />
 									)}
-									onClick={() => handleItemClick(item.id)}>
-									<IconComponent
+
+									<Button
+										variant={isActive ? "secondary" : "ghost"}
 										className={cn(
-											"h-4 w-4 shrink-0",
-											isActive ? "text-primary" : "text-muted-foreground"
+											"w-full justify-start gap-3 h-10",
+											collapsed ? "px-2" : "px-3",
+											isActive && "bg-primary/10 text-primary border-primary/20"
 										)}
-									/>
-									{!collapsed && (
-										<span
+										onClick={() => handleItemClick(item.id)}>
+										<IconComponent
 											className={cn(
-												"text-sm font-medium",
-												isActive ? "text-primary" : "text-foreground"
-											)}>
-											{item.label}
-										</span>
-									)}
-								</Button>
+												"h-4 w-4 shrink-0",
+												isActive ? "text-primary" : "text-muted-foreground"
+											)}
+										/>
+										{!collapsed && (
+											<span
+												className={cn(
+													"text-sm font-medium",
+													isActive ? "text-primary" : "text-foreground"
+												)}>
+												{item.label}
+											</span>
+										)}
+									</Button>
 
-								{/* Role indicators for special sections */}
-								{!collapsed && item.requiredRole && (
-									<div className="ml-7 mt-1">
-										<span
-											className={cn(
-												"text-xs px-2 py-0.5 rounded-full",
-												item.requiredRole === "SUPER_ADMIN"
-													? "bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-300"
-													: "bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300"
-											)}>
-											{item.requiredRole === "SUPER_ADMIN"
-												? "Super Admin"
-												: "Admin"}
-										</span>
-									</div>
-								)}
-							</div>
-						);
-					})}
-				</nav>
-			</ScrollArea>
+									{/* Role indicators for special sections */}
+									{!collapsed && item.requiredRole && (
+										<div className="ml-7 mt-1">
+											<span
+												className={cn(
+													"text-xs px-2 py-0.5 rounded-full",
+													item.requiredRole === "SUPER_ADMIN"
+														? "bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-300"
+														: "bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300"
+												)}>
+												{item.requiredRole === "SUPER_ADMIN"
+													? "Super Admin"
+													: "Admin"}
+											</span>
+										</div>
+									)}
+								</div>
+							);
+						})}
+					</nav>
+				</ScrollArea>
+			</div>
 
 			{/* Sidebar Footer */}
 			{!collapsed && (
-				<div className="p-4 border-t border-border">
+				<div className="p-4 border-t border-border flex-shrink-0">
 					<div className="text-xs text-muted-foreground">
 						<div className="flex items-center gap-2">
 							<span>Role:</span>

@@ -34,6 +34,13 @@ interface DashboardLayoutProps {
 	permissions: any;
 	user: any;
 	onSignOut: () => void;
+	welcome: {
+		title: string;
+		subtitle: string;
+		icon: React.ComponentType<{ className?: string }>;
+		color: string;
+	};
+	IconComponent: React.ComponentType<{ className?: string }>;
 }
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({
@@ -41,6 +48,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 	permissions,
 	user,
 	onSignOut,
+	welcome,
+	IconComponent,
 }) => {
 	const [activeSection, setActiveSection] = useState("overview");
 	const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -283,7 +292,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 	};
 
 	return (
-		<div className="flex h-full min-h-[calc(100vh-200px)]">
+		<div className="flex h-full">
 			{/* Sidebar */}
 			<DashboardSidebar
 				role={role}
@@ -294,8 +303,45 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 			/>
 
 			{/* Main Content */}
-			<div className="flex-1 overflow-auto">
-				<div className="p-6">{renderContent()}</div>
+			<div className="flex-1 flex flex-col overflow-hidden">
+				{/* Role-based Welcome Header */}
+				<div className="border-b border-border bg-background px-6 py-4">
+					<div className="flex items-center gap-3 mb-3">
+						<div
+							className={`p-2 rounded-lg bg-card shadow-sm ${welcome.color}`}>
+							<IconComponent className="h-6 w-6" />
+						</div>
+						<div>
+							<h1 className="text-2xl font-bold text-foreground">
+								{welcome.title}
+							</h1>
+							<p className="text-muted-foreground text-sm">
+								{welcome.subtitle}
+							</p>
+						</div>
+					</div>
+					<div className="flex items-center gap-2 text-sm text-muted-foreground">
+						<span>Current Role:</span>
+						<span className={`font-medium ${welcome.color}`}>
+							{role || "USER"}
+						</span>
+						{role === "SUPER_ADMIN" && (
+							<span className="text-xs bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-300 px-2 py-1 rounded-full">
+								Full Access
+							</span>
+						)}
+						{role === "ADMIN" && (
+							<span className="text-xs bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300 px-2 py-1 rounded-full">
+								Administrative Access
+							</span>
+						)}
+					</div>
+				</div>
+
+				{/* Content Area */}
+				<div className="flex-1 overflow-auto">
+					<div className="p-6 h-full">{renderContent()}</div>
+				</div>
 			</div>
 		</div>
 	);

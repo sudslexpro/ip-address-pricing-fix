@@ -67,49 +67,17 @@ const DashboardPage: React.FC = () => {
 	const IconComponent = welcome.icon;
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-			<div className="container mx-auto px-4 py-8">
-				{/* Header */}
-				<div className="mb-8">
-					<div className="flex items-center gap-3 mb-4">
-						<div
-							className={`p-2 rounded-lg bg-white shadow-sm ${welcome.color}`}>
-							<IconComponent className="h-6 w-6" />
-						</div>
-						<div>
-							<h1 className="text-3xl font-bold text-gray-900">
-								{welcome.title}
-							</h1>
-							<p className="text-gray-600 mt-1">{welcome.subtitle}</p>
-						</div>
-					</div>
-					<div className="flex items-center gap-2 text-sm text-gray-600">
-						<span>Current Role:</span>
-						<span className={`font-medium ${welcome.color}`}>
-							{role || "USER"}
-						</span>
-						{role === "SUPER_ADMIN" && (
-							<span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">
-								Full Access
-							</span>
-						)}
-						{role === "ADMIN" && (
-							<span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
-								Administrative Access
-							</span>
-						)}
-					</div>
-				</div>
-
-				{/* Dashboard Content with Sidebar */}
-				<div className="bg-white rounded-lg shadow-lg overflow-hidden">
-					<DashboardLayout
-						role={role || "USER"}
-						permissions={permissions}
-						user={session.user}
-						onSignOut={handleSignOut}
-					/>
-				</div>
+		<div className="h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-2 sm:p-4">
+			{/* Dashboard Content with Sidebar - Full height container */}
+			<div className="h-full bg-white rounded-lg shadow-lg overflow-hidden">
+				<DashboardLayout
+					role={role || "USER"}
+					permissions={permissions}
+					user={session.user}
+					onSignOut={handleSignOut}
+					welcome={welcome}
+					IconComponent={IconComponent}
+				/>
 			</div>
 		</div>
 	);
