@@ -48,59 +48,83 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
 	onToggleCollapse,
 }) => {
 	const getSidebarItems = (): SidebarItem[] => {
+		// Determine which role's navigation to show based on roleRoute
+		const targetRole = roleRoute
+			? roleRoute.toUpperCase().replace("-", "_")
+			: role;
+
 		const baseItems: SidebarItem[] = [
 			{
 				id: "overview",
 				label: "Overview",
 				icon: LayoutDashboard,
 			},
-			{
-				id: "quotes",
-				label: "Quotes",
-				icon: FileText,
-			},
-			{
+		];
+
+		// User-specific items (always available)
+		if (targetRole === "USER" || !roleRoute) {
+			baseItems.push(
+				{
+					id: "quotes",
+					label: "Quotes",
+					icon: FileText,
+				},
+				{
+					id: "settings",
+					label: "Settings",
+					icon: Settings,
+				}
+			);
+		}
+
+		// Admin-specific items
+		if (targetRole === "ADMIN" || targetRole === "SUPER_ADMIN") {
+			baseItems.push(
+				{
+					id: "users",
+					label: "User Management",
+					icon: Users,
+					requiredRole: "ADMIN",
+				},
+				{
+					id: "analytics",
+					label: "Analytics",
+					icon: BarChart3,
+					requiredRole: "ADMIN",
+				}
+			);
+		}
+
+		// Super admin-specific items
+		if (targetRole === "SUPER_ADMIN") {
+			baseItems.push(
+				{
+					id: "system",
+					label: "System Admin",
+					icon: Crown,
+					requiredRole: "SUPER_ADMIN",
+				},
+				{
+					id: "security",
+					label: "Security",
+					icon: Shield,
+					requiredRole: "SUPER_ADMIN",
+				},
+				{
+					id: "monitoring",
+					label: "Monitoring",
+					icon: Eye,
+					requiredRole: "SUPER_ADMIN",
+				}
+			);
+		}
+
+		// Add settings at the end for admin/super-admin routes
+		if (targetRole === "ADMIN" || targetRole === "SUPER_ADMIN") {
+			baseItems.push({
 				id: "settings",
 				label: "Settings",
 				icon: Settings,
-			},
-		];
-
-		// Add admin-specific items
-		if (role === "ADMIN" || role === "SUPER_ADMIN") {
-			baseItems.splice(2, 0, {
-				id: "users",
-				label: "User Management",
-				icon: Users,
-				requiredRole: "ADMIN",
-			});
-			baseItems.splice(3, 0, {
-				id: "analytics",
-				label: "Analytics",
-				icon: BarChart3,
-				requiredRole: "ADMIN",
-			});
-		}
-
-		// Add super admin-specific items
-		if (role === "SUPER_ADMIN") {
-			baseItems.splice(-1, 0, {
-				id: "system",
-				label: "System Admin",
-				icon: Crown,
-				requiredRole: "SUPER_ADMIN",
-			});
-			baseItems.splice(-1, 0, {
-				id: "security",
-				label: "Security",
-				icon: Shield,
-				requiredRole: "SUPER_ADMIN",
-			});
-			baseItems.splice(-1, 0, {
-				id: "monitoring",
-				label: "Monitoring",
-				icon: Eye,
-				requiredRole: "SUPER_ADMIN",
 			});
 		}
 
@@ -123,7 +147,18 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
 			<div className="p-4 border-b border-border flex-shrink-0">
 				<div className="flex items-center justify-between">
 					{!collapsed && (
-						<h2 className="text-lg font-semibold text-foreground">Dashboard</h2>
+						<div className="flex-1">
+							<h2 className="text-lg font-semibold text-foreground">
+								Dashboard
+							</h2>
+							{roleRoute && (
+								<p className="text-xs text-muted-foreground">
+									{roleRoute.charAt(0).toUpperCase() +
+										roleRoute.slice(1).replace("-", " ")}{" "}
+									View
+								</p>
+							)}
+						</div>
 					)}
 					{onToggleCollapse && (
 						<Button
@@ -139,6 +174,40 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
 						</Button>
 					)}
 				</div>
+
+				{/* Role Switcher - only show if user has multiple role access */}
+				{!collapsed && (role === "ADMIN" || role === "SUPER_ADMIN") && (
+					<div className="mt-3 space-y-1">
+						<p className="text-xs text-muted-foreground mb-2">Switch View:</p>
+						<div className="flex flex-wrap gap-1">
+							<Button
+								variant={roleRoute === "user" ? "secondary" : "ghost"}
+								size="sm"
+								className="text-xs h-7"
+								onClick={() => onSectionChange("../user/overview")}>
+								User
+							</Button>
+							{(role === "ADMIN" || role === "SUPER_ADMIN") && (
+								<Button
+									variant={roleRoute === "admin" ? "secondary" : "ghost"}
+									size="sm"
+									className="text-xs h-7"
+									onClick={() => onSectionChange("../admin/overview")}>
+									Admin
+								</Button>
+							)}
+							{role === "SUPER_ADMIN" && (
+								<Button
+									variant={roleRoute === "super-admin" ? "secondary" : "ghost"}
+									size="sm"
+									className="text-xs h-7"
+									onClick={() => onSectionChange("../super-admin/overview")}>
+									Super Admin
+								</Button>
+							)}
+						</div>
+					</div>
+				)}
 			</div>
 
 			{/* Sidebar Navigation */}
@@ -148,12 +217,19 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
 						{sidebarItems.map((item, index) => {
 							const IconComponent = item.icon;
 							const isActive = activeSection === item.id;
+
+							// For role-based routes, show items based on the target role
+							// For direct dashboard access, check user permissions
+							const targetRole = roleRoute
+								? roleRoute.toUpperCase().replace("-", "_")
+								: role;
 							const isAccessible =
 								!item.requiredRole ||
-								role === item.requiredRole ||
-								(item.requiredRole === "ADMIN" && role === "SUPER_ADMIN");
+								role === "SUPER_ADMIN" || // Super admin can access everything
+								(item.requiredRole === "ADMIN" &&
+									(role === "ADMIN" || role === "SUPER_ADMIN"));
 
-							if (!isAccessible) return null;
+							if (!isAccessible && !roleRoute) return null;
 
 							return (
 								<div key={item.id}>

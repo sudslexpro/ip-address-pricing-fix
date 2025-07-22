@@ -118,7 +118,13 @@ const DashboardRoleLayoutClient: React.FC<DashboardRoleLayoutClientProps> = ({
 	const currentSection = pathParts[3] || "overview";
 
 	const handleSectionChange = (section: string) => {
-		router.push(`/dashboard/${urlRole}/${section}`);
+		if (section.startsWith("../")) {
+			// Handle role switching navigation
+			router.push(`/dashboard/${section}`);
+		} else {
+			// Handle regular section navigation within the same role
+			router.push(`/dashboard/${urlRole}/${section}`);
+		}
 	};
 
 	return (
