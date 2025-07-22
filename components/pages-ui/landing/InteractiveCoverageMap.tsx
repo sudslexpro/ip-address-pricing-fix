@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/icon/AppIcon";
-import SimplePDFDownload from "@/components/pages-ui/download-pdf/SimplePDFDownload";
 import "ol/ol.css";
 import Map from "ol/Map";
 import View from "ol/View";
@@ -33,34 +32,11 @@ interface Service {
 	basePrice: number;
 }
 
-interface QuoteCountry {
-	country: string;
-	flag: string;
-	governmentFee: number;
-	attorneyFee: number;
-	commission: number;
-	total: number;
-	timeline: string;
-	services: string[];
-}
-
-interface GeneratedQuote {
-	countries: QuoteCountry[];
-	services: Service[];
-	grandTotal: number;
-	generatedAt: string;
-}
-
 const InteractiveCoverageMap = () => {
 	const mapContainerRef = useRef<HTMLDivElement>(null);
 	const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
 	const [selectedServices, setSelectedServices] = useState<string[]>([]);
 	const [hoveredCountry, setHoveredCountry] = useState<Country | null>(null);
-	const [showQuoteModal, setShowQuoteModal] = useState(false);
-	const [generatedQuote, setGeneratedQuote] = useState<GeneratedQuote | null>(
-		null
-	);
-	const [isGenerating, setIsGenerating] = useState(false);
 	const [map, setMap] = useState<Map | null>(null);
 	const [isMapLoaded, setIsMapLoaded] = useState(false);
 	const popupRef = useRef<HTMLDivElement | null>(null);
@@ -538,63 +514,11 @@ const InteractiveCoverageMap = () => {
 		);
 	};
 
-	const generateMultiCountryQuote = async () => {
+	const generateMultiCountryQuote = () => {
 		if (selectedCountries.length === 0 || selectedServices.length === 0) return;
 
-		setIsGenerating(true);
-		setShowQuoteModal(true);
-
-		// Simulate API call
-		await new Promise((resolve) => setTimeout(resolve, 2000));
-
-		const selectedCountryData = countryData.filter((country) =>
-			selectedCountries.includes(country.id)
-		);
-
-		const selectedServiceData = services.filter((service) =>
-			selectedServices.includes(service.id)
-		);
-
-		const quoteDetails = selectedCountryData.map((country) => {
-			const serviceTotal = selectedServiceData.reduce(
-				(sum, service) => sum + service.basePrice,
-				0
-			);
-			const governmentFee = country.price;
-			const attorneyFee = serviceTotal;
-			const commission = Math.round((governmentFee + attorneyFee) * 0.15); // 15% commission
-			const total = governmentFee + attorneyFee + commission;
-
-			return {
-				country: country.name,
-				flag: country.flag,
-				governmentFee,
-				attorneyFee,
-				commission,
-				total,
-				timeline: country.timeline,
-				services: selectedServiceData.map((s) => s.name),
-			};
-		});
-
-		const grandTotal = quoteDetails.reduce(
-			(sum, quote) => sum + quote.total,
-			0
-		);
-
-		setGeneratedQuote({
-			countries: quoteDetails,
-			services: selectedServiceData,
-			grandTotal,
-			generatedAt: new Date().toISOString(),
-		});
-
-		setIsGenerating(false);
-	};
-
-	const downloadQuotePDF = () => {
-		// This function is now handled by the PDFDownloadComponent
-		console.log("PDF download initiated via PDFDownloadComponent");
+		// Redirect to partner signup page
+		window.open("https://partner.lexprotector.com/signup", "_blank");
 	};
 
 	return (
@@ -720,9 +644,6 @@ const InteractiveCoverageMap = () => {
 									<div className="text-sm text-text-secondary">
 										{service.description}
 									</div>
-									<div className="text-sm font-medium mt-1">
-										${service.basePrice}
-									</div>
 								</button>
 							))}
 						</div>
@@ -743,108 +664,6 @@ const InteractiveCoverageMap = () => {
 						Generate Multi-Country Quote
 					</Button>
 				</div>
-
-				{/* Quote Modal */}
-				{showQuoteModal && (
-					<div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-						<div className="bg-white rounded-2xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-							<div className="p-6 border-b border-border">
-								<div className="flex items-center justify-between">
-									<h3 className="text-xl font-semibold text-text-primary">
-										Multi-Country Quote
-									</h3>
-									<button
-										onClick={() => setShowQuoteModal(false)}
-										className="p-2 hover:bg-surface rounded-lg">
-										<Icon name="X" size={20} />
-									</button>
-								</div>
-							</div>
-
-							<div className="p-6">
-								{isGenerating ? (
-									<div className="text-center py-8">
-										<Icon
-											name="Loader"
-											size={48}
-											className="text-primary animate-spin mx-auto mb-4"
-										/>
-										<p className="text-text-secondary">
-											Generating professional quote...
-										</p>
-									</div>
-								) : generatedQuote ? (
-									<div className="space-y-6">
-										<div className="grid gap-4">
-											{generatedQuote.countries.map((country, index) => (
-												<div
-													key={index}
-													className="bg-surface rounded-lg p-4 border border-border">
-													<div className="flex items-center justify-between mb-3">
-														<div className="flex items-center space-x-2">
-															<span className="text-lg">{country.flag}</span>
-															<span className="font-semibold">
-																{country.country}
-															</span>
-														</div>
-														<div className="text-right">
-															<div className="text-xl font-bold text-primary">
-																${country.total}
-															</div>
-															<div className="text-sm text-text-secondary">
-																{country.timeline}
-															</div>
-														</div>
-													</div>
-													<div className="grid grid-cols-3 gap-4 text-sm">
-														<div>
-															<span className="text-text-secondary">
-																Government:
-															</span>
-															<span className="font-medium ml-2">
-																${country.governmentFee}
-															</span>
-														</div>
-														<div>
-															<span className="text-text-secondary">
-																Attorney:
-															</span>
-															<span className="font-medium ml-2">
-																${country.attorneyFee}
-															</span>
-														</div>
-														<div>
-															<span className="text-text-secondary">
-																Commission:
-															</span>
-															<span className="font-medium ml-2">
-																${country.commission}
-															</span>
-														</div>
-													</div>
-												</div>
-											))}
-										</div>
-
-										<div className="border-t border-border pt-4">
-											<div className="flex items-center justify-between">
-												<div className="text-lg font-semibold text-text-primary">
-													Grand Total: ${generatedQuote.grandTotal}
-												</div>
-												<SimplePDFDownload
-													quote={generatedQuote}
-													onDownloadComplete={() => {
-														console.log("PDF download completed successfully");
-													}}
-												/>
-											</div>
-										</div>
-									</div>
-								) : null}
-							</div>
-						</div>
-					</div>
-				)}
 			</div>
 		</section>
 	);
