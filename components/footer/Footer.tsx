@@ -84,6 +84,20 @@ const Footer: React.FC = () => {
 										Coverage
 									</Link>
 								</li>
+								<li>
+									<Link
+										href="/#commission-calculator"
+										className="hover:text-accent transition-colors">
+										Commission Calculator
+									</Link>
+								</li>
+								<li>
+									<Link
+										href="/#success-stories"
+										className="hover:text-accent transition-colors">
+										Success Stories
+									</Link>
+								</li>
 							</ul>
 						</div>
 

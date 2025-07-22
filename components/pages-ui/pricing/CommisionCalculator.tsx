@@ -75,7 +75,7 @@ const CommissionCalculator = () => {
 	};
 
 	return (
-		<section className="py-20 bg-background" data-calculator>
+		<section id="commission-calculator" className="py-20 bg-background" data-calculator>
 			<div className="max-w-7xl mx-auto px-6 lg:px-8">
 				{/* Section Header */}
 				<div className="text-center mb-16">
