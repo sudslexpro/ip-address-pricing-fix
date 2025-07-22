@@ -89,13 +89,13 @@ const TestimonialsSection = () => {
 	const successMetrics = [
 		{
 			icon: "Users",
-			value: "500+",
+			value: "100+",
 			label: "Partner Firms",
 			description: "Boutique to mid-size practices",
 		},
 		{
 			icon: "FileText",
-			value: "50K+",
+			value: "800+",
 			label: "Quotes Generated",
 			description: "Professional quotes delivered",
 		},
