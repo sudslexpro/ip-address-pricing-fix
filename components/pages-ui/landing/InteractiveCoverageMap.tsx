@@ -656,9 +656,6 @@ const InteractiveCoverageMap = () => {
 						variant="default"
 						size="lg"
 						onClick={generateMultiCountryQuote}
-						disabled={
-							selectedCountries.length === 0 || selectedServices.length === 0
-						}
 						className="px-8 py-4 flex items-center gap-2">
 						<Icon name="Calculator" size={16} />
 						Generate Multi-Country Quote
