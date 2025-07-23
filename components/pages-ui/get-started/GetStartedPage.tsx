@@ -1,12 +1,14 @@
-import React from 'react';
-import GetStartedSection from '@/components/pages-ui/get-started/GetStartedSection';
+import React from "react";
+import MinimalCalendlyBooking from "@/components/pages-ui/get-started/MinimalCalendlyBooking";
 
 const GetStartedPage: React.FC = () => {
-  return (
-    <main>
-      <div><GetStartedSection /></div>
-    </main>
-  );
+	return (
+		<main>
+			<div>
+				<MinimalCalendlyBooking />
+			</div>
+		</main>
+	);
 };
 
 export default GetStartedPage;

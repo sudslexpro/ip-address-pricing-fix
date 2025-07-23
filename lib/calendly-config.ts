@@ -8,7 +8,7 @@
 export const CALENDLY_CONFIG = {
 	// Replace with your actual Calendly URL
 	// Example: "https://calendly.com/your-username/30min"
-	URL: "https://calendly.com/your-calendly-username",
+	URL: "https://calendly.com/lex-protector-demo/consultation",
 
 	// Default prefill data for forms
 	DEFAULT_PREFILL: {
