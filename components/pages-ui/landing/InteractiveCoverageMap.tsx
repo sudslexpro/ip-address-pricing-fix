@@ -15,6 +15,7 @@ import Point from "ol/geom/Point";
 import { Style, Circle as CircleStyle, Fill, Stroke } from "ol/style";
 import Overlay from "ol/Overlay";
 import type { FeatureLike } from "ol/Feature";
+import Link from "next/link";
 
 interface Country {
 	id: string;
@@ -511,7 +512,7 @@ const InteractiveCoverageMap = () => {
 		if (selectedCountries.length === 0 || selectedServices.length === 0) return;
 
 		// Redirect to partner signup page
-		window.open("https://partner.lexprotector.com/signup", "_blank");
+		window.open("https://partner.lexprotector.com/signup");
 	};
 
 	return (
@@ -645,14 +646,15 @@ const InteractiveCoverageMap = () => {
 
 				{/* Generate Quote Button */}
 				<div className="flex flex-col md:flex-row justify-center items-center gap-4 mt-8">
-					<Button
-						variant="default"
-						size="lg"
-						onClick={generateMultiCountryQuote}
-						className="px-8 py-4 flex items-center gap-2">
-						<Icon name="Calculator" size={16} />
-						Generate Multi-Country Quote
-					</Button>
+					<Link href="https://partner.lexprotector.com/signup">
+						<Button
+							variant="default"
+							size="lg"
+							className="px-8 py-4 flex items-center gap-2">
+							<Icon name="Calculator" size={16} />
+							Generate Multi-Country Quote
+						</Button>
+					</Link>
 					<Button
 						variant="default"
 						size="lg"
