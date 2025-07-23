@@ -153,7 +153,7 @@ const TestimonialsSection = () => {
 						<span>Success Stories</span>
 					</div>
 					<h2 className="text-3xl lg:text-4xl font-bold text-text-primary mb-6">
-						Trusted by <span className="text-success">500+ Law Firms</span>
+						Trusted by <span className="text-success">100+ Law Firms</span>
 					</h2>
 					<p className="text-xl text-text-secondary max-w-3xl mx-auto">
 						See how boutique law firms are transforming their practices and
