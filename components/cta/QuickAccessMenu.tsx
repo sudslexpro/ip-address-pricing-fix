@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Icon from "@/components/icon/AppIcon";
 import { Button } from "@/components/ui/button";
-import { LucideProps, icons as LucideIcons } from "lucide-react";
+import { icons as LucideIcons } from "lucide-react";
 
 const QuickAccessMenu = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -231,9 +231,9 @@ const QuickAccessMenu = () => {
 
 						{/* Footer */}
 						<div className="p-4 border-t border-border bg-surface/50">
-							<Link href="/get-started" onClick={() => setIsOpen(false)}>
+							<Link href="https://partner.lexprotector.com/signup" onClick={() => setIsOpen(false)}>
 								<Button variant="default" size="sm" className="w-full">
-									Start Your Trial
+									Get Started with your free trial
 									<Icon name="ArrowRight" size={16} className="ml-2" />
 								</Button>
 							</Link>

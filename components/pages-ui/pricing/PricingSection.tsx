@@ -155,11 +155,8 @@ const PricingSection = () => {
 			// Open Calendly modal for enterprise plan
 			setIsCalendlyModalOpen(true);
 		} else {
-			// Handle trial signup
-			const element = document.querySelector("#get-started");
-			if (element) {
-				element.scrollIntoView({ behavior: "smooth", block: "start" });
-			}
+			// Handle trial signup - redirect to signup page
+			window.location.href = "https://partner.lexprotector.com/signup";
 		}
 	};
 

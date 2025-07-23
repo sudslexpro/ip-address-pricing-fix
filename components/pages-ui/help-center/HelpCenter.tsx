@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import Link from "next/link";
 import {
 	Accordion,
 	AccordionContent,
@@ -331,10 +332,10 @@ const HelpCenter: React.FC = () => {
 											variant="ghost"
 											className="w-full justify-between p-2 h-auto"
 											asChild>
-											<a href="/get-started">
-												<span className="text-sm">Getting Started Guide</span>
+											<Link href="https://partner.lexprotector.com/signup">
+												<span className="text-sm">Get Started</span>
 												<ChevronRight className="w-4 h-4" />
-											</a>
+											</Link>
 										</Button>
 										<Button
 											variant="ghost"

@@ -34,7 +34,6 @@ const Header: React.FC<HeaderProps> = ({ isDevRoute = false }) => {
 			name: "Success Stories",
 			href: "/#success-stories",
 		},
-		{ id: "get-started", name: "Get Started", href: "/get-started" },
 	];
 
 	React.useEffect(() => {

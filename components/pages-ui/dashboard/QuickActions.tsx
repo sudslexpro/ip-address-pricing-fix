@@ -66,7 +66,8 @@ const QuickActions: React.FC<QuickActionsProps> = ({
 			description: "Create a new trademark quote",
 			icon: FileText,
 			action: () => {
-				window.location.href = "/get-started";
+				// Redirect to support page for quote generation
+				window.location.href = "/support";
 			},
 			variant: "default" as const,
 		},

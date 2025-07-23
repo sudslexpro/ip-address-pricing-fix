@@ -75,7 +75,10 @@ const CommissionCalculator = () => {
 	};
 
 	return (
-		<section id="commission-calculator" className="py-20 bg-background" data-calculator>
+		<section
+			id="commission-calculator"
+			className="py-20 bg-background"
+			data-calculator>
 			<div className="max-w-7xl mx-auto px-6 lg:px-8">
 				{/* Section Header */}
 				<div className="text-center mb-16">
@@ -323,19 +326,15 @@ const CommissionCalculator = () => {
 
 						{/* CTA */}
 						<div className="flex flex-col items-center justify-center pt-6">
-							<Link href="/get-started">
+							<Link href="https://partner.lexprotector.com/signup">
 								<Button
 									variant="default"
 									size="lg"
 									className="bg-primary hover:bg-blue-900 text-white font-semibold px-8 py-4 flex items-center gap-2"
 									onClick={() => {
-										const element = document.querySelector("#get-started");
-										if (element) {
-											element.scrollIntoView({
-												behavior: "smooth",
-												block: "start",
-											});
-										}
+										// Navigate to dashboard instead of scrolling to get-started section
+										window.location.href =
+											"https://partner.lexprotector.com/signup";
 									}}>
 									Start Earning More Today
 									<Icon name="ArrowRight" size={16} />

@@ -24,7 +24,6 @@ const FloatingCTA = () => {
 		coverage: "Check Coverage",
 		pricing: "View Pricing",
 		"success-stories": "Join Success Stories",
-		"get-started": "Start Trial",
 		default: "Request Demo",
 	};
 
@@ -48,7 +47,6 @@ const FloatingCTA = () => {
 				"coverage",
 				"pricing",
 				"success-stories",
-				"get-started",
 			];
 			let activeSection = "default";
 
@@ -76,7 +74,7 @@ const FloatingCTA = () => {
 	}, []);
 
 	const handleCTAClick = () => {
-		let targetSection = "#get-started";
+		let targetSection = "/support";
 
 		// Context-specific navigation
 		switch (currentSection) {
@@ -90,15 +88,21 @@ const FloatingCTA = () => {
 				targetSection = "#pricing";
 				break;
 			case "success-stories":
-				targetSection = "#get-started";
+				targetSection = "/support";
 				break;
 			default:
-				targetSection = "#get-started";
+				targetSection = "/support";
 		}
 
-		const element = document.querySelector(targetSection);
-		if (element) {
-			element.scrollIntoView({ behavior: "smooth", block: "start" });
+		// If it's a hash link, scroll to element
+		if (targetSection.startsWith("#")) {
+			const element = document.querySelector(targetSection);
+			if (element) {
+				element.scrollIntoView({ behavior: "smooth", block: "start" });
+			}
+		} else {
+			// If it's a page route, navigate to it
+			window.location.href = targetSection;
 		}
 
 		// Analytics tracking could be added here
