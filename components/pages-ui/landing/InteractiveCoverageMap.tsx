@@ -644,7 +644,7 @@ const InteractiveCoverageMap = () => {
 				</div>
 
 				{/* Generate Quote Button */}
-				<div className="flex justify-center items-center gap-4 mt-8">
+				<div className="flex flex-col md:flex-row justify-center items-center gap-4 mt-8">
 					<Button
 						variant="default"
 						size="lg"
