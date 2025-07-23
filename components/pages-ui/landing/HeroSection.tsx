@@ -137,7 +137,7 @@ const HeroSection: React.FC = () => {
 	useEffect(() => {
 		const interval = setInterval(() => {
 			setQuotesGenerated((prev) => prev + Math.floor(Math.random() * 3) + 1);
-		}, 3000);
+		}, 60000); // Changed to 60000 ms (1 minute)
 
 		// Create popup elements
 		if (!popupRef.current) {
