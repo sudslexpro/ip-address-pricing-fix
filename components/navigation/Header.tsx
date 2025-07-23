@@ -189,7 +189,7 @@ const Header: React.FC<HeaderProps> = ({ isDevRoute = false }) => {
 												variant="default"
 												size="sm"
 												className={`bg-[#1a365d] text-white hover:bg-[#1b3f6f] border border-[#8f9297] px-12 py-5`}>
-												Get Started
+												Sign Up
 												<ArrowRight className="ml-0.5 size-4" />
 											</Button>
 										</Link>
@@ -216,7 +216,7 @@ const Header: React.FC<HeaderProps> = ({ isDevRoute = false }) => {
 												variant="default"
 												size="sm"
 												className={`bg-[#1a365d] text-white hover:bg-[#1b3f6f] border border-[#8f9297] px-12 py-5`}>
-												Get Started
+												Sign Up
 												<ArrowRight className="ml-0.5 size-4" />
 											</Button>
 										</a>
