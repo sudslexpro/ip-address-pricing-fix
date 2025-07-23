@@ -664,6 +664,17 @@ const InteractiveCoverageMap = () => {
 						<Icon name="FileText" size={16} />
 						Sample Quotation Demo
 					</Button>
+					<Button
+						variant="default"
+						size="lg"
+						onClick={() => {
+							// Function will be added later
+							console.log("Schedule of Charges clicked");
+						}}
+						className="px-8 py-4 flex items-center gap-2">
+						<Icon name="DollarSign" size={16} />
+						Schedule of Charges
+					</Button>
 				</div>
 			</div>
 		</section>
