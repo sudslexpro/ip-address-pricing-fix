@@ -162,16 +162,6 @@ const Header: React.FC<HeaderProps> = ({ isDevRoute = false }) => {
 										<User className="mr-2 h-4 w-4" />
 										<Link href="/dashboard">Dashboard</Link>
 									</DropdownMenuItem>
-									<DropdownMenuItem>
-										<Settings className="mr-2 h-4 w-4" />
-										<span>Settings</span>
-									</DropdownMenuItem>
-									{session.user.role === "ADMIN" && (
-										<DropdownMenuItem>
-											<Shield className="mr-2 h-4 w-4" />
-											<span>Admin Panel</span>
-										</DropdownMenuItem>
-									)}
 									<DropdownMenuSeparator />
 									<DropdownMenuItem
 										onClick={() => signOut({ callbackUrl: "/" })}>
@@ -305,7 +295,7 @@ const Header: React.FC<HeaderProps> = ({ isDevRoute = false }) => {
 											</Link>
 											<Link href="/auth/signup">
 												<Button variant="default" size="sm">
-													Get Started
+													Sign Up
 												</Button>
 											</Link>
 										</>
@@ -322,7 +312,7 @@ const Header: React.FC<HeaderProps> = ({ isDevRoute = false }) => {
 											</Link>
 											<Link href="https://partner.lexprotector.com/signup">
 												<Button variant="default" size="sm">
-													Get Started
+													Sign Up
 												</Button>
 											</Link>
 										</div>
