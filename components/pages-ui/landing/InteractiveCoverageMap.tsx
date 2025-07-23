@@ -469,21 +469,14 @@ const InteractiveCoverageMap = () => {
 		}
 	}, [getFeatureStyle]);
 
-	// Effect to update map features based on selected countries
+	// Effect to update map features - always show all countries
 	useEffect(() => {
 		if (vectorSourceRef.current) {
 			// Clear existing features
 			vectorSourceRef.current.clear();
 
-			// Add features only for selected countries, or all if none selected
-			const countriesToShow =
-				selectedCountries.length > 0
-					? countryData.filter((country) =>
-							selectedCountries.includes(country.id)
-					  )
-					: countryData;
-
-			countriesToShow.forEach((country) => {
+			// Always show all countries
+			countryData.forEach((country) => {
 				const feature = new Feature({
 					geometry: new Point(fromLonLat(country.coordinates)),
 					id: country.id,
