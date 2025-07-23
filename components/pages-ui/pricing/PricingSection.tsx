@@ -5,11 +5,12 @@ import Icon from "@/components/icon/AppIcon";
 import Link from "next/link";
 import { CalendlyBookingModal } from "@/components/scheduling";
 import { getCalendlyUrl, CALENDLY_EVENT_TYPES } from "@/lib/calendly-config";
+import { useCalendlyModal } from "@/components/providers/CalendlyModalProvider";
 
 const PricingSection = () => {
 	const [billingCycle, setBillingCycle] = useState("monthly");
 	const [selectedPlan, setSelectedPlan] = useState("professional");
-	const [isCalendlyModalOpen, setIsCalendlyModalOpen] = useState(false);
+	const { isModalOpen, openModal, closeModal } = useCalendlyModal();
 
 	// Get Calendly URL for demo bookings
 	const calendlyUrl = getCalendlyUrl(CALENDLY_EVENT_TYPES.DEMO);
@@ -153,7 +154,7 @@ const PricingSection = () => {
 
 		if (planKey === "enterprise") {
 			// Open Calendly modal for enterprise plan
-			setIsCalendlyModalOpen(true);
+			openModal();
 		} else {
 			// Handle trial signup - redirect to signup page
 			window.location.href = "https://partner.lexprotector.com/signup";
@@ -161,7 +162,7 @@ const PricingSection = () => {
 	};
 
 	const handleScheduleDemo = () => {
-		setIsCalendlyModalOpen(true);
+		openModal();
 	};
 
 	return (
@@ -433,8 +434,8 @@ const PricingSection = () => {
 
 				{/* Calendly Booking Modal */}
 				<CalendlyBookingModal
-					isOpen={isCalendlyModalOpen}
-					onClose={() => setIsCalendlyModalOpen(false)}
+					isOpen={isModalOpen}
+					onClose={closeModal}
 					calendlyUrl={calendlyUrl}
 				/>
 			</div>

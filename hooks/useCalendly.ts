@@ -61,19 +61,42 @@ const loadCalendlyScript = (): Promise<void> => {
 			return;
 		}
 
-		// Create new script
+		// Add resource hints for better performance
+		const addResourceHints = () => {
+			// DNS prefetch for faster domain resolution
+			const dnsPrefetch = document.createElement("link");
+			dnsPrefetch.rel = "dns-prefetch";
+			dnsPrefetch.href = "https://assets.calendly.com";
+			document.head.appendChild(dnsPrefetch);
+
+			// Preconnect for complete connection setup
+			const preconnect = document.createElement("link");
+			preconnect.rel = "preconnect";
+			preconnect.href = "https://assets.calendly.com";
+			preconnect.crossOrigin = "anonymous";
+			document.head.appendChild(preconnect);
+
+			// Preload the script
+			const preloadLink = document.createElement("link");
+			preloadLink.rel = "preload";
+			preloadLink.href =
+				"https://assets.calendly.com/assets/external/widget.js";
+			preloadLink.as = "script";
+			preloadLink.crossOrigin = "anonymous";
+			document.head.appendChild(preloadLink);
+		};
+
+		addResourceHints();
+
+		// Create new script with optimizations
 		const script = document.createElement("script");
 		script.src = "https://assets.calendly.com/assets/external/widget.js";
 		script.async = true;
+		script.defer = true; // Better for performance
 		script.crossOrigin = "anonymous";
 
-		// Add preload hints for better performance
-		const preloadLink = document.createElement("link");
-		preloadLink.rel = "preload";
-		preloadLink.href = script.src;
-		preloadLink.as = "script";
-		preloadLink.crossOrigin = "anonymous";
-		document.head.appendChild(preloadLink);
+		// Add cache control for better caching
+		script.setAttribute("cache", "force-cache");
 
 		script.onload = () => {
 			calendlyScriptLoaded = true;
@@ -87,13 +110,17 @@ const loadCalendlyScript = (): Promise<void> => {
 			reject(new Error("Failed to load Calendly script"));
 		};
 
-		// Add timeout for script loading
-		setTimeout(() => {
+		// Reduced timeout for faster feedback
+		const timeoutId = setTimeout(() => {
 			if (!calendlyScriptLoaded) {
 				calendlyScriptLoading = false;
+				script.remove(); // Clean up failed script
 				reject(new Error("Calendly script loading timeout"));
 			}
-		}, 10000); // 10 second timeout
+		}, 5000); // Reduced to 5 seconds
+
+		// Clear timeout on successful load
+		script.addEventListener("load", () => clearTimeout(timeoutId));
 
 		document.head.appendChild(script);
 	});

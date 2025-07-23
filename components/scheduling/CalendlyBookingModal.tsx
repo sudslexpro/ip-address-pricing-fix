@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/icon/AppIcon";
 import { useCalendly } from "@/hooks/useCalendly";
+import { useCalendlyModal } from "@/components/providers/CalendlyModalProvider";
 
 interface CalendlyBookingModalProps {
 	isOpen: boolean;
@@ -30,6 +31,7 @@ const CalendlyBookingModal: React.FC<CalendlyBookingModalProps> = ({
 		initInlineWidget,
 		retryLoad,
 	} = useCalendly();
+	const { closeModal } = useCalendlyModal();
 	const [widgetInitialized, setWidgetInitialized] = useState(false);
 	const [widgetError, setWidgetError] = useState<string | null>(null);
 
@@ -76,8 +78,9 @@ const CalendlyBookingModal: React.FC<CalendlyBookingModalProps> = ({
 
 	const handleClose = useCallback(() => {
 		closePopup();
+		closeModal(); // Update global context
 		onClose();
-	}, [closePopup, onClose]);
+	}, [closePopup, closeModal, onClose]);
 
 	const handleRetry = useCallback(() => {
 		setWidgetError(null);
@@ -89,28 +92,76 @@ const CalendlyBookingModal: React.FC<CalendlyBookingModalProps> = ({
 		}
 	}, [error, retryLoad, initializeWidget]);
 
-	// Determine container height based on screen size
+	// Determine container height based on screen size and device capabilities
 	const getResponsiveHeight = () => {
 		if (typeof window !== "undefined") {
 			const viewportHeight = window.innerHeight;
 			const isMobile = window.innerWidth < 768;
+			const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
+
+			// Account for mobile browser UI chrome and keyboard
+			const mobileViewportAdjustment = isMobile ? 0.65 : 0.8;
+			const tabletViewportAdjustment = isTablet ? 0.75 : 0.8;
 
 			if (isMobile) {
-				return Math.min(500, viewportHeight * 0.7);
+				// On mobile, be more conservative with height to account for virtual keyboard
+				const baseHeight = Math.min(
+					500,
+					viewportHeight * mobileViewportAdjustment
+				);
+				// Ensure minimum usable height
+				return Math.max(350, baseHeight);
+			} else if (isTablet) {
+				return Math.min(650, viewportHeight * tabletViewportAdjustment);
 			}
-			return Math.min(600, viewportHeight * 0.8);
+
+			return Math.min(700, viewportHeight * 0.85);
 		}
 		return 600;
 	};
 
 	const [containerHeight, setContainerHeight] = useState(600);
+	const [isMounted, setIsMounted] = useState(false);
 
 	useEffect(() => {
+		setIsMounted(true);
 		const updateHeight = () => setContainerHeight(getResponsiveHeight());
 		updateHeight();
 
-		window.addEventListener("resize", updateHeight);
-		return () => window.removeEventListener("resize", updateHeight);
+		// Debounce resize handler for better performance
+		let resizeTimeout: NodeJS.Timeout;
+		const debouncedResize = () => {
+			clearTimeout(resizeTimeout);
+			resizeTimeout = setTimeout(updateHeight, 150);
+		};
+
+		window.addEventListener("resize", debouncedResize, { passive: true });
+
+		// Also listen for orientation changes on mobile
+		window.addEventListener(
+			"orientationchange",
+			() => {
+				// Delay to account for browser UI changes
+				setTimeout(updateHeight, 300);
+			},
+			{ passive: true }
+		);
+
+		// Listen for viewport height changes (mobile keyboard)
+		if ("visualViewport" in window) {
+			window.visualViewport?.addEventListener("resize", updateHeight, {
+				passive: true,
+			});
+		}
+
+		return () => {
+			window.removeEventListener("resize", debouncedResize);
+			window.removeEventListener("orientationchange", updateHeight);
+			if ("visualViewport" in window) {
+				window.visualViewport?.removeEventListener("resize", updateHeight);
+			}
+			clearTimeout(resizeTimeout);
+		};
 	}, []);
 
 	const showError = error || widgetError;
@@ -121,12 +172,12 @@ const CalendlyBookingModal: React.FC<CalendlyBookingModalProps> = ({
 			<DialogContent
 				className="
 					w-[95vw] max-w-4xl 
-					h-[95vh] max-h-[900px]
+					h-[95vh] max-h-[780px]
 					sm:w-[90vw] sm:h-[90vh]
 					md:w-[85vw] md:h-[85vh]
 					lg:w-[80vw] lg:max-w-4xl
 					overflow-hidden p-0
-					flex flex-col
+					flex flex-col mt-8
 				"
 				style={{ minHeight: "400px" }}>
 				<DialogHeader className="p-4 sm:p-6 pb-2 sm:pb-4 flex-shrink-0">

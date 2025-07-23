@@ -1,47 +1,78 @@
-/* Calendly Modal Responsive Styles */
+/* Calendly Modal Responsive Styles - Enhanced for All Devices */
 
 /* Mobile-first responsive design for Calendly modal */
 .calendly-modal-content {
-	/* Base mobile styles */
+	/* Base mobile styles with improved constraints */
 	width: 95vw;
-	height: 95vh;
-	max-height: 700px;
-	min-height: 400px;
+	height: 90vh;
+	max-height: 600px;
+	min-height: 350px;
+
+	/* Ensure proper positioning */
+	position: relative;
+	overflow: hidden;
+
+	/* Enhanced for touch devices */
+	touch-action: manipulation;
+	-webkit-overflow-scrolling: touch;
 }
 
-/* Small screens (landscape phones) */
-@media (min-width: 480px) {
+/* Small mobile devices (portrait) */
+@media (max-width: 479px) {
 	.calendly-modal-content {
-		width: 90vw;
-		height: 90vh;
-		max-height: 750px;
+		width: 98vw;
+		height: 85vh;
+		max-height: 500px;
+		min-height: 300px;
 	}
 }
 
-/* Tablets */
-@media (min-width: 768px) {
+/* Small screens (landscape phones) */
+@media (min-width: 480px) and (max-width: 767px) {
+	.calendly-modal-content {
+		width: 92vw;
+		height: 88vh;
+		max-height: 650px;
+		min-height: 400px;
+	}
+}
+
+/* Tablets (portrait) */
+@media (min-width: 768px) and (max-width: 1023px) {
 	.calendly-modal-content {
 		width: 85vw;
 		height: 85vh;
-		max-height: 800px;
+		max-height: 750px;
 		min-height: 500px;
 	}
 }
 
-/* Laptops and larger */
-@media (min-width: 1024px) {
+/* Tablets (landscape) and small laptops */
+@media (min-width: 1024px) and (max-width: 1279px) {
 	.calendly-modal-content {
 		width: 80vw;
 		max-width: 900px;
 		height: 80vh;
-		max-height: 850px;
+		max-height: 800px;
+		min-height: 550px;
 	}
 }
 
 /* Large desktops */
 @media (min-width: 1280px) {
 	.calendly-modal-content {
+		width: 75vw;
 		max-width: 1000px;
+		height: 80vh;
+		max-height: 850px;
+		min-height: 600px;
+	}
+}
+
+/* Ultra-wide screens */
+@media (min-width: 1920px) {
+	.calendly-modal-content {
+		max-width: 1200px;
 		max-height: 900px;
 	}
 }
