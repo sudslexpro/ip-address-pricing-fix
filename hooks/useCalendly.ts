@@ -22,10 +22,14 @@ interface UseCalendlyReturn {
 let calendlyScriptLoaded = false;
 let calendlyScriptLoading = false;
 let calendlyScriptPromise: Promise<void> | null = null;
+let retryCount = 0;
+const MAX_RETRIES = 3;
+const RETRY_DELAYS = [1000, 3000, 5000]; // Exponential backoff delays
 
 const loadCalendlyScript = (): Promise<void> => {
 	if (window.Calendly) {
 		calendlyScriptLoaded = true;
+		retryCount = 0; // Reset retry count on success
 		return Promise.resolve();
 	}
 
@@ -45,6 +49,7 @@ const loadCalendlyScript = (): Promise<void> => {
 			if (window.Calendly) {
 				calendlyScriptLoaded = true;
 				calendlyScriptLoading = false;
+				retryCount = 0;
 				resolve();
 				return;
 			}
@@ -52,11 +57,12 @@ const loadCalendlyScript = (): Promise<void> => {
 			existingScript.addEventListener("load", () => {
 				calendlyScriptLoaded = true;
 				calendlyScriptLoading = false;
+				retryCount = 0;
 				resolve();
 			});
 			existingScript.addEventListener("error", () => {
 				calendlyScriptLoading = false;
-				reject(new Error("Failed to load Calendly script"));
+				handleScriptError(reject);
 			});
 			return;
 		}
@@ -67,14 +73,18 @@ const loadCalendlyScript = (): Promise<void> => {
 			const dnsPrefetch = document.createElement("link");
 			dnsPrefetch.rel = "dns-prefetch";
 			dnsPrefetch.href = "https://assets.calendly.com";
-			document.head.appendChild(dnsPrefetch);
+			if (!document.querySelector(`link[href="${dnsPrefetch.href}"]`)) {
+				document.head.appendChild(dnsPrefetch);
+			}
 
 			// Preconnect for complete connection setup
 			const preconnect = document.createElement("link");
 			preconnect.rel = "preconnect";
 			preconnect.href = "https://assets.calendly.com";
 			preconnect.crossOrigin = "anonymous";
-			document.head.appendChild(preconnect);
+			if (!document.querySelector(`link[href="${preconnect.href}"]`)) {
+				document.head.appendChild(preconnect);
+			}
 
 			// Preload the script
 			const preloadLink = document.createElement("link");
@@ -83,7 +93,31 @@ const loadCalendlyScript = (): Promise<void> => {
 				"https://assets.calendly.com/assets/external/widget.js";
 			preloadLink.as = "script";
 			preloadLink.crossOrigin = "anonymous";
-			document.head.appendChild(preloadLink);
+			if (!document.querySelector(`link[href="${preloadLink.href}"]`)) {
+				document.head.appendChild(preloadLink);
+			}
+		};
+
+		const handleScriptError = (rejectFn: (reason?: any) => void) => {
+			retryCount++;
+			if (retryCount < MAX_RETRIES) {
+				console.warn(
+					`Calendly script loading failed. Retrying... (${retryCount}/${MAX_RETRIES})`
+				);
+				calendlyScriptLoading = false;
+				calendlyScriptPromise = null;
+
+				// Retry with exponential backoff
+				setTimeout(() => {
+					loadCalendlyScript().then(resolve).catch(rejectFn);
+				}, RETRY_DELAYS[retryCount - 1]);
+			} else {
+				calendlyScriptLoading = false;
+				retryCount = 0;
+				rejectFn(
+					new Error("Failed to load Calendly script after multiple retries")
+				);
+			}
 		};
 
 		addResourceHints();
@@ -101,23 +135,23 @@ const loadCalendlyScript = (): Promise<void> => {
 		script.onload = () => {
 			calendlyScriptLoaded = true;
 			calendlyScriptLoading = false;
+			retryCount = 0;
 			performanceMonitor.markScriptLoadEnd();
 			resolve();
 		};
 
 		script.onerror = () => {
-			calendlyScriptLoading = false;
-			reject(new Error("Failed to load Calendly script"));
+			script.remove(); // Clean up failed script
+			handleScriptError(reject);
 		};
 
-		// Reduced timeout for faster feedback
+		// Increased timeout for better reliability on slow connections
 		const timeoutId = setTimeout(() => {
 			if (!calendlyScriptLoaded) {
-				calendlyScriptLoading = false;
 				script.remove(); // Clean up failed script
-				reject(new Error("Calendly script loading timeout"));
+				handleScriptError(reject);
 			}
-		}, 5000); // Reduced to 5 seconds
+		}, 15000); // Increased to 15 seconds for better reliability
 
 		// Clear timeout on successful load
 		script.addEventListener("load", () => clearTimeout(timeoutId));
@@ -217,6 +251,8 @@ export const useCalendly = (): UseCalendlyReturn => {
 		calendlyScriptPromise = null;
 		calendlyScriptLoaded = false;
 		calendlyScriptLoading = false;
+		retryCount = 0; // Reset retry count on manual retry
+		setError(null); // Clear any existing errors
 		loadScript();
 	}, [loadScript]);
 

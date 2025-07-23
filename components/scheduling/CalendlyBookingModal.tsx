@@ -34,6 +34,7 @@ const CalendlyBookingModal: React.FC<CalendlyBookingModalProps> = ({
 	const { closeModal } = useCalendlyModal();
 	const [widgetInitialized, setWidgetInitialized] = useState(false);
 	const [widgetError, setWidgetError] = useState<string | null>(null);
+	const [isRetrying, setIsRetrying] = useState(false);
 
 	// Initialize widget when modal opens and Calendly is loaded
 	const initializeWidget = useCallback(() => {
@@ -85,11 +86,17 @@ const CalendlyBookingModal: React.FC<CalendlyBookingModalProps> = ({
 	const handleRetry = useCallback(() => {
 		setWidgetError(null);
 		setWidgetInitialized(false);
-		if (error) {
-			retryLoad();
-		} else {
-			initializeWidget();
-		}
+		setIsRetrying(true);
+
+		// Add a small delay to show retry feedback
+		setTimeout(() => {
+			if (error) {
+				retryLoad();
+			} else {
+				initializeWidget();
+			}
+			setIsRetrying(false);
+		}, 800);
 	}, [error, retryLoad, initializeWidget]);
 
 	// Determine container height based on screen size and device capabilities
@@ -165,7 +172,8 @@ const CalendlyBookingModal: React.FC<CalendlyBookingModalProps> = ({
 	}, []);
 
 	const showError = error || widgetError;
-	const showLoading = (isLoading || !widgetInitialized) && !showError;
+	const showLoading =
+		(isLoading || !widgetInitialized || isRetrying) && !showError;
 
 	return (
 		<Dialog open={isOpen} onOpenChange={handleClose}>
@@ -212,13 +220,26 @@ const CalendlyBookingModal: React.FC<CalendlyBookingModalProps> = ({
 										className="text-primary mx-auto mb-4 opacity-60"
 									/>
 									<p className="text-text-secondary text-sm sm:text-base">
-										{isLoading
+										{isRetrying
+											? "Retrying connection..."
+											: isLoading
 											? "Loading booking system..."
 											: "Setting up calendar..."}
 									</p>
 									<p className="text-text-muted text-xs mt-2">
-										This may take a few seconds
+										{isRetrying
+											? "Please wait while we reconnect..."
+											: "This may take a few seconds"}
 									</p>
+									{isLoading && !isRetrying && (
+										<div className="mt-4">
+											<div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+												<div
+													className="bg-primary h-2 rounded-full animate-pulse"
+													style={{ width: "45%" }}></div>
+											</div>
+										</div>
+									)}
 								</div>
 							</div>
 						)}
@@ -239,9 +260,16 @@ const CalendlyBookingModal: React.FC<CalendlyBookingModalProps> = ({
 										{showError}
 									</p>
 									<div className="space-y-2">
-										<Button onClick={handleRetry} className="w-full sm:w-auto">
-											<Icon name="RefreshCw" size={16} className="mr-2" />
-											Try Again
+										<Button
+											onClick={handleRetry}
+											className="w-full sm:w-auto"
+											disabled={isRetrying}>
+											<Icon
+												name={isRetrying ? "Loader2" : "RefreshCw"}
+												size={16}
+												className={`mr-2 ${isRetrying ? "animate-spin" : ""}`}
+											/>
+											{isRetrying ? "Retrying..." : "Try Again"}
 										</Button>
 										<div className="text-xs text-text-muted">
 											or{" "}

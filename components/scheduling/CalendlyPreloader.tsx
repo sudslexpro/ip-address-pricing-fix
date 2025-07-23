@@ -13,7 +13,7 @@ const CalendlyPreloader: React.FC = () => {
 		// Only run on client side
 		if (typeof window === "undefined") return;
 
-		// Enhanced preload conditions
+		// Enhanced preload conditions - more aggressive for better UX
 		const shouldPreload = () => {
 			// Don't preload on slow connections
 			if ("connection" in navigator) {
@@ -22,23 +22,22 @@ const CalendlyPreloader: React.FC = () => {
 					// Check for slow connections
 					if (
 						connection.effectiveType === "2g" ||
-						connection.effectiveType === "slow-2g" ||
-						connection.saveData === true
+						connection.effectiveType === "slow-2g"
 					) {
 						return false;
 					}
-					// Check for limited data plans
-					if (connection.saveData) {
+					// Only skip on explicitly limited data plans
+					if (connection.saveData === true) {
 						return false;
 					}
 				}
 			}
 
-			// Check device memory (if available)
+			// Check device memory (if available) - only skip on very low memory devices
 			if ("deviceMemory" in navigator) {
 				const deviceMemory = (navigator as any).deviceMemory;
-				if (deviceMemory && deviceMemory < 4) {
-					// Don't preload on low-memory devices
+				if (deviceMemory && deviceMemory < 2) {
+					// Only skip on devices with less than 2GB RAM
 					return false;
 				}
 			}
@@ -48,24 +47,16 @@ const CalendlyPreloader: React.FC = () => {
 				return false;
 			}
 
-			// Don't preload on mobile devices to save bandwidth
+			// Allow preload on tablets and larger mobile devices for better UX
 			const isMobile =
-				window.innerWidth < 768 ||
-				/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+				window.innerWidth < 480 ||
+				/Android|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
 					navigator.userAgent
 				);
 
-			if (isMobile) {
+			// Don't preload only on very small mobile devices
+			if (isMobile && window.innerWidth < 480) {
 				return false;
-			}
-
-			// Check if user is on battery power (for laptops)
-			if ("getBattery" in navigator) {
-				(navigator as any).getBattery().then((battery: any) => {
-					if (battery.charging === false && battery.level < 0.2) {
-						return false;
-					}
-				});
 			}
 
 			return true;
@@ -129,9 +120,9 @@ const CalendlyPreloader: React.FC = () => {
 		const handleActivity = () => {
 			if (!userActivity) {
 				userActivity = true;
-				// User is active, delay preload a bit more to avoid interfering
+				// User is active, preload immediately for better UX
 				clearTimeout(preloadTimer);
-				preloadTimer = setTimeout(preloadScript, 2000);
+				preloadTimer = setTimeout(preloadScript, 500); // Reduced delay
 			}
 		};
 
@@ -142,12 +133,12 @@ const CalendlyPreloader: React.FC = () => {
 			});
 		});
 
-		// Fallback: preload after idle time
+		// Fallback: preload after shorter idle time for faster loading
 		const idleTimer = setTimeout(() => {
 			if (!userActivity) {
 				preloadScript();
 			}
-		}, 5000);
+		}, 2000); // Reduced from 5000 to 2000ms
 
 		function preloadScript() {
 			if (
