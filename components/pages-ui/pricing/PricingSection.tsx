@@ -409,7 +409,7 @@ const PricingSection = () => {
 							faster, more accurate quotes and increase their revenue.
 						</p>
 						<div className="flex flex-col sm:flex-row gap-4 justify-center">
-							<Link href="/get-started">
+							<Link href="https://partner.lexprotector.com/signup">
 								<Button
 									variant="default"
 									size="lg"
