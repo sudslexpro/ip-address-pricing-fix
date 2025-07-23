@@ -721,7 +721,7 @@ const HeroSection: React.FC = () => {
 											</div>
 										</div>
 										<div>
-											<div className="text-2xl font-bold text-accent">95%</div>
+											<div className="text-2xl font-bold text-accent">99%</div>
 											<div className="text-xs text-text-secondary">
 												Accuracy
 											</div>
