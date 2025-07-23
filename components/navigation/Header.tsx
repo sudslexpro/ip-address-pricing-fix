@@ -29,7 +29,11 @@ const Header: React.FC<HeaderProps> = ({ isDevRoute = false }) => {
 		{ id: "solution-demo", name: "Solution Demo", href: "/#solution-demo" },
 		{ id: "coverage", name: "Coverage", href: "/#coverage" },
 		{ id: "pricing", name: "Pricing", href: "/#pricing" },
-		{ id: "success-stories", name: "Success Stories", href: "/#success-stories" },
+		{
+			id: "success-stories",
+			name: "Success Stories",
+			href: "/#success-stories",
+		},
 		{ id: "get-started", name: "Get Started", href: "/get-started" },
 	];
 
@@ -97,7 +101,7 @@ const Header: React.FC<HeaderProps> = ({ isDevRoute = false }) => {
 					<Link href="/" className="flex items-center space-x-2">
 						<div className="flex items-center justify-center">
 							<Image
-								src="/assets/images/LP_Logo_Only-1751558392904.jpeg"
+								src="/assets/images/LP_Logo.png"
 								alt="Lex Protector Logo"
 								width={100}
 								height={100}
@@ -308,8 +312,7 @@ const Header: React.FC<HeaderProps> = ({ isDevRoute = false }) => {
 									) : (
 										// All other routes - external authentication
 										<div>
-											<Link
-												href="https://partner.lexprotector.com/login">
+											<Link href="https://partner.lexprotector.com/login">
 												<Button
 													variant="outline"
 													size="sm"
@@ -317,8 +320,7 @@ const Header: React.FC<HeaderProps> = ({ isDevRoute = false }) => {
 													Sign In
 												</Button>
 											</Link>
-											<Link
-												href="https://partner.lexprotector.com/signup">
+											<Link href="https://partner.lexprotector.com/signup">
 												<Button variant="default" size="sm">
 													Get Started
 												</Button>

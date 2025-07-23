@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
 							<div className="flex items-center space-x-3 mb-6">
 								<div className="flex items-center justify-center">
 									<Image
-										src="/assets/images/LP_Logo_Only-1751558392904.jpeg"
+										src="/assets/images/LP_Logo.png"
 										alt="Lex Quotes Logo"
 										className="w-12 h-12 object-contain"
 										width={100}
@@ -22,10 +22,8 @@ const Footer: React.FC = () => {
 									/>
 								</div>
 								<div>
-									<div className="text-xl font-bold">Lex Quotes</div>
-									<div className="text-sm text-gray-400">
-										Professional Platform
-									</div>
+									<div className="text-xl font-bold">Lex Protector</div>
+									<div className="text-sm text-gray-400">Partner Portal</div>
 								</div>
 							</div>
 							<p className="text-gray-300 mb-6 max-w-md">
@@ -148,7 +146,8 @@ const Footer: React.FC = () => {
 					<div className="border-t border-gray-700 pt-8">
 						<div className="flex flex-col md:flex-row items-center justify-between">
 							<div className="text-gray-400 text-sm mb-4 md:mb-0">
-								© {new Date().getFullYear()} Lex Quotes. All rights reserved.
+								© {new Date().getFullYear()} Lex Protector LLP |  All rights
+								reserved.
 							</div>
 							<div className="flex space-x-6 text-sm text-gray-400">
 								<Link
