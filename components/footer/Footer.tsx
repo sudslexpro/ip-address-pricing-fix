@@ -41,12 +41,6 @@ const Footer: React.FC = () => {
 									className="w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center hover:bg-accent transition-colors">
 									<Icon name="Instagram" size={25} color="#E4405F" />
 								</Link>
-								<Link
-									href="https://www.instagram.com/lexprotectorint/"
-									title="lexprotectorint"
-									className="w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center hover:bg-accent transition-colors">
-									<Icon name="Instagram" size={25} color="#E4405F" />
-								</Link>
 								{/* LinkedIn */}
 								<Link
 									href="https://www.linkedin.com/company/lex-protector-international-law-office/posts/?feedView=all"
