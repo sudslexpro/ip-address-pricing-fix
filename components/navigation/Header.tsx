@@ -307,27 +307,23 @@ const Header: React.FC<HeaderProps> = ({ isDevRoute = false }) => {
 										</>
 									) : (
 										// All other routes - external authentication
-										<>
-											<a
-												href="https://partner.lexprotector.com/login"
-												target="_blank"
-												rel="noopener noreferrer">
+										<div>
+											<Link
+												href="https://partner.lexprotector.com/login">
 												<Button
 													variant="outline"
 													size="sm"
 													className="text-primary border-primary hover:bg-primary hover:text-white">
 													Sign In
 												</Button>
-											</a>
-											<a
-												href="https://partner.lexprotector.com/signup"
-												target="_blank"
-												rel="noopener noreferrer">
+											</Link>
+											<Link
+												href="https://partner.lexprotector.com/signup">
 												<Button variant="default" size="sm">
 													Get Started
 												</Button>
-											</a>
-										</>
+											</Link>
+										</div>
 									)}
 								</>
 							)}
