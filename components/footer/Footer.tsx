@@ -34,9 +34,16 @@ const Footer: React.FC = () => {
 							</p>
 							{/* Social Media Icons */}
 							<div className="flex space-x-4">
-								{/* Twitter */}
+								{/* Instagram */}
 								<Link
-									href="#"
+									href="https://www.instagram.com/lex_protector/"
+									title="lex_protector"
+									className="w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center hover:bg-accent transition-colors">
+									<Icon name="Instagram" size={25} color="#E4405F" />
+								</Link>
+								<Link
+									href="https://www.instagram.com/lexprotectorint/"
+									title="lexprotectorint"
 									className="w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center hover:bg-accent transition-colors">
 									<Icon name="Instagram" size={25} color="#E4405F" />
 								</Link>
