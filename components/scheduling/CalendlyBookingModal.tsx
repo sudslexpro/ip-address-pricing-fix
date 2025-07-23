@@ -51,7 +51,7 @@ const CalendlyBookingModal: React.FC<CalendlyBookingModalProps> = ({
 
 	return (
 		<Dialog open={isOpen} onOpenChange={handleClose}>
-			<DialogContent className="max-w-4xl max-h-[85vh] overflow-hidden p-0">
+			<DialogContent className="max-w-4xl max-h-[90vh] lg:mt-8 overflow-hidden p-0">
 				<DialogHeader className="p-6 pb-4">
 					<DialogTitle className="flex items-center gap-2 text-xl font-bold text-text-primary">
 						<Icon name="Calendar" size={20} className="text-primary" />
