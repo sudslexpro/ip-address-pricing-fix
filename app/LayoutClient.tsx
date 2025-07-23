@@ -5,6 +5,7 @@ import Header from "@/components/navigation/Header";
 import Footer from "@/components/footer/Footer";
 import FloatingCTA from "@/components/cta/FloatingCTA";
 import QuickAccessMenu from "@/components/cta/QuickAccessMenu";
+import { CalendlyPreloader } from "@/components/scheduling";
 
 interface LayoutClientProps {
 	children: React.ReactNode;
@@ -27,6 +28,9 @@ export default function LayoutClient({ children }: LayoutClientProps) {
 					<QuickAccessMenu />
 				</>
 			)}
+
+			{/* Preload Calendly for better performance */}
+			<CalendlyPreloader />
 
 			{/* Main content with conditional padding */}
 			<div className={isDashboardRoute || isDevRoute ? "" : "pt-16"}>

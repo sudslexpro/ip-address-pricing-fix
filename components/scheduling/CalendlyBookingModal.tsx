@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
 	Dialog,
 	DialogContent,
@@ -7,6 +7,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import Icon from "@/components/icon/AppIcon";
 import { useCalendly } from "@/hooks/useCalendly";
 
@@ -19,45 +20,121 @@ interface CalendlyBookingModalProps {
 const CalendlyBookingModal: React.FC<CalendlyBookingModalProps> = ({
 	isOpen,
 	onClose,
-	calendlyUrl = "https://calendly.com/your-calendly-username", // Replace with your actual Calendly URL
+	calendlyUrl = "https://calendly.com/lexprotectortech/", // Replace with your actual Calendly URL
 }) => {
-	const { isLoaded, closePopup, initInlineWidget } = useCalendly();
+	const {
+		isLoaded,
+		isLoading,
+		error,
+		closePopup,
+		initInlineWidget,
+		retryLoad,
+	} = useCalendly();
+	const [widgetInitialized, setWidgetInitialized] = useState(false);
+	const [widgetError, setWidgetError] = useState<string | null>(null);
 
-	useEffect(() => {
-		if (isOpen && isLoaded) {
-			// Initialize the inline widget when modal opens and Calendly is loaded
+	// Initialize widget when modal opens and Calendly is loaded
+	const initializeWidget = useCallback(() => {
+		if (!isOpen || !isLoaded || widgetInitialized) return;
+
+		try {
 			initInlineWidget("calendly-inline-widget", {
 				url: calendlyUrl,
 				prefill: {
-					// You can prefill form fields if needed
 					name: "",
 					email: "",
 				},
 				utm: {
-					// UTM parameters for tracking
 					utmCampaign: "lex-protector-demo",
 					utmSource: "pricing-page",
 					utmMedium: "website",
 				},
 			});
+			setWidgetInitialized(true);
+			setWidgetError(null);
+		} catch (err) {
+			console.error("Widget initialization failed:", err);
+			setWidgetError("Failed to load booking calendar");
 		}
-	}, [isOpen, isLoaded, calendlyUrl, initInlineWidget]);
+	}, [isOpen, isLoaded, calendlyUrl, initInlineWidget, widgetInitialized]);
 
-	const handleClose = () => {
-		// Close any open Calendly popups
+	useEffect(() => {
+		if (isOpen && isLoaded) {
+			// Small delay to ensure DOM is ready
+			const timer = setTimeout(initializeWidget, 100);
+			return () => clearTimeout(timer);
+		}
+	}, [isOpen, isLoaded, initializeWidget]);
+
+	// Reset widget state when modal closes
+	useEffect(() => {
+		if (!isOpen) {
+			setWidgetInitialized(false);
+			setWidgetError(null);
+		}
+	}, [isOpen]);
+
+	const handleClose = useCallback(() => {
 		closePopup();
 		onClose();
+	}, [closePopup, onClose]);
+
+	const handleRetry = useCallback(() => {
+		setWidgetError(null);
+		setWidgetInitialized(false);
+		if (error) {
+			retryLoad();
+		} else {
+			initializeWidget();
+		}
+	}, [error, retryLoad, initializeWidget]);
+
+	// Determine container height based on screen size
+	const getResponsiveHeight = () => {
+		if (typeof window !== "undefined") {
+			const viewportHeight = window.innerHeight;
+			const isMobile = window.innerWidth < 768;
+
+			if (isMobile) {
+				return Math.min(500, viewportHeight * 0.7);
+			}
+			return Math.min(600, viewportHeight * 0.8);
+		}
+		return 600;
 	};
+
+	const [containerHeight, setContainerHeight] = useState(600);
+
+	useEffect(() => {
+		const updateHeight = () => setContainerHeight(getResponsiveHeight());
+		updateHeight();
+
+		window.addEventListener("resize", updateHeight);
+		return () => window.removeEventListener("resize", updateHeight);
+	}, []);
+
+	const showError = error || widgetError;
+	const showLoading = (isLoading || !widgetInitialized) && !showError;
 
 	return (
 		<Dialog open={isOpen} onOpenChange={handleClose}>
-			<DialogContent className="max-w-4xl max-h-[90vh] lg:mt-8 overflow-hidden p-0">
-				<DialogHeader className="p-6 pb-4">
-					<DialogTitle className="flex items-center gap-2 text-xl font-bold text-text-primary">
+			<DialogContent
+				className="
+					w-[95vw] max-w-4xl 
+					h-[95vh] max-h-[900px]
+					sm:w-[90vw] sm:h-[90vh]
+					md:w-[85vw] md:h-[85vh]
+					lg:w-[80vw] lg:max-w-4xl
+					overflow-hidden p-0
+					flex flex-col
+				"
+				style={{ minHeight: "400px" }}>
+				<DialogHeader className="p-4 sm:p-6 pb-2 sm:pb-4 flex-shrink-0">
+					<DialogTitle className="flex items-center gap-2 text-lg sm:text-xl font-bold text-text-primary">
 						<Icon name="Calendar" size={20} className="text-primary" />
 						Schedule Your Demo
 					</DialogTitle>
-					<DialogDescription className="text-text-secondary">
+					<DialogDescription className="text-sm sm:text-base text-text-secondary">
 						Book a personalized demo with our team to see how Lex Protector can
 						transform your legal practice. Choose a time that works best for
 						you.
@@ -65,33 +142,77 @@ const CalendlyBookingModal: React.FC<CalendlyBookingModalProps> = ({
 				</DialogHeader>
 
 				{/* Calendly Inline Widget Container */}
-				<div className="flex-1 min-h-[600px] px-6 pb-6">
+				<div className="flex-1 px-4 sm:px-6 pb-4 sm:pb-6 min-h-0">
 					<div
 						id="calendly-inline-widget"
-						className="w-full h-full min-h-[600px] rounded-lg border border-border overflow-hidden"
-						style={{ minWidth: "320px" }}>
-						{/* Loading state */}
-						{!isLoaded && (
+						className="w-full h-full rounded-lg border border-border overflow-hidden bg-white"
+						style={{
+							minHeight: `${Math.max(containerHeight, 350)}px`,
+							height: "100%",
+						}}>
+						{/* Loading State */}
+						{showLoading && (
 							<div className="flex items-center justify-center h-full bg-surface">
-								<div className="text-center">
+								<div className="text-center p-4">
+									<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
 									<Icon
 										name="Calendar"
 										size={48}
-										className="text-primary mx-auto mb-4"
+										className="text-primary mx-auto mb-4 opacity-60"
 									/>
-									<p className="text-text-secondary">
-										Loading booking calendar...
+									<p className="text-text-secondary text-sm sm:text-base">
+										{isLoading
+											? "Loading booking system..."
+											: "Setting up calendar..."}
 									</p>
+									<p className="text-text-muted text-xs mt-2">
+										This may take a few seconds
+									</p>
+								</div>
+							</div>
+						)}
+
+						{/* Error State */}
+						{showError && (
+							<div className="flex items-center justify-center h-full bg-surface">
+								<div className="text-center p-4 max-w-md">
+									<Icon
+										name="AlertCircle"
+										size={48}
+										className="text-red-500 mx-auto mb-4"
+									/>
+									<h3 className="text-lg font-semibold text-text-primary mb-2">
+										Loading Failed
+									</h3>
+									<p className="text-text-secondary text-sm mb-4">
+										{showError}
+									</p>
+									<div className="space-y-2">
+										<Button onClick={handleRetry} className="w-full sm:w-auto">
+											<Icon name="RefreshCw" size={16} className="mr-2" />
+											Try Again
+										</Button>
+										<div className="text-xs text-text-muted">
+											or{" "}
+											<a
+												href={calendlyUrl}
+												target="_blank"
+												rel="noopener noreferrer"
+												className="text-primary hover:text-accent underline font-medium">
+												open in new window
+											</a>
+										</div>
+									</div>
 								</div>
 							</div>
 						)}
 					</div>
 				</div>
 
-				{/* Alternative: Direct link fallback */}
-				<div className="px-6 pb-6">
-					<div className="bg-accent/10 rounded-lg p-4 border border-accent/20">
-						<p className="text-sm text-text-secondary mb-2">
+				{/* Footer with alternative link */}
+				<div className="px-4 sm:px-6 pb-4 sm:pb-6 flex-shrink-0">
+					<div className="bg-accent/10 rounded-lg p-3 sm:p-4 border border-accent/20">
+						<p className="text-xs sm:text-sm text-text-secondary">
 							Having trouble with the calendar?{" "}
 							<a
 								href={calendlyUrl}
