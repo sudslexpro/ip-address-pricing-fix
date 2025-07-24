@@ -51,11 +51,7 @@ function LayoutContent({ children }: LayoutClientProps) {
 
 export default function LayoutClient({ children }: LayoutClientProps) {
 	return (
-		<ThemeProvider
-			attribute="class"
-			defaultTheme="system"
-			enableSystem
-			disableTransitionOnChange>
+		<ThemeProvider>
 			<ModalProvider>
 				<LayoutContent>{children}</LayoutContent>
 				<Toaster />

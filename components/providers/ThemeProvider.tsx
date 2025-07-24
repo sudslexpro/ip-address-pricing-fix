@@ -10,7 +10,17 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({
 	children,
 	...props
 }) => {
-	return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
+	return (
+		<NextThemesProvider
+			attribute="class"
+			defaultTheme="system"
+			enableSystem
+			disableTransitionOnChange={false}
+			storageKey="lex-protector-theme"
+			{...props}>
+			{children}
+		</NextThemesProvider>
+	);
 };
 
 export { ThemeProvider };

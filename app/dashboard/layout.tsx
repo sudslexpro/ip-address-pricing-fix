@@ -13,8 +13,8 @@ export default function DashboardLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<div className="h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-2 sm:p-4">
-			<div className="h-full bg-white rounded-lg shadow-lg overflow-hidden">
+		<div className="h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 p-2 sm:p-4">
+			<div className="h-full bg-background rounded-lg shadow-lg dark:shadow-black/25 border border-border overflow-hidden">
 				<DashboardLayoutClient>{children}</DashboardLayoutClient>
 			</div>
 		</div>

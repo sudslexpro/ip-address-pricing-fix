@@ -140,7 +140,7 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
 					{/* Desktop CTA */}
 					<div className="hidden lg:flex items-center space-x-4">
 						{/* Theme Toggle */}
-						<ThemeToggle />
+						<ThemeToggle variant="icon-only" />
 
 						{session?.user ? (
 							// Authenticated user menu
@@ -271,7 +271,7 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
 
 						{/* Theme Toggle for Mobile */}
 						<div className="flex justify-center py-2">
-							<ThemeToggle />
+							<ThemeToggle variant="compact" showLabel />
 						</div>
 
 						{/* Mobile CTAs */}
