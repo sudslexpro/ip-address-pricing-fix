@@ -570,7 +570,7 @@ const HeroSection: React.FC = () => {
 									variant="outline"
 									size="lg"
 									onClick={handleTrialStart}
-									className="border-primary text-primary hover:bg-[#1a365d] hover:text-white px-8 py-8">
+									className="border-primary text-primary hover:bg-[#1a365d] hover:text-white w-[22rem] md:w-auto px-8 py-8">
 									Start Free Trial
 									<Icon name="ArrowRight" size={16} />
 								</Button>
