@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { useCalendlyModal } from "@/components/providers/CalendlyModalProvider";
 
 declare global {
 	interface Window {
@@ -19,7 +18,6 @@ const FloatingCTA = () => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [currentSection, setCurrentSection] = useState("");
 	const [ctaText, setCtaText] = useState("Get Started");
-	const { isModalOpen } = useCalendlyModal();
 
 	const sectionCTAMap: Record<string, string> = {
 		"solution-demo": "Try Demo Now",
@@ -116,7 +114,7 @@ const FloatingCTA = () => {
 		}
 	};
 
-	if (!isVisible || isModalOpen) return null;
+	if (!isVisible) return null;
 
 	return (
 		<div className="fixed bottom-6 right-6 z-150 animate-fade-in">

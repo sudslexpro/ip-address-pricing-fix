@@ -3,17 +3,10 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/icon/AppIcon";
 import Link from "next/link";
-import { CalendlyBookingModal } from "@/components/scheduling";
-import { getCalendlyUrl, CALENDLY_EVENT_TYPES } from "@/lib/calendly-config";
-import { useCalendlyModal } from "@/components/providers/CalendlyModalProvider";
 
 const PricingSection = () => {
 	const [billingCycle, setBillingCycle] = useState("monthly");
 	const [selectedPlan, setSelectedPlan] = useState("professional");
-	const { isModalOpen, openModal, closeModal } = useCalendlyModal();
-
-	// Get Calendly URL for demo bookings
-	const calendlyUrl = getCalendlyUrl(CALENDLY_EVENT_TYPES.DEMO);
 
 	const plans = {
 		starter: {
@@ -153,16 +146,12 @@ const PricingSection = () => {
 		setSelectedPlan(planKey);
 
 		if (planKey === "enterprise") {
-			// Open Calendly modal for enterprise plan
-			openModal();
+			// Redirect to contact page for enterprise plan
+			window.location.href = "/support";
 		} else {
 			// Handle trial signup - redirect to signup page
 			window.location.href = "https://partner.lexprotector.com/signup";
 		}
-	};
-
-	const handleScheduleDemo = () => {
-		openModal();
 	};
 
 	return (
@@ -417,27 +406,21 @@ const PricingSection = () => {
 									Start 14-Day Free Trial
 								</Button>
 							</Link>
-							<Button
-								variant="outline"
-								size="lg"
-								className={`hover:bg-primary hover:text-white`}
-								onClick={handleScheduleDemo}>
-								<Icon name="Calendar" size={16} className="mr-2" />
-								Schedule Demo
-							</Button>
+							<Link href="/#pricing">
+								<Button
+									variant="outline"
+									size="lg"
+									className={`hover:bg-primary hover:text-white`}>
+									<Icon name="Calendar" size={16} className="mr-2" />
+									Schedule Demo
+								</Button>
+							</Link>
 						</div>
 						<p className="text-xs text-text-muted mt-4">
 							No credit card required • Cancel anytime • Full feature access
 						</p>
 					</div>
 				</div>
-
-				{/* Calendly Booking Modal */}
-				<CalendlyBookingModal
-					isOpen={isModalOpen}
-					onClose={closeModal}
-					calendlyUrl={calendlyUrl}
-				/>
 			</div>
 		</section>
 	);

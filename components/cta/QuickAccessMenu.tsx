@@ -4,11 +4,9 @@ import Link from "next/link";
 import Icon from "@/components/icon/AppIcon";
 import { Button } from "@/components/ui/button";
 import { icons as LucideIcons } from "lucide-react";
-import { useCalendlyModal } from "@/components/providers/CalendlyModalProvider";
 
 const QuickAccessMenu = () => {
 	const [isOpen, setIsOpen] = useState(false);
-	const { isModalOpen } = useCalendlyModal();
 
 	const quickAccessItems: QuickAccessItem[] = [
 		{
@@ -16,7 +14,7 @@ const QuickAccessMenu = () => {
 			label: "Commission Calculator",
 			description: "Calculate potential earnings",
 			icon: "Calculator",
-			href: "/pricing",
+			href: "/#pricing",
 		},
 		{
 			id: "demo",
@@ -129,11 +127,6 @@ const QuickAccessMenu = () => {
 			setIsOpen(false);
 		}
 	};
-
-	// Hide the entire component when Calendly modal is open
-	if (isModalOpen) {
-		return null;
-	}
 
 	return (
 		<>
