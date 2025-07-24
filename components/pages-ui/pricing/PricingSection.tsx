@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import Icon from "@/components/icon/AppIcon";
 import Link from "next/link";
 import {
-	Modal,
+	EnhancedModal as Modal,
 	ModalContent,
 	ModalHeader,
 	ModalTitle,
@@ -435,20 +435,31 @@ const PricingSection = () => {
 				</div>
 
 				{/* Demo Modal */}
-				<Modal open={isModalOpen} onOpenChange={setIsModalOpen}>
-					<ModalContent size="xl" className={`mt-8 max-w-[22rem] rounded-lg md:max-w-2xl`}>
+				<Modal
+					open={isModalOpen}
+					onOpenChange={setIsModalOpen}
+					modalId="pricing-demo-modal">
+					<ModalContent
+						size="xl"
+						className="mt-4 max-w-[95vw] rounded-lg md:max-w-4xl max-h-[90vh] w-full overflow-hidden">
 						<ModalHeader className="sr-only">
 							<ModalTitle>Schedule Demo</ModalTitle>
 							<ModalDescription>Book a demo with our team</ModalDescription>
 						</ModalHeader>
-						<CalendlyScheduler
-							calendlyUrl="https://calendly.com/lexprotectortech"
-							eventType="30min"
-							title="Schedule Your Demo"
-							description="Book a personalized demo with our team to see how Lex Protector can transform your legal practice."
-							buttonText="Schedule Demo"
-							widgetHeight="700px"
-						/>
+						<div className="overflow-y-auto max-h-[calc(90vh-2rem)] p-1">
+							<CalendlyScheduler
+								calendlyUrl="https://calendly.com/lexprotector-int"
+								eventType="30min"
+								title="Schedule Your Demo"
+								description="Book a personalized demo with our team to see how Lex Protector can transform your legal practice."
+								buttonText="Schedule Demo"
+								responsiveHeight={{
+									mobile: "500px",
+									tablet: "600px",
+									desktop: "800px",
+								}}
+							/>
+						</div>
 					</ModalContent>
 				</Modal>
 			</div>

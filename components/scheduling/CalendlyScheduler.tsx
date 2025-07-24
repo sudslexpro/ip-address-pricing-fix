@@ -29,6 +29,12 @@ interface CalendlySchedulerProps {
 	startWithWidget?: boolean;
 	/** Height of the Calendly widget */
 	widgetHeight?: string;
+	/** Responsive height classes for different screen sizes */
+	responsiveHeight?: {
+		mobile?: string;
+		tablet?: string;
+		desktop?: string;
+	};
 	/** Custom duration suffix mapping */
 	durationSuffixes?: Record<string, string>;
 }
@@ -51,6 +57,7 @@ const CalendlyScheduler: React.FC<CalendlySchedulerProps> = ({
 	compact = false,
 	startWithWidget = false,
 	widgetHeight = "650px",
+	responsiveHeight,
 	durationSuffixes,
 }) => {
 	const [showWidget, setShowWidget] = useState(startWithWidget);
@@ -169,8 +176,36 @@ const CalendlyScheduler: React.FC<CalendlySchedulerProps> = ({
 
 				{/* Calendly widget */}
 				<div
-					className="w-full border border-border rounded-lg overflow-hidden"
-					style={{ height: widgetHeight }}>
+					className="w-full border border-border rounded-lg overflow-hidden calendly-responsive-container"
+					style={
+						{
+							"--mobile-height": responsiveHeight?.mobile || "500px",
+							"--tablet-height": responsiveHeight?.tablet || "600px",
+							"--desktop-height": responsiveHeight?.desktop || "800px",
+							height: responsiveHeight ? "var(--mobile-height)" : widgetHeight,
+						} as React.CSSProperties
+					}>
+					<style
+						dangerouslySetInnerHTML={{
+							__html: responsiveHeight
+								? `
+							.calendly-responsive-container {
+								height: var(--mobile-height);
+							}
+							@media (min-width: 768px) {
+								.calendly-responsive-container {
+									height: var(--tablet-height);
+								}
+							}
+							@media (min-width: 1024px) {
+								.calendly-responsive-container {
+									height: var(--desktop-height);
+								}
+							}
+						`
+								: "",
+						}}
+					/>
 					<iframe
 						src={finalUrl}
 						width="100%"

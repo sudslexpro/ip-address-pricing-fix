@@ -16,6 +16,14 @@ import { Style, Circle as CircleStyle, Fill, Stroke } from "ol/style";
 import Overlay from "ol/Overlay";
 import type { FeatureLike } from "ol/Feature";
 import Link from "next/link";
+import {
+	EnhancedModal as Modal,
+	ModalContent,
+	ModalHeader,
+	ModalTitle,
+	ModalDescription,
+} from "@/components/ui/modal";
+import { CalendlyScheduler } from "@/components/scheduling";
 
 interface CountryData {
 	id: string;
@@ -41,6 +49,7 @@ const HeroSection: React.FC = () => {
 	const popupContentRef = useRef<HTMLDivElement | null>(null);
 	const vectorSourceRef = useRef<VectorSource | null>(null);
 	const vectorLayerRef = useRef<VectorLayer<VectorSource> | null>(null);
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	// Unified style function that handles both filtering and hover states
 	const getFeatureStyle = useCallback(
@@ -457,18 +466,15 @@ const HeroSection: React.FC = () => {
 		}
 	};
 
-	const handleDemoRequest = () => {
-		const element = document.querySelector("#demo-form");
-		if (element) {
-			element.scrollIntoView({ behavior: "smooth", block: "start" });
-		}
-	};
-
 	const handleTrialStart = () => {
 		const element = document.querySelector("#pricing");
 		if (element) {
 			element.scrollIntoView({ behavior: "smooth", block: "start" });
 		}
+	};
+
+	const handleRequestLiveDemo = () => {
+		setIsModalOpen(true);
 	};
 
 	return (
@@ -548,10 +554,10 @@ const HeroSection: React.FC = () => {
 							</h1>
 
 							<p className="text-xl text-text-secondary leading-relaxed max-w-2xl">
-								Transform your IP lawyer & boutique law firm with the only white-label
-								platform that turns 2-hour manual research into 2-minute
-								professional quotes. Select countries, choose services, and
-								generate multi-country quotes with detailed schedules and
+								Transform your IP lawyer & boutique law firm with the only
+								white-label platform that turns 2-hour manual research into
+								2-minute professional quotes. Select countries, choose services,
+								and generate multi-country quotes with detailed schedules and
 								commission calculations.
 							</p>
 						</div>
@@ -560,7 +566,7 @@ const HeroSection: React.FC = () => {
 							<Button
 								variant="default"
 								size="lg"
-								onClick={handleDemoRequest}
+								onClick={handleRequestLiveDemo}
 								className="bg-[#1a365d] hover:bg-background text-white hover:text-[#1a365d] border-ring font-semibold px-8 py-8">
 								<Icon name="Play" size={16} />
 								Request Live Demo
@@ -576,6 +582,35 @@ const HeroSection: React.FC = () => {
 								</Button>
 							</Link>
 						</div>
+
+						{/* Request Live Demo Modal */}
+						<Modal
+							open={isModalOpen}
+							onOpenChange={setIsModalOpen}
+							modalId="hero-demo-modal">
+							<ModalContent
+								size="xl"
+								className="mt-4 max-w-[95vw] md:max-w-4xl max-h-[90vh] w-full overflow-hidden">
+								<ModalHeader className="sr-only">
+									<ModalTitle>Schedule Demo</ModalTitle>
+									<ModalDescription>Book a demo with our team</ModalDescription>
+								</ModalHeader>
+								<div className="overflow-y-auto max-h-[calc(90vh-2rem)] p-1">
+									<CalendlyScheduler
+										calendlyUrl="https://calendly.com/lexprotector-int"
+										eventType="30min"
+										title="Schedule Your Demo"
+										description="Book a personalized demo with our team to see how Lex Protector can transform your legal practice."
+										buttonText="Schedule Demo"
+										responsiveHeight={{
+											mobile: "500px",
+											tablet: "600px",
+											desktop: "800px",
+										}}
+									/>
+								</div>
+							</ModalContent>
+						</Modal>
 
 						{/* Trust Bar */}
 						<div className="pt-8 border-t border-border">
