@@ -15,7 +15,7 @@ import { CalendlyScheduler } from "@/components/scheduling";
 const PricingSection = () => {
 	const [billingCycle, setBillingCycle] = useState("monthly");
 	const [selectedPlan, setSelectedPlan] = useState("professional");
-	const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const plans = {
 		starter: {
@@ -164,7 +164,7 @@ const PricingSection = () => {
 	};
 
 	const handleScheduleDemo = () => {
-		setIsDemoModalOpen(true);
+		setIsModalOpen(true);
 	};
 
 	return (
@@ -435,8 +435,8 @@ const PricingSection = () => {
 				</div>
 
 				{/* Demo Modal */}
-				<Modal open={isDemoModalOpen} onOpenChange={setIsDemoModalOpen}>
-					<ModalContent size="xl">
+				<Modal open={isModalOpen} onOpenChange={setIsModalOpen}>
+					<ModalContent size="xl" className={`mt-8 max-w-[22rem] rounded-lg md:max-w-2xl`}>
 						<ModalHeader className="sr-only">
 							<ModalTitle>Schedule Demo</ModalTitle>
 							<ModalDescription>Book a demo with our team</ModalDescription>
