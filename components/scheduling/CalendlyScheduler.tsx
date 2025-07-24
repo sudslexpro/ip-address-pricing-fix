@@ -55,9 +55,8 @@ const CalendlyScheduler: React.FC<CalendlySchedulerProps> = ({
 }) => {
 	const [showWidget, setShowWidget] = useState(startWithWidget);
 
-	// Base Calendly URL - only change this to update all durations
-	const BASE_CALENDLY_URL =
-		calendlyUrl || "https://calendly.com/lexprotectortech";
+	// Base Calendly URL - REPLACE THIS WITH YOUR ACTUAL CALENDLY URL
+	const BASE_CALENDLY_URL = calendlyUrl || null;
 
 	// Default duration suffixes - customize these based on your Calendly setup
 	const defaultSuffixes: Record<string, string> = {
@@ -85,9 +84,15 @@ const CalendlyScheduler: React.FC<CalendlySchedulerProps> = ({
 
 	// Generate the final URL by combining base URL with suffix
 	const generateCalendlyUrl = (type: string): string => {
+		if (!BASE_CALENDLY_URL) {
+			return "#"; // Return placeholder if no URL configured
+		}
 		const suffix = defaultSuffixes[type] || `/${type}`;
 		return `${BASE_CALENDLY_URL}${suffix}`;
 	};
+
+	// Check if Calendly URL is configured
+	const isCalendlyConfigured = Boolean(BASE_CALENDLY_URL);
 
 	const finalUrl = generateCalendlyUrl(eventType);
 	const finalDuration = duration || getDurationText(eventType);
@@ -103,6 +108,48 @@ const CalendlyScheduler: React.FC<CalendlySchedulerProps> = ({
 
 	// Widget view
 	if (showWidget) {
+		// Show configuration error if no URL is provided
+		if (!isCalendlyConfigured) {
+			return (
+				<div className="space-y-4">
+					{/* Back button */}
+					<div className="flex items-center justify-between">
+						<Button
+							variant="ghost"
+							size="sm"
+							onClick={handleBackToInfo}
+							className="text-muted-foreground hover:text-foreground">
+							<Icon name="ArrowLeft" size={16} className="mr-2" />
+							Back to Details
+						</Button>
+					</div>
+
+					{/* Configuration error */}
+					<div className="text-center py-8 space-y-4">
+						<div className="w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center mx-auto">
+							<Icon
+								name="AlertTriangle"
+								size={32}
+								className="text-destructive"
+							/>
+						</div>
+						<div>
+							<h3 className="text-lg font-semibold text-foreground mb-2">
+								Calendly URL Not Configured
+							</h3>
+							<p className="text-sm text-muted-foreground mb-4">
+								Please configure your Calendly URL to enable appointment
+								scheduling.
+							</p>
+							<p className="text-xs text-muted-foreground">
+								Contact your administrator to set up the Calendly integration.
+							</p>
+						</div>
+					</div>
+				</div>
+			);
+		}
+
 		return (
 			<div className="space-y-4">
 				{/* Back button */}
@@ -116,7 +163,7 @@ const CalendlyScheduler: React.FC<CalendlySchedulerProps> = ({
 						Back to Details
 					</Button>
 					<div className="text-xs text-muted-foreground">
-						{duration} • No commitment required
+						{finalDuration} • No commitment required
 					</div>
 				</div>
 
@@ -150,12 +197,19 @@ const CalendlyScheduler: React.FC<CalendlySchedulerProps> = ({
 					</h3>
 					<p className="text-sm text-muted-foreground mb-4">{description}</p>
 				</div>
-				<Button onClick={handleShowWidget} className="w-full" size="lg">
-					<Icon name="Calendar" size={16} className="mr-2" />
-					{buttonText}
-				</Button>
+				{isCalendlyConfigured ? (
+					<Button onClick={handleShowWidget} className="w-full" size="lg">
+						<Icon name="Calendar" size={16} className="mr-2" />
+						{buttonText}
+					</Button>
+				) : (
+					<Button variant="outline" disabled className="w-full" size="lg">
+						<Icon name="AlertTriangle" size={16} className="mr-2" />
+						Calendly URL Not Configured
+					</Button>
+				)}
 				<p className="text-xs text-muted-foreground">
-					{duration} • No commitment required
+					{finalDuration} • No commitment required
 				</p>
 			</div>
 		);
@@ -195,14 +249,21 @@ const CalendlyScheduler: React.FC<CalendlySchedulerProps> = ({
 
 			{/* Action Button */}
 			<div className="space-y-3">
-				<Button onClick={handleShowWidget} className="w-full" size="lg">
-					<Icon name="Calendar" size={16} className="mr-2" />
-					{buttonText}
-				</Button>
+				{isCalendlyConfigured ? (
+					<Button onClick={handleShowWidget} className="w-full" size="lg">
+						<Icon name="Calendar" size={16} className="mr-2" />
+						{buttonText}
+					</Button>
+				) : (
+					<Button variant="outline" disabled className="w-full" size="lg">
+						<Icon name="AlertTriangle" size={16} className="mr-2" />
+						Calendly URL Not Configured
+					</Button>
+				)}
 			</div>
 
 			<p className="text-xs text-muted-foreground">
-				{duration} • No commitment required
+				{finalDuration} • No commitment required
 			</p>
 		</div>
 	);

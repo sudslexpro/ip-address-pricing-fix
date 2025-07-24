@@ -442,7 +442,8 @@ const PricingSection = () => {
 							<ModalDescription>Book a demo with our team</ModalDescription>
 						</ModalHeader>
 						<CalendlyScheduler
-							eventType="demo"
+							calendlyUrl="https://calendly.com/lexprotectortech"
+							eventType="30min"
 							title="Schedule Your Demo"
 							description="Book a personalized demo with our team to see how Lex Protector can transform your legal practice."
 							buttonText="Schedule Demo"

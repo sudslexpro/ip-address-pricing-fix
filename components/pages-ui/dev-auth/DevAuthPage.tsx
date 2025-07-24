@@ -220,6 +220,15 @@ export const DevAuthPage: React.FC = () => {
 									Test Online Status
 								</Button>
 							</Link>
+							<Link href="/modal-showcase">
+								<Button
+									variant="outline"
+									size="sm"
+									className="w-full justify-start">
+									<Database className="mr-2 h-4 w-4" />
+									Modal Components Showcase
+								</Button>
+							</Link>
 						</CardContent>
 					</Card>
 				</div>
