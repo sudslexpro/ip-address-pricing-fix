@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import Icon from "@/components/icon/AppIcon";
 import {
 	Modal,
+	EnhancedModal,
 	ModalContent,
 	ModalHeader,
 	ModalTitle,
@@ -299,7 +300,10 @@ const [isOpen, setIsOpen] = useState(false);
 			</Modal>
 
 			{/* Calendly Modal */}
-			<Modal open={calendlyModal} onOpenChange={setCalendlyModal}>
+			<EnhancedModal
+				open={calendlyModal}
+				onOpenChange={setCalendlyModal}
+				modalId="showcase-calendly-modal">
 				<ModalContent size="xl">
 					<ModalHeader className="sr-only">
 						<ModalTitle>Schedule Demo</ModalTitle>
@@ -311,10 +315,14 @@ const [isOpen, setIsOpen] = useState(false);
 						title="Schedule Your Demo"
 						description="This is a demo of the Calendly scheduler component integrated with our modal system."
 						buttonText="Schedule Demo"
-						widgetHeight="700px"
+						responsiveHeight={{
+							mobile: "500px",
+							tablet: "600px",
+							desktop: "700px",
+						}}
 					/>
 				</ModalContent>
-			</Modal>
+			</EnhancedModal>
 
 			{/* Confirmation Modal */}
 			<Modal open={confirmationModal} onOpenChange={setConfirmationModal}>

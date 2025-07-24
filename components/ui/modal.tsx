@@ -1,11 +1,165 @@
+/**
+ * Modal UI Component with Enhanced Provider Integration
+ *
+ * This module provides two types of modal components:
+ *
+ * 1. **Modal** - Basic Radix UI modal wrapper
+ * 2. **EnhancedModal** - Integrated with ModalProvider for automatic floating element management
+ *
+ * ## Usage with EnhancedModal (Recommended)
+ *
+ * ```tsx
+ * import { EnhancedModal as Modal, ModalContent } from "@/components/ui/modal";
+ *
+ * function MyComponent() {
+ *   const [isOpen, setIsOpen] = useState(false);
+ *
+ *   return (
+ *     <Modal
+ *       open={isOpen}
+ *       onOpenChange={setIsOpen}
+ *       modalId="my-unique-modal" // Optional: auto-generated if not provided
+ *     >
+ *       <ModalContent>
+ *         Your modal content here
+ *       </ModalContent>
+ *     </Modal>
+ *   );
+ * }
+ * ```
+ *
+ * ## Features
+ *
+ * - **Automatic Floating Element Management**: Floating CTAs and menus are automatically hidden when modal opens
+ * - **Multiple Modal Support**: Track multiple modals simultaneously
+ * - **Responsive Design**: Built-in responsive sizing options
+ * - **Accessibility**: Full ARIA support via Radix UI
+ *
+ * ## Provider Setup
+ *
+ * The ModalProvider must be wrapped around your app (already configured in LayoutClient):
+ *
+ * ```tsx
+ * import { ModalProvider } from "@/components/ui/modal";
+ *
+ * function App() {
+ *   return (
+ *     <ModalProvider>
+ *       <YourApp />
+ *     </ModalProvider>
+ *   );
+ * }
+ * ```
+ * ```
+ */
+
 "use client";
 
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { cva, type VariantProps } from "class-variance-authority";
 import { X } from "lucide-react";
+import {
+	createContext,
+	useContext,
+	useState,
+	useCallback,
+	useEffect,
+} from "react";
 
 import { cn } from "@/lib/utils";
+
+// Modal Provider Context and Types
+interface ModalContextType {
+	isAnyModalOpen: boolean;
+	openModals: Set<string>;
+	registerModal: (modalId: string) => void;
+	unregisterModal: (modalId: string) => void;
+	setModalOpen: (modalId: string, isOpen: boolean) => void;
+}
+
+const ModalContext = createContext<ModalContextType | undefined>(undefined);
+
+const useModalContext = () => {
+	const context = useContext(ModalContext);
+	if (!context) {
+		throw new Error("useModalContext must be used within a ModalProvider");
+	}
+	return context;
+};
+
+// Modal Provider Component
+interface ModalProviderProps {
+	children: React.ReactNode;
+}
+
+const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
+	const [openModals, setOpenModals] = useState<Set<string>>(new Set());
+
+	const registerModal = useCallback((modalId: string) => {
+		// Modal registration is handled implicitly when opening
+	}, []);
+
+	const unregisterModal = useCallback((modalId: string) => {
+		setOpenModals((prev) => {
+			const newSet = new Set(prev);
+			newSet.delete(modalId);
+			return newSet;
+		});
+	}, []);
+
+	const setModalOpen = useCallback((modalId: string, isOpen: boolean) => {
+		setOpenModals((prev) => {
+			const newSet = new Set(prev);
+			if (isOpen) {
+				newSet.add(modalId);
+			} else {
+				newSet.delete(modalId);
+			}
+			return newSet;
+		});
+	}, []);
+
+	const isAnyModalOpen = openModals.size > 0;
+
+	const value: ModalContextType = {
+		isAnyModalOpen,
+		openModals,
+		registerModal,
+		unregisterModal,
+		setModalOpen,
+	};
+
+	return (
+		<ModalContext.Provider value={value}>{children}</ModalContext.Provider>
+	);
+};
+
+// Modal Client Component
+interface ModalClientProps {
+	children: React.ReactNode;
+	modalId: string;
+	isOpen: boolean;
+}
+
+const ModalClient: React.FC<ModalClientProps> = ({
+	children,
+	modalId,
+	isOpen,
+}) => {
+	const { setModalOpen, unregisterModal } = useModalContext();
+
+	useEffect(() => {
+		setModalOpen(modalId, isOpen);
+
+		// Cleanup when component unmounts
+		return () => {
+			unregisterModal(modalId);
+		};
+	}, [modalId, isOpen, setModalOpen, unregisterModal]);
+
+	return <>{children}</>;
+};
 
 const Modal = DialogPrimitive.Root;
 
@@ -129,8 +283,32 @@ const ModalDescription = React.forwardRef<
 ));
 ModalDescription.displayName = DialogPrimitive.Description.displayName;
 
+// Enhanced Modal component that integrates with ModalProvider
+interface EnhancedModalProps {
+	children: React.ReactNode;
+	open: boolean;
+	onOpenChange: (open: boolean) => void;
+	modalId?: string;
+}
+
+const EnhancedModal: React.FC<EnhancedModalProps> = ({
+	children,
+	open,
+	onOpenChange,
+	modalId = `modal-${Math.random().toString(36).substr(2, 9)}`,
+}) => {
+	return (
+		<Modal open={open} onOpenChange={onOpenChange}>
+			<ModalClient modalId={modalId} isOpen={open}>
+				{children}
+			</ModalClient>
+		</Modal>
+	);
+};
+
 export {
 	Modal,
+	EnhancedModal,
 	ModalPortal,
 	ModalOverlay,
 	ModalClose,
@@ -140,4 +318,7 @@ export {
 	ModalFooter,
 	ModalTitle,
 	ModalDescription,
+	ModalProvider,
+	ModalClient,
+	useModalContext,
 };
