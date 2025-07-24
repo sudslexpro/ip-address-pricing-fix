@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ArrowRight, X, User, Settings, LogOut, Shield } from "lucide-react";
 import Icon from "../icon/AppIcon";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 interface HeaderProps {
 	isAdminRoute?: boolean;
@@ -138,6 +139,9 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
 
 					{/* Desktop CTA */}
 					<div className="hidden lg:flex items-center space-x-4">
+						{/* Theme Toggle */}
+						<ThemeToggle />
+
 						{session?.user ? (
 							// Authenticated user menu
 							<DropdownMenu>
@@ -264,6 +268,11 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
 								</button>
 							))}
 						</nav>
+
+						{/* Theme Toggle for Mobile */}
+						<div className="flex justify-center py-2">
+							<ThemeToggle />
+						</div>
 
 						{/* Mobile CTAs */}
 						<div className="pt-4 border-t border-border space-y-3 flex justify-center gap-3">

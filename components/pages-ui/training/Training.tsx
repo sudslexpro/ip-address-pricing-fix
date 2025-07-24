@@ -191,13 +191,13 @@ const categories: TrainingCategory[] = [
 const getDifficultyColor = (difficulty: string) => {
 	switch (difficulty) {
 		case "Beginner":
-			return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
+			return "bg-success/10 text-success dark:bg-success/20 dark:text-success";
 		case "Intermediate":
-			return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200";
+			return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300";
 		case "Advanced":
-			return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200";
+			return "bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive";
 		default:
-			return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200";
+			return "bg-muted text-muted-foreground";
 	}
 };
 

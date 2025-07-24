@@ -6,6 +6,8 @@ import Footer from "@/components/footer/Footer";
 import FloatingCTA from "@/components/cta/FloatingCTA";
 import QuickAccessMenu from "@/components/cta/QuickAccessMenu";
 import { ModalProvider, useModalContext } from "@/components/ui/modal";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 interface LayoutClientProps {
 	children: React.ReactNode;
@@ -24,7 +26,9 @@ function LayoutContent({ children }: LayoutClientProps) {
 	return (
 		<>
 			{/* Show header on all routes except dashboard and admin (admin has its own header) */}
-			{!isDashboardRoute && !isAdminRoute && <Header isAdminRoute={isAdminRoute} />}
+			{!isDashboardRoute && !isAdminRoute && (
+				<Header isAdminRoute={isAdminRoute} />
+			)}
 
 			{/* Only show floating elements if not on dashboard, admin route, or when modal is open */}
 			{shouldShowFloatingElements && (
@@ -47,8 +51,15 @@ function LayoutContent({ children }: LayoutClientProps) {
 
 export default function LayoutClient({ children }: LayoutClientProps) {
 	return (
-		<ModalProvider>
-			<LayoutContent>{children}</LayoutContent>
-		</ModalProvider>
+		<ThemeProvider
+			attribute="class"
+			defaultTheme="system"
+			enableSystem
+			disableTransitionOnChange>
+			<ModalProvider>
+				<LayoutContent>{children}</LayoutContent>
+				<Toaster />
+			</ModalProvider>
+		</ThemeProvider>
 	);
 }
