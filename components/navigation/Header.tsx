@@ -26,14 +26,14 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
 	const { data: session, status } = useSession();
 
 	const navlinks = [
-		{ id: "solution-demo", name: "Solution Demo", href: "#solution-demo" },
-		{ id: "coverage", name: "Coverage", href: "#coverage" },
+		{ id: "solution-demo", name: "Solution Demo", href: "/#solution-demo" },
+		{ id: "coverage", name: "Coverage", href: "/#coverage" },
 		{
 			id: "success-stories",
 			name: "Success Stories",
-			href: "#success-stories",
+			href: "/#success-stories",
 		},
-		{ id: "pricing", name: "Pricing", href: "#pricing" },
+		{ id: "pricing", name: "Pricing", href: "/#pricing" },
 	];
 
 	React.useEffect(() => {
