@@ -26,14 +26,14 @@ const Header: React.FC<HeaderProps> = ({ isDevRoute = false }) => {
 	const { data: session, status } = useSession();
 
 	const navlinks = [
-		{ id: "solution-demo", name: "Solution Demo", href: "/#solution-demo" },
-		{ id: "coverage", name: "Coverage", href: "/#coverage" },
-		{ id: "pricing", name: "Pricing", href: "/#pricing" },
+		{ id: "solution-demo", name: "Solution Demo", href: "#solution-demo" },
+		{ id: "coverage", name: "Coverage", href: "#coverage" },
 		{
 			id: "success-stories",
 			name: "Success Stories",
-			href: "/#success-stories",
+			href: "#success-stories",
 		},
+		{ id: "pricing", name: "Pricing", href: "#pricing" },
 	];
 
 	React.useEffect(() => {
@@ -247,16 +247,19 @@ const Header: React.FC<HeaderProps> = ({ isDevRoute = false }) => {
 						{/* Mobile Navigation */}
 						<nav className="space-y-2">
 							{navlinks.map((item) => (
-								<Link
+								<button
 									key={item.id}
-									href={item.href}
+									onClick={(e) => {
+										e.preventDefault();
+										handleNavClick(item.href);
+									}}
 									className={`block w-full text-left px-3 py-2 text-sm font-medium transition-smooth rounded-md cursor-pointer ${
 										activeSection === item.id
 											? "text-yellow-600 bg-yellow-100 dark:text-yellow-400 dark:bg-yellow-900/20"
 											: "text-text-secondary hover:text-primary hover:bg-surface"
 									}`}>
 									{item.name}
-								</Link>
+								</button>
 							))}
 						</nav>
 
