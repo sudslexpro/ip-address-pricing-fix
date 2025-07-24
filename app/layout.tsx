@@ -10,8 +10,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-	title: "Lex Protector Quotation Portal",
-	description: "Lex Protector Quotation Portal, powered by Lex Protector",
+	title: "Lex Protector Partner Portal",
+	description: "Lex Protector Partner Portal, powered by Lex Protector",
 };
 
 export default function RootLayout({
