@@ -70,21 +70,21 @@ components/pages-ui/modal-showcase/
 
 ```tsx
 import {
-	Modal,
-	ModalContent,
-	ModalHeader,
-	ModalTitle,
+ Modal,
+ ModalContent,
+ ModalHeader,
+ ModalTitle,
 } from "@/components/ui/modal";
 
 const [isOpen, setIsOpen] = useState(false);
 
 <Modal open={isOpen} onOpenChange={setIsOpen}>
-	<ModalContent size="md">
-		<ModalHeader>
-			<ModalTitle>My Modal</ModalTitle>
-		</ModalHeader>
-		<div className="p-6">Content goes here</div>
-	</ModalContent>
+ <ModalContent size="md">
+  <ModalHeader>
+   <ModalTitle>My Modal</ModalTitle>
+  </ModalHeader>
+  <div className="p-6">Content goes here</div>
+ </ModalContent>
 </Modal>;
 ```
 
@@ -92,14 +92,14 @@ const [isOpen, setIsOpen] = useState(false);
 
 ```tsx
 <Modal open={calendlyOpen} onOpenChange={setCalendlyOpen}>
-	<ModalContent size="xl">
-		<CalendlyScheduler
-			calendlyUrl="https://calendly.com/your-username"
-			eventType="demo"
-			title="Schedule Demo"
-			widgetHeight="700px"
-		/>
-	</ModalContent>
+ <ModalContent size="xl">
+  <CalendlyScheduler
+   calendlyUrl="https://calendly.com/your-username"
+   eventType="demo"
+   title="Schedule Demo"
+   widgetHeight="700px"
+  />
+ </ModalContent>
 </Modal>
 ```
 
@@ -107,20 +107,20 @@ const [isOpen, setIsOpen] = useState(false);
 
 ```tsx
 <Modal open={confirmOpen} onOpenChange={setConfirmOpen}>
-	<ModalContent size="sm">
-		<ModalHeader>
-			<ModalTitle>Confirm Action</ModalTitle>
-			<ModalDescription>Are you sure you want to proceed?</ModalDescription>
-		</ModalHeader>
-		<ModalFooter>
-			<Button variant="outline" onClick={() => setConfirmOpen(false)}>
-				Cancel
-			</Button>
-			<Button variant="destructive" onClick={handleConfirm}>
-				Delete
-			</Button>
-		</ModalFooter>
-	</ModalContent>
+ <ModalContent size="sm">
+  <ModalHeader>
+   <ModalTitle>Confirm Action</ModalTitle>
+   <ModalDescription>Are you sure you want to proceed?</ModalDescription>
+  </ModalHeader>
+  <ModalFooter>
+   <Button variant="outline" onClick={() => setConfirmOpen(false)}>
+    Cancel
+   </Button>
+   <Button variant="destructive" onClick={handleConfirm}>
+    Delete
+   </Button>
+  </ModalFooter>
+ </ModalContent>
 </Modal>
 ```
 
