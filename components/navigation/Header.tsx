@@ -215,7 +215,7 @@ const Header: React.FC<HeaderProps> = ({ isDevRoute = false }) => {
 												variant="default"
 												size="sm"
 												className={`bg-[#1a365d] text-white hover:bg-[#1b3f6f] border border-[#8f9297] px-12 py-5`}>
-												Sign Up
+												Get Started
 												<ArrowRight className="ml-0.5 size-4" />
 											</Button>
 										</a>
@@ -247,16 +247,16 @@ const Header: React.FC<HeaderProps> = ({ isDevRoute = false }) => {
 						{/* Mobile Navigation */}
 						<nav className="space-y-2">
 							{navlinks.map((item) => (
-								<button
+								<Link
 									key={item.id}
-									onClick={() => handleNavClick(item.href)}
+									href={item.href}
 									className={`block w-full text-left px-3 py-2 text-sm font-medium transition-smooth rounded-md cursor-pointer ${
 										activeSection === item.id
 											? "text-yellow-600 bg-yellow-100 dark:text-yellow-400 dark:bg-yellow-900/20"
 											: "text-text-secondary hover:text-primary hover:bg-surface"
 									}`}>
 									{item.name}
-								</button>
+								</Link>
 							))}
 						</nav>
 
@@ -300,18 +300,18 @@ const Header: React.FC<HeaderProps> = ({ isDevRoute = false }) => {
 										</>
 									) : (
 										// All other routes - external authentication
-										<div>
+										<div className={`flex gap-2`}>
 											<Link href="https://partner.lexprotector.com/login">
 												<Button
 													variant="outline"
-													size="sm"
+													size="lg"
 													className="text-primary border-primary hover:bg-primary hover:text-white">
 													Sign In
 												</Button>
 											</Link>
 											<Link href="https://partner.lexprotector.com/signup">
-												<Button variant="default" size="sm">
-													Sign Up
+												<Button variant="default" size="lg">
+													Get Started
 												</Button>
 											</Link>
 										</div>
