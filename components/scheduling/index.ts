@@ -1,2 +1,1 @@
-export { default as CalendlyBookingModal } from "./CalendlyBookingModal";
-export { default as CalendlyPreloader } from "./CalendlyPreloader";
+// Scheduling components will be added here
