@@ -18,6 +18,13 @@ const nextConfig: NextConfig = {
 			},
 		],
 	},
+	allowedDevOrigins: [
+		"local-origin.dev",
+		"*.local-origin.dev",
+		"192.168.0.144",
+		"192.168.0.112",
+	],
+	crossOrigin: "anonymous",
 	serverExternalPackages: ["@prisma/client"],
 	async headers() {
 		return [
