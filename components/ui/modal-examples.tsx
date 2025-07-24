@@ -99,6 +99,7 @@ export const CalendlyModal = ({
 	description,
 	features,
 	compact = false,
+	widgetHeight,
 }: {
 	trigger: React.ReactNode;
 	eventType?: "consultation" | "demo" | "30min" | "60min";
@@ -106,13 +107,14 @@ export const CalendlyModal = ({
 	description?: string;
 	features?: string[];
 	compact?: boolean;
+	widgetHeight?: string;
 }) => {
 	const [open, setOpen] = React.useState(false);
 
 	return (
 		<Modal open={open} onOpenChange={setOpen}>
 			<ModalTrigger asChild>{trigger}</ModalTrigger>
-			<ModalContent size={compact ? "sm" : "md"}>
+			<ModalContent size={compact ? "md" : "xl"}>
 				<ModalHeader className="sr-only">
 					<ModalTitle>Schedule Meeting</ModalTitle>
 					<ModalDescription>Book a meeting with our team</ModalDescription>
@@ -123,7 +125,7 @@ export const CalendlyModal = ({
 					description={description}
 					features={features}
 					compact={compact}
-					onCalendlyOpen={() => setOpen(false)}
+					widgetHeight={widgetHeight}
 				/>
 			</ModalContent>
 		</Modal>

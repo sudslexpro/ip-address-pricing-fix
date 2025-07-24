@@ -22,34 +22,34 @@ Located in `components/ui/modal-examples.tsx` - Pre-built modal patterns for com
 
 ```tsx
 import {
- Modal,
- ModalContent,
- ModalHeader,
- ModalTitle,
- ModalDescription,
- ModalTrigger,
+	Modal,
+	ModalContent,
+	ModalHeader,
+	ModalTitle,
+	ModalDescription,
+	ModalTrigger,
 } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 
 function SimpleModal() {
- return (
-  <Modal>
-   <ModalTrigger asChild>
-    <Button>Open Modal</Button>
-   </ModalTrigger>
-   <ModalContent>
-    <ModalHeader>
-     <ModalTitle>Modal Title</ModalTitle>
-     <ModalDescription>
-      This is a description of what this modal does.
-     </ModalDescription>
-    </ModalHeader>
-    <div className="p-4">
-     <p>Your modal content goes here.</p>
-    </div>
-   </ModalContent>
-  </Modal>
- );
+	return (
+		<Modal>
+			<ModalTrigger asChild>
+				<Button>Open Modal</Button>
+			</ModalTrigger>
+			<ModalContent>
+				<ModalHeader>
+					<ModalTitle>Modal Title</ModalTitle>
+					<ModalDescription>
+						This is a description of what this modal does.
+					</ModalDescription>
+				</ModalHeader>
+				<div className="p-4">
+					<p>Your modal content goes here.</p>
+				</div>
+			</ModalContent>
+		</Modal>
+	);
 }
 ```
 
@@ -59,15 +59,15 @@ function SimpleModal() {
 import { Modal, ModalContent } from "@/components/ui/modal";
 
 function ControlledModal() {
- const [open, setOpen] = useState(false);
+	const [open, setOpen] = useState(false);
 
- return (
-  <Modal open={open} onOpenChange={setOpen}>
-   <ModalContent>
-    <p>Controlled modal content</p>
-   </ModalContent>
-  </Modal>
- );
+	return (
+		<Modal open={open} onOpenChange={setOpen}>
+			<ModalContent>
+				<p>Controlled modal content</p>
+			</ModalContent>
+		</Modal>
+	);
 }
 ```
 
@@ -87,6 +87,8 @@ The modal supports different sizes:
 
 ## Calendly Integration
 
+The Calendly integration now supports **inline widget rendering** instead of opening external links. Users can schedule appointments directly within the modal without leaving your application.
+
 ### Basic Calendly Modal
 
 ```tsx
@@ -94,14 +96,15 @@ import { CalendlyModal } from "@/components/ui/modal-examples";
 import { Button } from "@/components/ui/button";
 
 function ScheduleDemo() {
- return (
-  <CalendlyModal
-   trigger={<Button>Schedule Demo</Button>}
-   eventType="demo"
-   title="Schedule Your Demo"
-   description="Book a personalized demo with our team."
-  />
- );
+	return (
+		<CalendlyModal
+			trigger={<Button>Schedule Demo</Button>}
+			eventType="demo"
+			title="Schedule Your Demo"
+			description="Book a personalized demo with our team."
+			widgetHeight="700px"
+		/>
+	);
 }
 ```
 
@@ -112,28 +115,38 @@ import { CalendlyScheduler } from "@/components/scheduling";
 import { Modal, ModalContent } from "@/components/ui/modal";
 
 function CustomCalendlyModal() {
- const [open, setOpen] = useState(false);
+	const [open, setOpen] = useState(false);
 
- return (
-  <Modal open={open} onOpenChange={setOpen}>
-   <ModalContent size="md">
-    <CalendlyScheduler
-     eventType="consultation"
-     calendlyUrl="https://calendly.com/custom-url"
-     title="Custom Title"
-     features={[
-      "Custom feature 1",
-      "Custom feature 2",
-      "Custom feature 3",
-     ]}
-     compact={false}
-     onCalendlyOpen={() => setOpen(false)}
-    />
-   </ModalContent>
-  </Modal>
- );
+	return (
+		<Modal open={open} onOpenChange={setOpen}>
+			<ModalContent size="xl">
+				<CalendlyScheduler
+					eventType="consultation"
+					calendlyUrl="https://calendly.com/custom-url"
+					title="Custom Title"
+					features={[
+						"Custom feature 1",
+						"Custom feature 2",
+						"Custom feature 3",
+					]}
+					compact={false}
+					widgetHeight="650px"
+					startWithWidget={false}
+				/>
+			</ModalContent>
+		</Modal>
+	);
 }
 ```
+
+### Two-Step Calendly Experience
+
+The CalendlyScheduler component provides a two-step experience:
+
+1. **Information View**: Shows features, description, and a "Schedule Now" button
+2. **Widget View**: Displays the Calendly iframe directly in the modal
+
+Users can navigate back and forth between these views using the "Back to Details" button.
 
 ## Pre-built Modal Examples
 
@@ -144,17 +157,17 @@ import { ConfirmationModal } from "@/components/ui/modal-examples";
 import { Button } from "@/components/ui/button";
 
 function DeleteButton() {
- return (
-  <ConfirmationModal
-   title="Are you sure?"
-   description="This action cannot be undone."
-   trigger={<Button variant="destructive">Delete</Button>}
-   onConfirm={() => console.log("Confirmed")}
-   onCancel={() => console.log("Cancelled")}
-   confirmText="Delete"
-   cancelText="Cancel"
-  />
- );
+	return (
+		<ConfirmationModal
+			title="Are you sure?"
+			description="This action cannot be undone."
+			trigger={<Button variant="destructive">Delete</Button>}
+			onConfirm={() => console.log("Confirmed")}
+			onCancel={() => console.log("Cancelled")}
+			confirmText="Delete"
+			cancelText="Cancel"
+		/>
+	);
 }
 ```
 
@@ -165,27 +178,27 @@ import { FormModal } from "@/components/ui/modal-examples";
 import { Button } from "@/components/ui/button";
 
 function EditForm() {
- return (
-  <FormModal
-   title="Edit Profile"
-   description="Make changes to your profile here."
-   trigger={<Button>Edit Profile</Button>}
-   size="lg">
-   <form className="space-y-4">
-    <input
-     type="text"
-     placeholder="Name"
-     className="w-full p-2 border rounded"
-    />
-    <input
-     type="email"
-     placeholder="Email"
-     className="w-full p-2 border rounded"
-    />
-    <Button type="submit">Save Changes</Button>
-   </form>
-  </FormModal>
- );
+	return (
+		<FormModal
+			title="Edit Profile"
+			description="Make changes to your profile here."
+			trigger={<Button>Edit Profile</Button>}
+			size="lg">
+			<form className="space-y-4">
+				<input
+					type="text"
+					placeholder="Name"
+					className="w-full p-2 border rounded"
+				/>
+				<input
+					type="email"
+					placeholder="Email"
+					className="w-full p-2 border rounded"
+				/>
+				<Button type="submit">Save Changes</Button>
+			</form>
+		</FormModal>
+	);
 }
 ```
 
@@ -195,17 +208,17 @@ function EditForm() {
 import { MediaModal } from "@/components/ui/modal-examples";
 
 function ImageGallery() {
- return (
-  <MediaModal
-   trigger={
-    <img src="/thumbnail.jpg" alt="Thumbnail" className="cursor-pointer" />
-   }
-   src="/full-image.jpg"
-   alt="Full size image"
-   title="Image Title"
-   description="Image description"
-  />
- );
+	return (
+		<MediaModal
+			trigger={
+				<img src="/thumbnail.jpg" alt="Thumbnail" className="cursor-pointer" />
+			}
+			src="/full-image.jpg"
+			alt="Full size image"
+			title="Image Title"
+			description="Image description"
+		/>
+	);
 }
 ```
 
@@ -216,15 +229,15 @@ import { WebContentModal } from "@/components/ui/modal-examples";
 import { Button } from "@/components/ui/button";
 
 function EmbedDemo() {
- return (
-  <WebContentModal
-   trigger={<Button>View Demo</Button>}
-   url="https://example.com/demo"
-   title="Product Demo"
-   description="Interactive product demonstration"
-   height="600px"
-  />
- );
+	return (
+		<WebContentModal
+			trigger={<Button>View Demo</Button>}
+			url="https://example.com/demo"
+			title="Product Demo"
+			description="Interactive product demonstration"
+			height="600px"
+		/>
+	);
 }
 ```
 
@@ -235,17 +248,17 @@ import { CustomContentModal } from "@/components/ui/modal-examples";
 import { Button } from "@/components/ui/button";
 
 function VideoModal() {
- return (
-  <CustomContentModal trigger={<Button>Play Video</Button>} size="xl">
-   <div className="aspect-video">
-    <iframe
-     src="https://www.youtube.com/embed/VIDEO_ID"
-     className="w-full h-full"
-     allowFullScreen
-    />
-   </div>
-  </CustomContentModal>
- );
+	return (
+		<CustomContentModal trigger={<Button>Play Video</Button>} size="xl">
+			<div className="aspect-video">
+				<iframe
+					src="https://www.youtube.com/embed/VIDEO_ID"
+					className="w-full h-full"
+					allowFullScreen
+				/>
+			</div>
+		</CustomContentModal>
+	);
 }
 ```
 
@@ -270,9 +283,11 @@ function VideoModal() {
 - `features?: string[]` - List of features to highlight
 - `buttonText?: string` - Custom button text
 - `duration?: string` - Duration text
-- `onCalendlyOpen?: () => void` - Callback when Calendly opens
+- `onCalendlyOpen?: () => void` - Callback when Calendly widget is shown
 - `showFeatures?: boolean` - Show/hide features list
 - `compact?: boolean` - Compact mode for smaller displays
+- `startWithWidget?: boolean` - Start with Calendly widget open (default: false)
+- `widgetHeight?: string` - Height of the Calendly iframe (default: "650px")
 
 ## Styling
 
