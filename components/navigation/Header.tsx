@@ -75,7 +75,9 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
 	}, [isMenuOpen, navlinks]);
 
 	const handleNavClick = (href: string) => {
-		const element = document.querySelector(href);
+		// Extract the fragment part (after #) to use as a valid CSS selector
+		const fragmentId = href.includes("#") ? href.split("#")[1] : href;
+		const element = document.getElementById(fragmentId);
 		if (element) {
 			element.scrollIntoView({ behavior: "smooth", block: "start" });
 		}
