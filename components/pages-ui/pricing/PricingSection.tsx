@@ -3,10 +3,19 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/icon/AppIcon";
 import Link from "next/link";
+import {
+	Modal,
+	ModalContent,
+	ModalHeader,
+	ModalTitle,
+	ModalDescription,
+} from "@/components/ui/modal";
+import { CalendlyScheduler } from "@/components/scheduling";
 
 const PricingSection = () => {
 	const [billingCycle, setBillingCycle] = useState("monthly");
 	const [selectedPlan, setSelectedPlan] = useState("professional");
+	const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
 	const plans = {
 		starter: {
@@ -152,6 +161,10 @@ const PricingSection = () => {
 			// Handle trial signup - redirect to signup page
 			window.location.href = "https://partner.lexprotector.com/signup";
 		}
+	};
+
+	const handleScheduleDemo = () => {
+		setIsDemoModalOpen(true);
 	};
 
 	return (
@@ -406,21 +419,37 @@ const PricingSection = () => {
 									Start 14-Day Free Trial
 								</Button>
 							</Link>
-							<Link href="/#pricing">
-								<Button
-									variant="outline"
-									size="lg"
-									className={`hover:bg-primary hover:text-white`}>
-									<Icon name="Calendar" size={16} className="mr-2" />
-									Schedule Demo
-								</Button>
-							</Link>
+							<Button
+								variant="outline"
+								size="lg"
+								className={`hover:bg-primary hover:text-white`}
+								onClick={handleScheduleDemo}>
+								<Icon name="Calendar" size={16} className="mr-2" />
+								Schedule Demo
+							</Button>
 						</div>
 						<p className="text-xs text-text-muted mt-4">
 							No credit card required • Cancel anytime • Full feature access
 						</p>
 					</div>
 				</div>
+
+				{/* Demo Modal */}
+				<Modal open={isDemoModalOpen} onOpenChange={setIsDemoModalOpen}>
+					<ModalContent size="xl">
+						<ModalHeader className="sr-only">
+							<ModalTitle>Schedule Demo</ModalTitle>
+							<ModalDescription>Book a demo with our team</ModalDescription>
+						</ModalHeader>
+						<CalendlyScheduler
+							eventType="demo"
+							title="Schedule Your Demo"
+							description="Book a personalized demo with our team to see how Lex Protector can transform your legal practice."
+							buttonText="Schedule Demo"
+							widgetHeight="700px"
+						/>
+					</ModalContent>
+				</Modal>
 			</div>
 		</section>
 	);
