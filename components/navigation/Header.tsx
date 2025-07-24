@@ -16,10 +16,10 @@ import { ArrowRight, X, User, Settings, LogOut, Shield } from "lucide-react";
 import Icon from "../icon/AppIcon";
 
 interface HeaderProps {
-	isDevRoute?: boolean;
+	isAdminRoute?: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ isDevRoute = false }) => {
+const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
 	const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 	const [activeSection, setActiveSection] = React.useState("");
 	const [scrollProgress, setScrollProgress] = React.useState(0);
@@ -172,8 +172,8 @@ const Header: React.FC<HeaderProps> = ({ isDevRoute = false }) => {
 						) : (
 							// Unauthenticated user buttons
 							<>
-								{isDevRoute ? (
-									// Dev route - internal authentication
+								{isAdminRoute ? (
+									// Admin route - internal authentication
 									<>
 										<Link href="/auth/signin">
 											<Button
@@ -284,8 +284,8 @@ const Header: React.FC<HeaderProps> = ({ isDevRoute = false }) => {
 								</div>
 							) : (
 								<>
-									{isDevRoute ? (
-										// Dev route - internal authentication
+									{isAdminRoute ? (
+										// Admin route - internal authentication
 										<>
 											<Link href="/auth/signin">
 												<Button

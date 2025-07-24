@@ -213,7 +213,7 @@ The layout automatically hides floating elements when modals are open:
 function LayoutContent({ children }) {
  const { isAnyModalOpen } = useModalContext();
  const shouldShowFloatingElements =
-  !isDashboardRoute && !isDevRoute && !isAnyModalOpen;
+  !isDashboardRoute && !isAdminRoute && !isAnyModalOpen;
 
  return (
   <>

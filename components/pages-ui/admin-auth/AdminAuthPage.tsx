@@ -24,12 +24,12 @@ import {
 	Monitor,
 } from "lucide-react";
 
-export const DevAuthPage: React.FC = () => {
+export const AdminAuthPage: React.FC = () => {
 	const { data: session, status } = useSession();
 
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
-			{/* Dev Header */}
+			{/* Admin Header */}
 			<header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 shadow-sm">
 				<div className="max-w-7xl mx-auto px-6 py-4">
 					<div className="flex items-center justify-between">
@@ -39,7 +39,7 @@ export const DevAuthPage: React.FC = () => {
 							</div>
 							<div>
 								<h1 className="text-xl font-bold text-slate-900 dark:text-white">
-									Developer Portal
+									Admin Portal
 								</h1>
 								<p className="text-sm text-slate-500 dark:text-slate-400">
 									Authentication & Dashboard Access
@@ -49,7 +49,7 @@ export const DevAuthPage: React.FC = () => {
 						<Badge
 							variant="outline"
 							className="bg-yellow-50 text-yellow-700 border-yellow-200">
-							Development Environment
+							Admin Environment
 						</Badge>
 					</div>
 				</div>
@@ -61,8 +61,8 @@ export const DevAuthPage: React.FC = () => {
 					<div className="flex items-center space-x-2">
 						<Shield className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
 						<p className="text-sm text-yellow-800 dark:text-yellow-200">
-							<strong>Development Access Only:</strong> This route is for
-							internal development and testing purposes. Regular users should
+							<strong>Admin Access Only:</strong> This route is for
+							internal admin access and testing purposes. Regular users should
 							access authentication through the main portal.
 						</p>
 					</div>
@@ -142,7 +142,7 @@ export const DevAuthPage: React.FC = () => {
 						<CardHeader>
 							<CardTitle className="flex items-center space-x-2">
 								<Lock className="h-5 w-5" />
-								<span>Developer Sign In</span>
+								<span>Admin Sign In</span>
 							</CardTitle>
 							<CardDescription>
 								Access the internal authentication system for dashboard testing
@@ -173,7 +173,7 @@ export const DevAuthPage: React.FC = () => {
 									<Link href="/auth/signup">
 										<Button className="w-full">
 											<Shield className="mr-2 h-4 w-4" />
-											Create Developer Account
+											Create Admin Account
 										</Button>
 									</Link>
 								</div>
@@ -255,10 +255,10 @@ export const DevAuthPage: React.FC = () => {
 							</div>
 							<div>
 								<h4 className="font-semibold text-slate-900 dark:text-white mb-2">
-									Development Routes
+									Admin Routes
 								</h4>
 								<ul className="text-sm text-slate-600 dark:text-slate-400 space-y-1">
-									<li>• Development Access: /dev</li>
+									<li>• Admin Access: /admin</li>
 									<li>• Dashboard: /dashboard</li>
 									<li>• Auth Testing: /test-auth</li>
 								</ul>
@@ -267,7 +267,7 @@ export const DevAuthPage: React.FC = () => {
 
 						<div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
 							<p className="text-sm text-blue-800 dark:text-blue-200">
-								<strong>Note:</strong> This development route (/dev) provides
+								<strong>Note:</strong> This admin route (/admin) provides
 								internal access to the dashboard system. The main site
 								authentication buttons now redirect to the production partner
 								portal for regular users.

@@ -15,18 +15,18 @@ function LayoutContent({ children }: LayoutClientProps) {
 	const pathname = usePathname();
 	const { isAnyModalOpen } = useModalContext();
 	const isDashboardRoute = pathname?.startsWith("/dashboard");
-	const isDevRoute = pathname === "/dev";
+	const isAdminRoute = pathname === "/admin";
 
 	// Hide floating elements when modals are open or on specific routes
 	const shouldShowFloatingElements =
-		!isDashboardRoute && !isDevRoute && !isAnyModalOpen;
+		!isDashboardRoute && !isAdminRoute && !isAnyModalOpen;
 
 	return (
 		<>
-			{/* Show header on all routes except dashboard and dev (dev has its own header) */}
-			{!isDashboardRoute && !isDevRoute && <Header isDevRoute={isDevRoute} />}
+			{/* Show header on all routes except dashboard and admin (admin has its own header) */}
+			{!isDashboardRoute && !isAdminRoute && <Header isAdminRoute={isAdminRoute} />}
 
-			{/* Only show floating elements if not on dashboard, dev route, or when modal is open */}
+			{/* Only show floating elements if not on dashboard, admin route, or when modal is open */}
 			{shouldShowFloatingElements && (
 				<>
 					<FloatingCTA />
@@ -35,12 +35,12 @@ function LayoutContent({ children }: LayoutClientProps) {
 			)}
 
 			{/* Main content with conditional padding */}
-			<div className={isDashboardRoute || isDevRoute ? "" : "pt-16"}>
+			<div className={isDashboardRoute || isAdminRoute ? "" : "pt-16"}>
 				{children}
 			</div>
 
-			{/* Only show footer if not on dashboard or dev route */}
-			{!isDashboardRoute && !isDevRoute && <Footer />}
+			{/* Only show footer if not on dashboard or admin route */}
+			{!isDashboardRoute && !isAdminRoute && <Footer />}
 		</>
 	);
 }
