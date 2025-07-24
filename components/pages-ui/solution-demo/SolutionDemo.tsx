@@ -24,19 +24,21 @@ const SolutionDemo = () => {
 					{/* Video Player UI */}
 					<div className="relative max-w-4xl mx-auto mb-6 sm:mb-8">
 						<div className="bg-black rounded-lg sm:rounded-xl lg:rounded-2xl overflow-hidden shadow-xl sm:shadow-2xl border border-border/20">
-							{/* Video Player Header */}
-							<div className="bg-gradient-to-r from-gray-800 to-gray-900 px-3 sm:px-4 py-2 sm:py-3 flex items-center justify-between">
-								<div className="flex items-center space-x-2 sm:space-x-3">
-									<div className="flex space-x-1 sm:space-x-2">
-										<div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full"></div>
-										<div className="w-2 h-2 sm:w-3 sm:h-3 bg-yellow-500 rounded-full"></div>
-										<div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full"></div>
+							{/* Video Player Header - Only show when video is not playing */}
+							{!isVideoPlaying && (
+								<div className="bg-gradient-to-r from-gray-800 to-gray-900 px-3 sm:px-4 py-2 sm:py-3 flex items-center justify-between">
+									<div className="flex items-center space-x-2 sm:space-x-3">
+										<div className="flex space-x-1 sm:space-x-2">
+											<div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full"></div>
+											<div className="w-2 h-2 sm:w-3 sm:h-3 bg-yellow-500 rounded-full"></div>
+											<div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full"></div>
+										</div>
+										<span className="text-white text-xs sm:text-sm font-medium">
+											Live Demo
+										</span>
 									</div>
-									<span className="text-white text-xs sm:text-sm font-medium">
-										Live Demo
-									</span>
 								</div>
-							</div>
+							)}
 
 							{/* Video Content Area */}
 							<div className="relative aspect-video bg-gradient-to-br from-gray-900 via-black to-gray-800">
@@ -110,10 +112,10 @@ const SolutionDemo = () => {
 										</div>
 									</div>
 								) : (
-									// YouTube video embed
+									// YouTube video embed - no custom UI overlay
 									<iframe
 										className="w-full h-full"
-										src={`https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&rel=0&modestbranding=1&controls=1`}
+										src={`https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&mute=1&rel=0&modestbranding=1&controls=1`}
 										title="Quote Generation Demo"
 										frameBorder="0"
 										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
