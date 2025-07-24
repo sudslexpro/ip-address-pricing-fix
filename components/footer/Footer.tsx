@@ -63,7 +63,7 @@ const Footer: React.FC = () => {
 								</li>
 								<li>
 									<Link
-										href="/pricing"
+										href="/#pricing"
 										className="hover:text-accent transition-colors">
 										Pricing
 									</Link>
