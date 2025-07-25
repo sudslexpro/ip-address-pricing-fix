@@ -28,11 +28,11 @@ This is the most flexible component that supports multiple modes:
 import { VersatileCalendlyScheduler } from "@/components/scheduling";
 
 <VersatileCalendlyScheduler
-	calendlyUrl="https://calendly.com/lexprotector-int"
-	eventType="30min"
-	title="Schedule Your Demo"
-	description="Book a personalized demo with our team"
-	mode="modal" // default
+ calendlyUrl="https://calendly.com/lexprotector-int"
+ eventType="30min"
+ title="Schedule Your Demo"
+ description="Book a personalized demo with our team"
+ mode="modal" // default
 />;
 ```
 
@@ -42,16 +42,16 @@ import { VersatileCalendlyScheduler } from "@/components/scheduling";
 import { VersatileCalendlyScheduler } from "@/components/scheduling";
 
 <VersatileCalendlyScheduler
-	calendlyUrl="https://calendly.com/lexprotector-int"
-	eventType="30min"
-	title="Schedule Your Demo"
-	mode="inline"
-	responsiveHeight={{
-		mobile: "500px",
-		tablet: "600px",
-		desktop: "700px",
-	}}
-	containerClassName="my-custom-class"
+ calendlyUrl="https://calendly.com/lexprotector-int"
+ eventType="30min"
+ title="Schedule Your Demo"
+ mode="inline"
+ responsiveHeight={{
+  mobile: "500px",
+  tablet: "600px",
+  desktop: "700px",
+ }}
+ containerClassName="my-custom-class"
 />;
 ```
 
@@ -61,11 +61,11 @@ import { VersatileCalendlyScheduler } from "@/components/scheduling";
 import { VersatileCalendlyScheduler } from "@/components/scheduling";
 
 <VersatileCalendlyScheduler
-	calendlyUrl="https://calendly.com/lexprotector-int"
-	eventType="30min"
-	mode="widget"
-	startWithWidget={false}
-	compact={true}
+ calendlyUrl="https://calendly.com/lexprotector-int"
+ eventType="30min"
+ mode="widget"
+ startWithWidget={false}
+ compact={true}
 />;
 ```
 
@@ -77,15 +77,15 @@ For when you just want a simple inline Calendly widget:
 import { InlineCalendlyScheduler } from "@/components/scheduling";
 
 <InlineCalendlyScheduler
-	calendlyUrl="https://calendly.com/lexprotector-int/30min"
-	title="Schedule Your Demo"
-	description="Book a personalized demo with our team"
-	height="700px"
-	responsiveHeight={{
-		mobile: "500px",
-		tablet: "600px",
-		desktop: "700px",
-	}}
+ calendlyUrl="https://calendly.com/lexprotector-int/30min"
+ title="Schedule Your Demo"
+ description="Book a personalized demo with our team"
+ height="700px"
+ responsiveHeight={{
+  mobile: "500px",
+  tablet: "600px",
+  desktop: "700px",
+ }}
 />;
 ```
 
@@ -97,12 +97,12 @@ The original component maintains backward compatibility:
 import { CalendlyScheduler } from "@/components/scheduling";
 
 <CalendlyScheduler
-	calendlyUrl="https://calendly.com/lexprotector-int"
-	eventType="30min"
-	title="Schedule Your Demo"
-	description="Book a personalized demo with our team"
-	compact={false}
-	startWithWidget={false}
+ calendlyUrl="https://calendly.com/lexprotector-int"
+ eventType="30min"
+ title="Schedule Your Demo"
+ description="Book a personalized demo with our team"
+ compact={false}
+ startWithWidget={false}
 />;
 ```
 
@@ -137,9 +137,9 @@ Both `VersatileCalendlyScheduler` (inline mode) and `InlineCalendlyScheduler` au
 
 ```html
 <script
-	type="text/javascript"
-	src="https://assets.calendly.com/assets/external/widget.js"
-	async></script>
+ type="text/javascript"
+ src="https://assets.calendly.com/assets/external/widget.js"
+ async></script>
 ```
 
 ### URL Format
@@ -189,9 +189,9 @@ Simply change the mode prop:
 
 ```tsx
 <VersatileCalendlyScheduler
-	{...props}
-	mode="inline"
-	calendlyUrl="https://calendly.com/lexprotector-int/30min" // Full URL for inline
+ {...props}
+ mode="inline"
+ calendlyUrl="https://calendly.com/lexprotector-int/30min" // Full URL for inline
 />
 ```
 
