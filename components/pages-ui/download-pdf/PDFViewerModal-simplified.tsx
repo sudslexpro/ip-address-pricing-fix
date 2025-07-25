@@ -31,8 +31,7 @@ const PDFViewerModal: React.FC<PDFViewerModalProps> = ({
 		<Modal
 			open={isOpen}
 			onOpenChange={onClose}
-			modalId={`pdf-viewer-${title.replace(/\s+/g, "-").toLowerCase()}`}
-		>
+			modalId={`pdf-viewer-${title.replace(/\s+/g, "-").toLowerCase()}`}>
 			<ModalContent size={size} className="max-h-[90vh] flex flex-col">
 				<ModalHeader className="flex-shrink-0">
 					<div className="flex items-center gap-2">
@@ -50,9 +49,8 @@ const PDFViewerModal: React.FC<PDFViewerModalProps> = ({
 						)}
 						style={{
 							minHeight: "297mm", // A4 height
-							maxWidth: "210mm",  // A4 width
-						}}
-					>
+							maxWidth: "210mm", // A4 width
+						}}>
 						{content}
 					</div>
 				</div>
@@ -63,8 +61,7 @@ const PDFViewerModal: React.FC<PDFViewerModalProps> = ({
 						<Button
 							variant="secondary"
 							onClick={onClose}
-							className="flex items-center gap-2"
-						>
+							className="flex items-center gap-2">
 							<Icon name="X" size={16} />
 							Close
 						</Button>

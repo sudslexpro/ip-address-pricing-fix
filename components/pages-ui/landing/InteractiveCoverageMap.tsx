@@ -583,14 +583,12 @@ const InteractiveCoverageMap = () => {
 	const handleShowSampleQuotation = () => {
 		pdfModal.openModal(createSampleQuotationContent(), {
 			title: "Sample Trademark Quotation",
-			filename: "sample-trademark-quotation.pdf",
 		});
 	};
 
 	const handleShowScheduleOfCharges = () => {
 		pdfModal.openModal(createScheduleOfChargesContent(), {
 			title: "Schedule of Charges",
-			filename: "trademark-schedule-of-charges.pdf",
 		});
 	};
 
@@ -1026,7 +1024,6 @@ const InteractiveCoverageMap = () => {
 					onClose={pdfModal.closeModal}
 					title={pdfModal.title}
 					content={pdfModal.content}
-					filename={pdfModal.filename}
 					size={pdfModal.size}
 				/>
 			</div>

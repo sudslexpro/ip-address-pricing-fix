@@ -595,14 +595,12 @@ const PDFViewerDemo: React.FC = () => {
 	const handleShowSampleQuotation = () => {
 		pdfModal.openModal(<SampleQuotationContent />, {
 			title: "Sample Trademark Quotation",
-			filename: "sample-trademark-quotation.pdf",
 		});
 	};
 
 	const handleShowScheduleOfCharges = () => {
 		pdfModal.openModal(<ScheduleOfChargesContent />, {
 			title: "Schedule of Charges",
-			filename: "trademark-schedule-of-charges.pdf",
 		});
 	};
 
@@ -630,7 +628,6 @@ const PDFViewerDemo: React.FC = () => {
 				onClose={pdfModal.closeModal}
 				title={pdfModal.title}
 				content={pdfModal.content}
-				filename={pdfModal.filename}
 				size={pdfModal.size}
 			/>
 		</div>
