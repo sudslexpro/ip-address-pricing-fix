@@ -38,13 +38,31 @@ const Footer: React.FC = () => {
 								<Link
 									href="https://www.instagram.com/lex_protector/"
 									title="lex_protector"
-									className="w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center hover:bg-accent transition-colors">
-									<Icon name="Instagram" size={25} color="#E4405F" />
+									className="w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center hover:bg-blue-900 transition-colors">
+									<Icon name="Instagram" size={25} />
+								</Link>
+								{/* Facebook */}
+								<Link
+									href={"https://www.facebook.com/lex.protector"}
+									className="w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center hover:bg-blue-900 transition-colors">
+									<Icon name="Facebook" size={25} />
+								</Link>
+								{/* Twitter/X */}
+								<Link
+									href="https://twitter.com/LexProtector"
+									className="w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center hover:bg-blue-900 transition-colors">
+									<Icon name="Twitter" size={25} />
+								</Link>
+								{/* YouTube */}
+								<Link
+									href="https://www.youtube.com/LexProtector"
+									className="w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center hover:bg-blue-900 transition-colors">
+									<Icon name="Youtube" size={25} />
 								</Link>
 								{/* LinkedIn */}
 								<Link
 									href="https://www.linkedin.com/company/lex-protector-international-law-office/posts/?feedView=all"
-									className="w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center hover:bg-accent transition-colors">
+									className="w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center hover:bg-blue-900 transition-colors">
 									<Icon name="Linkedin" size={25} />
 								</Link>
 							</div>
