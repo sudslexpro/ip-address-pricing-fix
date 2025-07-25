@@ -96,13 +96,13 @@ const Footer: React.FC = () => {
 						<div>
 							<h3 className="text-lg font-semibold mb-4">Support</h3>
 							<ul className="space-y-2 text-gray-300">
-								<li>
+								{/* <li>
 									<Link
 										href="/help-center"
 										className="hover:text-accent transition-colors">
 										Help Center
 									</Link>
-								</li>
+								</li> */}
 								<li>
 									<Link
 										href="/support"
@@ -117,13 +117,13 @@ const Footer: React.FC = () => {
 										Training Resources
 									</Link>
 								</li>
-								<li>
+								{/* <li>
 									<Link
 										href="/system-status"
 										className="hover:text-accent transition-colors">
 										System Status
 									</Link>
-								</li>
+								</li> */}
 								<li>
 									<Link
 										href="/legal-resources"
