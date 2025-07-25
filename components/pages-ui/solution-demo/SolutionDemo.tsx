@@ -1,12 +1,16 @@
 "use client";
 import React, { useState } from "react";
 import Icon from "@/components/icon/AppIcon";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const SolutionDemo = () => {
 	const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+	const isMobile = useIsMobile();
 
-	// YouTube video ID from the provided link
-	const youtubeVideoId = "4b9hrNad8eo";
+	// YouTube video IDs for different devices
+	const mobileVideoId = "4b9hrNad8eo";
+	const desktopVideoId = "lMgjyUVB1TA";
+	const youtubeVideoId = isMobile ? mobileVideoId : desktopVideoId;
 
 	const handleVideoPlay = () => {
 		setIsVideoPlaying(true);
@@ -127,7 +131,9 @@ const SolutionDemo = () => {
 
 					<h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-text-primary mb-4 sm:mb-6 px-4 sm:px-0">
 						Interactive Demo:{" "}
-						<span className="text-primary dark:text-blue-600">Try It Yourself</span>
+						<span className="text-primary dark:text-blue-600">
+							Try It Yourself
+						</span>
 					</h2>
 					<p className="text-lg sm:text-xl text-text-secondary max-w-3xl mx-auto px-4 sm:px-0">
 						Experience how our platform transforms complex trademark research
