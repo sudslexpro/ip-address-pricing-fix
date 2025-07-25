@@ -596,12 +596,12 @@ const InteractiveCoverageMap = () => {
 	const handleShowSamplePDFQuotation = () => {
 		// Example: Load a PDF from the public folder
 		// You can replace this with any valid PDF URL or path
-		pdfModal.openPDFModal("/files/Quotation - 100890.pdf", {
+		pdfModal.openPDFModal("/files/Quotation - 100893.pdf", {
 			title: "Sample PDF Quotation",
 		});
 	};
 	const handleShowScheduleOfChargesPDF = () => {
-		pdfModal.openPDFModal("/files/Schedule of Charges - 100890.pdf", {
+		pdfModal.openPDFModal("/files/Schedule of Charges - 100893.pdf", {
 			title: "Schedule of Charges",
 		});
 	};

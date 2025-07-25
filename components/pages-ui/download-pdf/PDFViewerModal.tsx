@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import {
 	EnhancedModal as Modal,
 	ModalContent,
@@ -11,11 +12,23 @@ import {
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/icon/AppIcon";
 import { cn } from "@/lib/utils";
-import { Document, Page, pdfjs } from "react-pdf";
 
-// Set up PDF.js worker
+// Dynamic import to avoid SSR issues
+const Document = dynamic(
+	() => import("react-pdf").then((mod) => mod.Document),
+	{
+		ssr: false,
+	}
+);
+const Page = dynamic(() => import("react-pdf").then((mod) => mod.Page), {
+	ssr: false,
+});
+
+// Set up PDF.js worker on client side only
 if (typeof window !== "undefined") {
-	pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+	import("react-pdf").then(({ pdfjs }) => {
+		pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+	});
 }
 
 interface PDFViewerModalProps {
@@ -88,35 +101,42 @@ const PDFViewerModal: React.FC<PDFViewerModalProps> = ({
 					)}
 
 					<div className="flex-1 flex items-center justify-center p-4">
-						<Document
-							file={pdfPath}
-							onLoadSuccess={onDocumentLoadSuccess}
-							onLoadError={onDocumentLoadError}
-							loading={
-								<div className="flex items-center justify-center p-8">
-									<Icon
-										name="Loader2"
-										size={24}
-										className="animate-spin mr-2"
-									/>
-									<span>Loading PDF...</span>
-								</div>
-							}
-							error={
-								<div className="flex items-center justify-center p-8 text-red-600">
-									<Icon name="AlertCircle" size={24} className="mr-2" />
-									<span>Failed to load PDF</span>
-								</div>
-							}
-							className="flex items-center justify-center">
-							<Page
-								pageNumber={pageNumber}
-								renderTextLayer={false}
-								renderAnnotationLayer={false}
-								className="max-w-full h-auto shadow-lg"
-								width={Math.min(window.innerWidth * 0.7, 800)}
-							/>
-						</Document>
+						{typeof window !== "undefined" && (
+							<Document
+								file={pdfPath}
+								onLoadSuccess={onDocumentLoadSuccess}
+								onLoadError={onDocumentLoadError}
+								loading={
+									<div className="flex items-center justify-center p-8">
+										<Icon
+											name="Loader2"
+											size={24}
+											className="animate-spin mr-2"
+										/>
+										<span>Loading PDF...</span>
+									</div>
+								}
+								error={
+									<div className="flex items-center justify-center p-8 text-red-600">
+										<Icon name="AlertCircle" size={24} className="mr-2" />
+										<span>Failed to load PDF</span>
+									</div>
+								}
+								className="flex items-center justify-center">
+								<Page
+									pageNumber={pageNumber}
+									renderTextLayer={false}
+									renderAnnotationLayer={false}
+									className="max-w-full h-auto shadow-lg"
+									width={Math.min(
+										typeof window !== "undefined"
+											? window.innerWidth * 0.7
+											: 800,
+										800
+									)}
+								/>
+							</Document>
+						)}
 					</div>
 
 					{numPages > 1 && (
