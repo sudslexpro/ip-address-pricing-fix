@@ -140,7 +140,7 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
 					{/* Desktop CTA */}
 					<div className="hidden lg:flex items-center space-x-4">
 						{/* Theme Toggle */}
-						<ThemeToggle variant="icon-only" />
+						<ThemeToggle variant="switch" />
 
 						{session?.user ? (
 							// Authenticated user menu
