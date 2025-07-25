@@ -580,24 +580,29 @@ const InteractiveCoverageMap = () => {
 	};
 
 	// Button handlers
-	const handleShowSampleQuotation = () => {
-		pdfModal.openModal(createSampleQuotationContent(), {
-			title: "Sample Trademark Quotation",
-		});
-	};
+	// const handleShowSampleQuotation = () => {
+	// 	pdfModal.openModal(createSampleQuotationContent(), {
+	// 		title: "Sample Trademark Quotation",
+	// 	});
+	// };
 
-	const handleShowScheduleOfCharges = () => {
-		pdfModal.openModal(createScheduleOfChargesContent(), {
-			title: "Schedule of Charges",
-		});
-	};
+	// const handleShowScheduleOfCharges = () => {
+	// 	pdfModal.openModal(createScheduleOfChargesContent(), {
+	// 		title: "Schedule of Charges",
+	// 	});
+	// };
 
 	// Example function to open a PDF file
-	const handleShowPDFFile = () => {
+	const handleShowSamplePDFQuotation = () => {
 		// Example: Load a PDF from the public folder
 		// You can replace this with any valid PDF URL or path
-		pdfModal.openPDFModal("/sample-pdfs/sample-document.pdf", {
-			title: "Sample PDF Document",
+		pdfModal.openPDFModal("/files/Quotation - 100890.pdf", {
+			title: "Sample PDF Quotation",
+		});
+	};
+	const handleShowScheduleOfChargesPDF = () => {
+		pdfModal.openPDFModal("/files/Schedule of Charges - 100890.pdf", {
+			title: "Schedule of Charges",
 		});
 	};
 
@@ -1012,7 +1017,7 @@ const InteractiveCoverageMap = () => {
 					<Button
 						variant="default"
 						size="lg"
-						onClick={handleShowSampleQuotation}
+						onClick={handleShowSamplePDFQuotation}
 						className="px-8 py-4 flex items-center gap-2 dark:bg-blue-600/30 dark:text-white">
 						<Icon name="FileText" size={16} />
 						Sample Quotation Demo
@@ -1020,7 +1025,7 @@ const InteractiveCoverageMap = () => {
 					<Button
 						variant="default"
 						size="lg"
-						onClick={handleShowScheduleOfCharges}
+						onClick={handleShowScheduleOfChargesPDF}
 						className="px-8 py-4 flex items-center gap-2 dark:bg-blue-600/30 dark:text-white">
 						<Icon name="DollarSign" size={16} />
 						Schedule of Charges

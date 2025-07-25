@@ -39,9 +39,9 @@ A React component that generates and downloads PDF quotes with the letterhead an
 - Automatic filename with timestamp
 - High-quality PDF output (2x scale)
 
-### 3. PDFViewerModal ⭐ VIEW-ONLY
+### 3. PDFViewerModal ⭐ ENHANCED VIEW-ONLY
 
-A simplified PDF viewer modal component for displaying documents in a professional format.
+A versatile PDF viewer modal component for displaying both React content and PDF files.
 
 **Props:**
 
@@ -50,22 +50,33 @@ interface PDFViewerModalProps {
  isOpen: boolean; // Controls modal visibility
  onClose: () => void; // Callback when modal closes
  title?: string; // Modal title (default: "PDF Document")
- content: React.ReactNode; // Content to display
+ content?: React.ReactNode; // React content to display
+ pdfPath?: string; // PDF file path/URL to load
  size?: "sm" | "default" | "md" | "lg" | "xl" | "full" | "auto"; // Modal size
 }
 ```
 
 **Features:**
 
-- **Document Viewing**: Professional A4-sized document display
-- **Responsive Design**: Multiple size options and mobile-friendly
-- **Clean Interface**: Simplified view-only modal with professional styling
+- **Dual Mode Support**: Display either React content or PDF files
+- **PDF File Rendering**: Uses react-pdf for proper PDF file display
+- **Page Navigation**: Next/Previous page controls for multi-page PDFs
+- **Responsive Design**: Automatically scales PDF content for optimal viewing
+- **Loading States**: Shows loading indicators and error messages
+- **Professional Formatting**: A4 page sizing with proper margins for React content
 - **Accessibility**: Full keyboard navigation and screen reader support
-- **Professional Formatting**: A4 page sizing with proper margins and styling
+
+**PDF File Features:**
+
+- Multi-page PDF support with navigation
+- Automatic page scaling
+- Error handling for invalid PDF files
+- Loading indicators
+- Page counter display
 
 ### 4. usePDFViewerModal Hook
 
-A custom hook for managing PDF viewer modal state.
+A custom hook for managing PDF viewer modal state with support for both React content and PDF files.
 
 **Usage:**
 
@@ -75,11 +86,22 @@ const pdfModal = usePDFViewerModal({
  defaultSize: "xl",
 });
 
-// Open modal with content
+// Open modal with React content
 pdfModal.openModal(<MyContent />, {
  title: "Custom Title",
 });
+
+// Open modal with PDF file
+pdfModal.openPDFModal("/path/to/document.pdf", {
+ title: "PDF Document",
+});
 ```
+
+**Methods:**
+
+- `openModal(content, options)` - Opens modal with React content
+- `openPDFModal(pdfPath, options)` - Opens modal with PDF file
+- `closeModal()` - Closes the modal
 
 ### 5. PDFViewerDemo
 
@@ -88,6 +110,8 @@ A demonstration component showing sample quotation and schedule of charges with 
 ## Dependencies
 
 - `@radix-ui/react-dialog` - Modal components for accessibility
+- `react-pdf` - PDF file rendering and display
+- `pdfjs-dist` - PDF.js library for PDF processing
 - React and TypeScript for component functionality
 
 ## Usage Example
@@ -115,15 +139,23 @@ const MyComponent = () => {
   });
  };
 
+ const handleShowPDFFile = () => {
+  pdfModal.openPDFModal("/path/to/document.pdf", {
+   title: "PDF Document",
+  });
+ };
+
  return (
   <div>
-   <button onClick={handleShowDocument}>View Document</button>
+   <button onClick={handleShowDocument}>View React Content</button>
+   <button onClick={handleShowPDFFile}>View PDF File</button>
 
    <PDFViewerModal
     isOpen={pdfModal.isOpen}
     onClose={pdfModal.closeModal}
     title={pdfModal.title}
     content={pdfModal.content}
+    pdfPath={pdfModal.pdfPath}
     size={pdfModal.size}
    />
   </div>

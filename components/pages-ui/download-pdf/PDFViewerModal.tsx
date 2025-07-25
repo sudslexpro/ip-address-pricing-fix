@@ -14,7 +14,9 @@ import { cn } from "@/lib/utils";
 import { Document, Page, pdfjs } from "react-pdf";
 
 // Set up PDF.js worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+if (typeof window !== "undefined") {
+	pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+}
 
 interface PDFViewerModalProps {
 	isOpen: boolean;
@@ -77,7 +79,7 @@ const PDFViewerModal: React.FC<PDFViewerModalProps> = ({
 							<span>Loading PDF...</span>
 						</div>
 					)}
-					
+
 					{error && (
 						<div className="flex items-center justify-center p-8 text-red-600">
 							<Icon name="AlertCircle" size={24} className="mr-2" />
@@ -92,7 +94,11 @@ const PDFViewerModal: React.FC<PDFViewerModalProps> = ({
 							onLoadError={onDocumentLoadError}
 							loading={
 								<div className="flex items-center justify-center p-8">
-									<Icon name="Loader2" size={24} className="animate-spin mr-2" />
+									<Icon
+										name="Loader2"
+										size={24}
+										className="animate-spin mr-2"
+									/>
 									<span>Loading PDF...</span>
 								</div>
 							}
@@ -102,8 +108,7 @@ const PDFViewerModal: React.FC<PDFViewerModalProps> = ({
 									<span>Failed to load PDF</span>
 								</div>
 							}
-							className="flex items-center justify-center"
-						>
+							className="flex items-center justify-center">
 							<Page
 								pageNumber={pageNumber}
 								renderTextLayer={false}
@@ -121,23 +126,21 @@ const PDFViewerModal: React.FC<PDFViewerModalProps> = ({
 								size="sm"
 								onClick={goToPrevPage}
 								disabled={pageNumber <= 1}
-								className="flex items-center gap-2"
-							>
+								className="flex items-center gap-2">
 								<Icon name="ChevronLeft" size={16} />
 								Previous
 							</Button>
-							
+
 							<span className="text-sm text-muted-foreground">
 								Page {pageNumber} of {numPages}
 							</span>
-							
+
 							<Button
 								variant="outline"
 								size="sm"
 								onClick={goToNextPage}
 								disabled={pageNumber >= numPages}
-								className="flex items-center gap-2"
-							>
+								className="flex items-center gap-2">
 								Next
 								<Icon name="ChevronRight" size={16} />
 							</Button>
@@ -156,9 +159,8 @@ const PDFViewerModal: React.FC<PDFViewerModalProps> = ({
 				)}
 				style={{
 					minHeight: "297mm", // A4 height
-					maxWidth: "210mm",  // A4 width
-				}}
-			>
+					maxWidth: "210mm", // A4 width
+				}}>
 				{content}
 			</div>
 		);
@@ -168,25 +170,20 @@ const PDFViewerModal: React.FC<PDFViewerModalProps> = ({
 		<Modal
 			open={isOpen}
 			onOpenChange={onClose}
-			modalId={`pdf-viewer-${title.replace(/\s+/g, "-").toLowerCase()}`}
-		>
+			modalId={`pdf-viewer-${title.replace(/\s+/g, "-").toLowerCase()}`}>
 			<ModalContent size={size} className="max-h-[90vh] flex flex-col">
 				<ModalHeader className="flex-shrink-0">
 					<div className="flex items-center gap-2">
 						<Icon name="FileText" size={20} />
 						<ModalTitle>{title}</ModalTitle>
 						{pdfPath && (
-							<span className="text-sm text-muted-foreground">
-								(PDF File)
-							</span>
+							<span className="text-sm text-muted-foreground">(PDF File)</span>
 						)}
 					</div>
 				</ModalHeader>
 
 				{/* PDF Content */}
-				<div className="flex-1 overflow-auto p-6">
-					{renderContent()}
-				</div>
+				<div className="flex-1 overflow-auto p-6">{renderContent()}</div>
 
 				{/* Action Buttons */}
 				<ModalFooter className="flex-shrink-0 border-t border-border pt-4">
@@ -194,8 +191,7 @@ const PDFViewerModal: React.FC<PDFViewerModalProps> = ({
 						<Button
 							variant="secondary"
 							onClick={onClose}
-							className="flex items-center gap-2"
-						>
+							className="flex items-center gap-2">
 							<Icon name="X" size={16} />
 							Close
 						</Button>
