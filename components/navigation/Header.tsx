@@ -111,7 +111,7 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
 							/>
 						</div>
 						<div className="flex flex-col">
-							<span className="text-xl font-bold text-primary font-inter">
+							<span className="text-xl font-bold text-primary dark:text-muted-foreground font-inter">
 								Lex Protector
 							</span>
 							<span className="text-xs text-text-secondary font-medium">
@@ -130,7 +130,7 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
 								className={`px-3 py-2 text-sm font-medium transition-smooth rounded-md ${
 									activeSection === item.id
 										? "text-yellow-600 bg-accent/10 dark:text-yellow-400 dark:bg-yellow-900/20"
-										: "text-text-secondary hover:text-primary hover:bg-surface"
+										: "text-text-secondary hover:text-muted-foreground hover:bg-surface"
 								}`}>
 								{item.name}
 							</Link>
@@ -185,7 +185,7 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
 											<Button
 												variant="outline"
 												size="sm"
-												className="text-[#1a365d] border-[#1a365d] hover:bg-[#1a365d] hover:text-white px-8 py-5">
+												className="text-[#1a365d] dark:text-foreground border-[#1a365d] hover:bg-[#223c61] hover:text-white px-8 py-5">
 												Sign In
 											</Button>
 										</Link>
@@ -209,7 +209,7 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
 											<Button
 												variant="outline"
 												size="sm"
-												className="text-[#1a365d] border-[#1a365d] hover:bg-[#1a365d] hover:text-white px-8 py-5">
+												className="text-[#1a365d] dark:text-foreground border-[#1a365d] hover:bg-[#223c61] hover:text-white px-8 py-5">
 												Sign In
 											</Button>
 										</a>
