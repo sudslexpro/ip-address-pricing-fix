@@ -417,7 +417,7 @@ const PricingSection = () => {
 							Ready to Transform Your Practice?
 						</h3>
 						<p className="text-text-secondary mb-6 max-w-2xl mx-auto">
-							Join 500+ law firms already using Lex Protector to generate
+							Join 100+ law firms already using Lex Protector to generate
 							faster, more accurate quotes and increase their revenue.
 						</p>
 						<div className="flex flex-col sm:flex-row gap-4 justify-center">
