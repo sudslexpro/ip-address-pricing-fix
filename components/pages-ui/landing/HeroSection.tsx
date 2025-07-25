@@ -16,14 +16,7 @@ import { Style, Circle as CircleStyle, Fill, Stroke } from "ol/style";
 import Overlay from "ol/Overlay";
 import type { FeatureLike } from "ol/Feature";
 import Link from "next/link";
-import {
-	EnhancedModal as Modal,
-	ModalContent,
-	ModalHeader,
-	ModalTitle,
-	ModalDescription,
-} from "@/components/ui/modal";
-import { CalendlyScheduler } from "@/components/scheduling";
+import { InlineCalendlyScheduler } from "@/components/scheduling";
 
 interface CountryData {
 	id: string;
@@ -49,7 +42,8 @@ const HeroSection: React.FC = () => {
 	const popupContentRef = useRef<HTMLDivElement | null>(null);
 	const vectorSourceRef = useRef<VectorSource | null>(null);
 	const vectorLayerRef = useRef<VectorLayer<VectorSource> | null>(null);
-	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [showCalendlyScheduler, setShowCalendlyScheduler] = useState(false);
+	const calendlyRef = useRef<HTMLDivElement>(null);
 
 	// Unified style function that handles both filtering and hover states
 	const getFeatureStyle = useCallback(
@@ -474,7 +468,17 @@ const HeroSection: React.FC = () => {
 	};
 
 	const handleRequestLiveDemo = () => {
-		setIsModalOpen(true);
+		setShowCalendlyScheduler(true);
+		// Small delay to ensure the component is rendered before scrolling
+		setTimeout(() => {
+			if (calendlyRef.current) {
+				calendlyRef.current.scrollIntoView({
+					behavior: "smooth",
+					block: "start",
+					inline: "nearest",
+				});
+			}
+		}, 100);
 	};
 
 	return (
@@ -537,6 +541,7 @@ const HeroSection: React.FC = () => {
 			</div>
 
 			<div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+				{/* Hero Content and Map Section */}
 				<div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[80vh]">
 					{/* Left Side - Content */}
 					<div className="space-y-8">
@@ -582,35 +587,6 @@ const HeroSection: React.FC = () => {
 								</Button>
 							</Link>
 						</div>
-
-						{/* Request Live Demo Modal */}
-						<Modal
-							open={isModalOpen}
-							onOpenChange={setIsModalOpen}
-							modalId="hero-demo-modal">
-							<ModalContent
-								size="xl"
-								className="mt-4 max-w-[95vw] md:max-w-4xl max-h-[90vh] w-full overflow-hidden">
-								<ModalHeader className="sr-only">
-									<ModalTitle>Schedule Demo</ModalTitle>
-									<ModalDescription>Book a demo with our team</ModalDescription>
-								</ModalHeader>
-								<div className="overflow-y-auto max-h-[calc(90vh-2rem)] p-1">
-									<CalendlyScheduler
-										calendlyUrl="https://calendly.com/lexprotector-int"
-										eventType="30min"
-										title="Schedule Your Demo"
-										description="Book a personalized demo with our team to see how Lex Protector can transform your legal practice."
-										buttonText="Schedule Demo"
-										responsiveHeight={{
-											mobile: "500px",
-											tablet: "600px",
-											desktop: "800px",
-										}}
-									/>
-								</div>
-							</ModalContent>
-						</Modal>
 
 						{/* Trust Bar */}
 						<div className="pt-8 border-t border-border">
@@ -790,6 +766,37 @@ const HeroSection: React.FC = () => {
 						</div>
 					</div>
 				</div>
+
+				{/* Inline Calendly Scheduler Section */}
+				{showCalendlyScheduler && (
+					<div
+						ref={calendlyRef}
+						className="mt-16 lg:mt-24 animate-in fade-in-50 slide-in-from-bottom-8 duration-700">
+						<div className="text-center mb-12">
+							<h2 className="text-3xl lg:text-4xl font-bold text-primary mb-4">
+								Schedule Your Personalized Demo
+							</h2>
+							<p className="text-xl text-text-secondary max-w-3xl mx-auto">
+								See how Lex Protector can transform your legal practice with a
+								live demo. Book a time that works for you directly below.
+							</p>
+						</div>
+
+						<div className="bg-white rounded-2xl shadow-cta border border-border p-8 lg:p-12">
+							<InlineCalendlyScheduler
+								calendlyUrl="https://calendly.com/lexprotector-int/30min"
+								title="Schedule Your Demo"
+								description="Choose a convenient time for your personalized demonstration"
+								responsiveHeight={{
+									mobile: "500px",
+									tablet: "600px",
+									desktop: "700px",
+								}}
+								containerClassName="max-w-4xl mx-auto"
+							/>
+						</div>
+					</div>
+				)}
 			</div>
 		</section>
 	);
