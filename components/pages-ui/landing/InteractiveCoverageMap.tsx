@@ -59,7 +59,7 @@ const InteractiveCoverageMap = () => {
 		{
 			id: "US",
 			name: "United States",
-			price: 325,
+			price: 300,
 			flag: "🇺🇸",
 			timeline: "8-12 months",
 			coordinates: [-98.5795, 39.8283] as [number, number],
@@ -67,31 +67,15 @@ const InteractiveCoverageMap = () => {
 		{
 			id: "UK",
 			name: "United Kingdom",
-			price: 280,
+			price: 275,
 			flag: "🇬🇧",
 			timeline: "4-6 months",
 			coordinates: [-0.1278, 51.5074] as [number, number],
 		},
 		{
-			id: "DE",
-			name: "Germany",
-			price: 290,
-			flag: "🇩🇪",
-			timeline: "6-8 months",
-			coordinates: [10.4515, 51.1657] as [number, number],
-		},
-		{
-			id: "JP",
-			name: "Japan",
-			price: 420,
-			flag: "🇯🇵",
-			timeline: "10-14 months",
-			coordinates: [138.2529, 36.2048] as [number, number],
-		},
-		{
 			id: "AU",
 			name: "Australia",
-			price: 380,
+			price: 250,
 			flag: "🇦🇺",
 			timeline: "8-10 months",
 			coordinates: [133.7751, -25.2744] as [number, number],
@@ -99,122 +83,178 @@ const InteractiveCoverageMap = () => {
 		{
 			id: "CA",
 			name: "Canada",
-			price: 310,
+			price: 300,
 			flag: "🇨🇦",
 			timeline: "6-8 months",
 			coordinates: [-106.3468, 56.1304] as [number, number],
 		},
 		{
-			id: "FR",
-			name: "France",
-			price: 295,
-			flag: "🇫🇷",
-			timeline: "6-8 months",
-			coordinates: [2.2137, 46.2276] as [number, number],
-		},
-		{
-			id: "IN",
-			name: "India",
-			price: 180,
-			flag: "🇮🇳",
-			timeline: "12-18 months",
-			coordinates: [78.9629, 20.5937] as [number, number],
-		},
-		{
-			id: "BR",
-			name: "Brazil",
-			price: 250,
-			flag: "🇧🇷",
-			timeline: "8-12 months",
-			coordinates: [-51.9253, -14.235] as [number, number],
-		},
-		{
 			id: "CN",
 			name: "China",
-			price: 350,
+			price: 400,
 			flag: "🇨🇳",
 			timeline: "9-12 months",
 			coordinates: [104.1954, 35.8617] as [number, number],
 		},
 		{
-			id: "KR",
-			name: "South Korea",
-			price: 320,
-			flag: "🇰🇷",
+			id: "EU",
+			name: "European Union",
+			price: 400,
+			flag: "🇪🇺",
+			timeline: "6-8 months",
+			coordinates: [9.1815, 48.8566] as [number, number],
+		},
+		{
+			id: "IN",
+			name: "India",
+			price: 100,
+			flag: "🇮🇳",
+			timeline: "12-18 months",
+			coordinates: [78.9629, 20.5937] as [number, number],
+		},
+		{
+			id: "NZ",
+			name: "New Zealand",
+			price: 250,
+			flag: "🇳🇿",
 			timeline: "8-10 months",
-			coordinates: [127.7669, 35.9078] as [number, number],
+			coordinates: [174.886, -40.9006] as [number, number],
+		},
+		{
+			id: "SG",
+			name: "Singapore",
+			price: 400,
+			flag: "🇸🇬",
+			timeline: "8-12 months",
+			coordinates: [103.8198, 1.3521] as [number, number],
+		},
+		{
+			id: "AE",
+			name: "United Arab Emirates",
+			price: 550,
+			flag: "🇦🇪",
+			timeline: "10-14 months",
+			coordinates: [53.8478, 23.4241] as [number, number],
+		},
+		{
+			id: "SA",
+			name: "Saudi Arabia",
+			price: 625,
+			flag: "🇸🇦",
+			timeline: "12-16 months",
+			coordinates: [45.0792, 23.8859] as [number, number],
+		},
+		{
+			id: "ZA",
+			name: "South Africa",
+			price: 275,
+			flag: "🇿🇦",
+			timeline: "10-14 months",
+			coordinates: [22.9375, -30.5595] as [number, number],
+		},
+		{
+			id: "BD",
+			name: "Bangladesh",
+			price: 150,
+			flag: "🇧🇩",
+			timeline: "12-18 months",
+			coordinates: [90.3563, 23.685] as [number, number],
+		},
+		{
+			id: "TR",
+			name: "Turkey",
+			price: 295,
+			flag: "🇹🇷",
+			timeline: "8-12 months",
+			coordinates: [35.2433, 38.9637] as [number, number],
+		},
+		{
+			id: "TW",
+			name: "Taiwan",
+			price: 350,
+			flag: "🇹🇼",
+			timeline: "10-14 months",
+			coordinates: [120.9605, 23.6978] as [number, number],
+		},
+		{
+			id: "CL",
+			name: "Chile",
+			price: 425,
+			flag: "🇨🇱",
+			timeline: "8-12 months",
+			coordinates: [-71.5429, -35.6751] as [number, number],
+		},
+		{
+			id: "KW",
+			name: "Kuwait",
+			price: 350,
+			flag: "🇰🇼",
+			timeline: "10-14 months",
+			coordinates: [47.4818, 29.3117] as [number, number],
+		},
+		{
+			id: "EC",
+			name: "Ecuador",
+			price: 375,
+			flag: "🇪🇨",
+			timeline: "8-12 months",
+			coordinates: [-78.1834, -1.8312] as [number, number],
+		},
+		{
+			id: "BH",
+			name: "Bahrain",
+			price: 250,
+			flag: "🇧🇭",
+			timeline: "8-12 months",
+			coordinates: [50.5577, 26.0667] as [number, number],
+		},
+		{
+			id: "OM",
+			name: "Oman",
+			price: 350,
+			flag: "🇴🇲",
+			timeline: "10-14 months",
+			coordinates: [55.9754, 21.4735] as [number, number],
+		},
+		{
+			id: "JP",
+			name: "Japan",
+			price: 400,
+			flag: "🇯🇵",
+			timeline: "10-14 months",
+			coordinates: [138.2529, 36.2048] as [number, number],
+		},
+		{
+			id: "MY",
+			name: "Malaysia",
+			price: 250,
+			flag: "🇲🇾",
+			timeline: "8-12 months",
+			coordinates: [101.9758, 4.2105] as [number, number],
+		},
+		{
+			id: "ID",
+			name: "Indonesia",
+			price: 350,
+			flag: "🇮🇩",
+			timeline: "10-14 months",
+			coordinates: [113.9213, -0.7893] as [number, number],
+		},
+		{
+			id: "NP",
+			name: "Nepal",
+			price: 275,
+			flag: "🇳🇵",
+			timeline: "12-18 months",
+			coordinates: [84.124, 28.3949] as [number, number],
 		},
 		{
 			id: "MX",
 			name: "Mexico",
-			price: 220,
+			price: 275,
 			flag: "🇲🇽",
 			timeline: "6-9 months",
 			coordinates: [-102.5528, 23.6345] as [number, number],
-		},
-		{
-			id: "IT",
-			name: "Italy",
-			price: 285,
-			flag: "🇮🇹",
-			timeline: "6-8 months",
-			coordinates: [12.5674, 41.8719] as [number, number],
-		},
-		{
-			id: "ES",
-			name: "Spain",
-			price: 275,
-			flag: "🇪🇸",
-			timeline: "6-8 months",
-			coordinates: [-3.7492, 40.4637] as [number, number],
-		},
-		{
-			id: "NL",
-			name: "Netherlands",
-			price: 300,
-			flag: "🇳🇱",
-			timeline: "4-6 months",
-			coordinates: [5.2913, 52.1326] as [number, number],
-		},
-		{
-			id: "CH",
-			name: "Switzerland",
-			price: 450,
-			flag: "🇨🇭",
-			timeline: "8-10 months",
-			coordinates: [8.2275, 46.8182] as [number, number],
-		},
-		{
-			id: "SE",
-			name: "Sweden",
-			price: 320,
-			flag: "🇸🇪",
-			timeline: "6-8 months",
-			coordinates: [18.6435, 60.1282] as [number, number],
-		},
-		{
-			id: "NO",
-			name: "Norway",
-			price: 340,
-			flag: "🇳🇴",
-			timeline: "6-8 months",
-			coordinates: [9.5018, 60.472] as [number, number],
-		},
-		{
-			id: "DK",
-			name: "Denmark",
-			price: 330,
-			flag: "🇩🇰",
-			timeline: "4-6 months",
-			coordinates: [9.5018, 56.2639] as [number, number],
-		},
-		{
-			id: "FI",
-			name: "Finland",
-			price: 315,
-			flag: "🇫🇮",
-			timeline: "6-8 months",
-			coordinates: [25.7482, 61.9241] as [number, number],
 		},
 	];
 
@@ -256,328 +296,6 @@ const InteractiveCoverageMap = () => {
 			basePrice: 300,
 		},
 	];
-
-	// Sample quotation content
-	const createSampleQuotationContent = () => {
-		const sampleData = {
-			quoteNumber: "LPQ-2025-001",
-			clientName: "Global Tech Solutions Ltd.",
-			clientEmail: "legal@globaltechsolutions.com",
-			dateGenerated: new Date().toLocaleDateString("en-US", {
-				year: "numeric",
-				month: "long",
-				day: "numeric",
-			}),
-			validUntil: new Date(
-				Date.now() + 30 * 24 * 60 * 60 * 1000
-			).toLocaleDateString("en-US", {
-				year: "numeric",
-				month: "long",
-				day: "numeric",
-			}),
-			countries: [
-				{
-					country: "United States",
-					flag: "🇺🇸",
-					governmentFee: 250,
-					attorneyFee: 300,
-					commission: 75,
-					total: 625,
-					timeline: "8-12 months",
-				},
-				{
-					country: "United Kingdom",
-					flag: "🇬🇧",
-					governmentFee: 200,
-					attorneyFee: 280,
-					commission: 70,
-					total: 550,
-					timeline: "4-6 months",
-				},
-				{
-					country: "Germany",
-					flag: "🇩🇪",
-					governmentFee: 180,
-					attorneyFee: 290,
-					commission: 72.5,
-					total: 542.5,
-					timeline: "6-8 months",
-				},
-			],
-			grandTotal: 1717.5,
-		};
-
-		return (
-			<div className="space-y-8">
-				<LexProtectorLetterhead />
-
-				<div className="text-center border-b-2 border-gray-300 pb-6">
-					<h1 className="text-3xl font-bold text-gray-800 mb-2">
-						TRADEMARK REGISTRATION QUOTATION
-					</h1>
-					<div className="text-lg text-gray-600">
-						Quote #{sampleData.quoteNumber}
-					</div>
-				</div>
-
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-					<div>
-						<h3 className="text-lg font-semibold text-gray-800 mb-3">
-							Client Information
-						</h3>
-						<div className="space-y-2 text-gray-700">
-							<div>
-								<strong>Company:</strong> {sampleData.clientName}
-							</div>
-							<div>
-								<strong>Email:</strong> {sampleData.clientEmail}
-							</div>
-						</div>
-					</div>
-					<div>
-						<h3 className="text-lg font-semibold text-gray-800 mb-3">
-							Quote Details
-						</h3>
-						<div className="space-y-2 text-gray-700">
-							<div>
-								<strong>Date Generated:</strong> {sampleData.dateGenerated}
-							</div>
-							<div>
-								<strong>Valid Until:</strong> {sampleData.validUntil}
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div>
-					<h3 className="text-lg font-semibold text-gray-800 mb-4">
-						Country-wise Fee Breakdown
-					</h3>
-					<div className="overflow-x-auto">
-						<table className="w-full border-collapse border border-gray-300">
-							<thead>
-								<tr className="bg-gray-50">
-									<th className="border border-gray-300 px-4 py-3 text-left">
-										Country
-									</th>
-									<th className="border border-gray-300 px-4 py-3 text-right">
-										Gov. Fee
-									</th>
-									<th className="border border-gray-300 px-4 py-3 text-right">
-										Attorney Fee
-									</th>
-									<th className="border border-gray-300 px-4 py-3 text-right">
-										Commission
-									</th>
-									<th className="border border-gray-300 px-4 py-3 text-right">
-										Total
-									</th>
-									<th className="border border-gray-300 px-4 py-3 text-center">
-										Timeline
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								{sampleData.countries.map((country, index) => (
-									<tr
-										key={index}
-										className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-										<td className="border border-gray-300 px-4 py-3">
-											<div className="flex items-center gap-2">
-												<span className="text-lg">{country.flag}</span>
-												<span className="font-medium">{country.country}</span>
-											</div>
-										</td>
-										<td className="border border-gray-300 px-4 py-3 text-right">
-											${country.governmentFee.toFixed(2)}
-										</td>
-										<td className="border border-gray-300 px-4 py-3 text-right">
-											${country.attorneyFee.toFixed(2)}
-										</td>
-										<td className="border border-gray-300 px-4 py-3 text-right">
-											${country.commission.toFixed(2)}
-										</td>
-										<td className="border border-gray-300 px-4 py-3 text-right font-semibold">
-											${country.total.toFixed(2)}
-										</td>
-										<td className="border border-gray-300 px-4 py-3 text-center text-sm">
-											{country.timeline}
-										</td>
-									</tr>
-								))}
-							</tbody>
-							<tfoot>
-								<tr className="bg-blue-50">
-									<td
-										className="border border-gray-300 px-4 py-3 font-bold"
-										colSpan={4}>
-										GRAND TOTAL
-									</td>
-									<td className="border border-gray-300 px-4 py-3 text-right font-bold text-lg text-blue-600">
-										${sampleData.grandTotal.toFixed(2)}
-									</td>
-									<td className="border border-gray-300 px-4 py-3"></td>
-								</tr>
-							</tfoot>
-						</table>
-					</div>
-				</div>
-
-				<div className="text-center text-sm text-gray-500 border-t border-gray-200 pt-4">
-					<div>© 2025 Lex Protector. All rights reserved.</div>
-					<div className="mt-1">
-						This quotation is confidential and proprietary to Lex Protector and
-						the intended recipient.
-					</div>
-				</div>
-			</div>
-		);
-	};
-
-	// Schedule of charges content
-	const createScheduleOfChargesContent = () => {
-		return (
-			<div className="space-y-8">
-				<LexProtectorLetterhead />
-
-				<div className="text-center border-b-2 border-gray-300 pb-6">
-					<h1 className="text-3xl font-bold text-gray-800 mb-2">
-						SCHEDULE OF CHARGES
-					</h1>
-					<div className="text-lg text-gray-600">
-						Trademark Registration Services - 2025
-					</div>
-				</div>
-
-				<div className="space-y-8">
-					<div>
-						<h3 className="text-xl font-semibold text-gray-800 mb-4 bg-blue-50 p-3 rounded">
-							Trademark Search Services
-						</h3>
-						<div className="overflow-x-auto">
-							<table className="w-full border-collapse border border-gray-300">
-								<thead>
-									<tr className="bg-gray-50">
-										<th className="border border-gray-300 px-4 py-3 text-left">
-											Service
-										</th>
-										<th className="border border-gray-300 px-4 py-3 text-left">
-											Description
-										</th>
-										<th className="border border-gray-300 px-4 py-3 text-right">
-											Price (USD)
-										</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td className="border border-gray-300 px-4 py-3 font-medium">
-											Basic Search
-										</td>
-										<td className="border border-gray-300 px-4 py-3">
-											Identical mark search in primary databases
-										</td>
-										<td className="border border-gray-300 px-4 py-3 text-right">
-											$75
-										</td>
-									</tr>
-									<tr className="bg-gray-50">
-										<td className="border border-gray-300 px-4 py-3 font-medium">
-											Comprehensive Search
-										</td>
-										<td className="border border-gray-300 px-4 py-3">
-											Comprehensive search including similar marks and common
-											law
-										</td>
-										<td className="border border-gray-300 px-4 py-3 text-right">
-											$150
-										</td>
-									</tr>
-									<tr>
-										<td className="border border-gray-300 px-4 py-3 font-medium">
-											Watch Service Setup
-										</td>
-										<td className="border border-gray-300 px-4 py-3">
-											Ongoing monitoring for conflicting applications
-										</td>
-										<td className="border border-gray-300 px-4 py-3 text-right">
-											$100
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-
-					<div>
-						<h3 className="text-xl font-semibold text-gray-800 mb-4 bg-green-50 p-3 rounded">
-							Application Filing Services
-						</h3>
-						<div className="overflow-x-auto">
-							<table className="w-full border-collapse border border-gray-300">
-								<thead>
-									<tr className="bg-gray-50">
-										<th className="border border-gray-300 px-4 py-3 text-left">
-											Service
-										</th>
-										<th className="border border-gray-300 px-4 py-3 text-left">
-											Description
-										</th>
-										<th className="border border-gray-300 px-4 py-3 text-right">
-											Price (USD)
-										</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td className="border border-gray-300 px-4 py-3 font-medium">
-											Application Preparation
-										</td>
-										<td className="border border-gray-300 px-4 py-3">
-											Complete application drafting and review
-										</td>
-										<td className="border border-gray-300 px-4 py-3 text-right">
-											$200
-										</td>
-									</tr>
-									<tr className="bg-gray-50">
-										<td className="border border-gray-300 px-4 py-3 font-medium">
-											Filing Service
-										</td>
-										<td className="border border-gray-300 px-4 py-3">
-											Electronic filing with relevant trademark office
-										</td>
-										<td className="border border-gray-300 px-4 py-3 text-right">
-											$100
-										</td>
-									</tr>
-									<tr>
-										<td className="border border-gray-300 px-4 py-3 font-medium">
-											Priority Claim
-										</td>
-										<td className="border border-gray-300 px-4 py-3">
-											Paris Convention priority claim preparation
-										</td>
-										<td className="border border-gray-300 px-4 py-3 text-right">
-											$75
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-
-				<div className="text-center text-sm text-gray-500 border-t border-gray-200 pt-4">
-					<div>© 2025 Lex Protector. All rights reserved.</div>
-					<div className="mt-1">
-						This schedule of charges is effective January 1, 2025 and subject to
-						periodic review.
-					</div>
-				</div>
-			</div>
-		);
-	};
 
 	// Button handlers
 	// const handleShowSampleQuotation = () => {
@@ -865,13 +583,6 @@ const InteractiveCoverageMap = () => {
 				? prev.filter((id) => id !== serviceId)
 				: [...prev, serviceId]
 		);
-	};
-
-	const generateMultiCountryQuote = () => {
-		if (selectedCountries.length === 0 || selectedServices.length === 0) return;
-
-		// Redirect to partner signup page
-		window.open("https://partner.lexprotector.com/signup");
 	};
 
 	return (
