@@ -2,6 +2,11 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/icon/AppIcon";
+import {
+	PDFViewerModal,
+	LexProtectorLetterhead,
+} from "@/components/pages-ui/download-pdf";
+import { usePDFViewerModal } from "@/hooks/usePDFViewerModal";
 import "ol/ol.css";
 import Map from "ol/Map";
 import View from "ol/View";
@@ -44,6 +49,11 @@ const InteractiveCoverageMap = () => {
 	const popupContentRef = useRef<HTMLDivElement | null>(null);
 	const vectorSourceRef = useRef<VectorSource | null>(null);
 	const vectorLayerRef = useRef<VectorLayer<VectorSource> | null>(null);
+
+	// PDF Viewer Modal hook
+	const pdfModal = usePDFViewerModal({
+		defaultSize: "xl",
+	});
 
 	const countryData = [
 		{
@@ -246,6 +256,343 @@ const InteractiveCoverageMap = () => {
 			basePrice: 300,
 		},
 	];
+
+	// Sample quotation content
+	const createSampleQuotationContent = () => {
+		const sampleData = {
+			quoteNumber: "LPQ-2025-001",
+			clientName: "Global Tech Solutions Ltd.",
+			clientEmail: "legal@globaltechsolutions.com",
+			dateGenerated: new Date().toLocaleDateString("en-US", {
+				year: "numeric",
+				month: "long",
+				day: "numeric",
+			}),
+			validUntil: new Date(
+				Date.now() + 30 * 24 * 60 * 60 * 1000
+			).toLocaleDateString("en-US", {
+				year: "numeric",
+				month: "long",
+				day: "numeric",
+			}),
+			countries: [
+				{
+					country: "United States",
+					flag: "🇺🇸",
+					governmentFee: 250,
+					attorneyFee: 300,
+					commission: 75,
+					total: 625,
+					timeline: "8-12 months",
+				},
+				{
+					country: "United Kingdom",
+					flag: "🇬🇧",
+					governmentFee: 200,
+					attorneyFee: 280,
+					commission: 70,
+					total: 550,
+					timeline: "4-6 months",
+				},
+				{
+					country: "Germany",
+					flag: "🇩🇪",
+					governmentFee: 180,
+					attorneyFee: 290,
+					commission: 72.5,
+					total: 542.5,
+					timeline: "6-8 months",
+				},
+			],
+			grandTotal: 1717.5,
+		};
+
+		return (
+			<div className="space-y-8">
+				<LexProtectorLetterhead />
+
+				<div className="text-center border-b-2 border-gray-300 pb-6">
+					<h1 className="text-3xl font-bold text-gray-800 mb-2">
+						TRADEMARK REGISTRATION QUOTATION
+					</h1>
+					<div className="text-lg text-gray-600">
+						Quote #{sampleData.quoteNumber}
+					</div>
+				</div>
+
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+					<div>
+						<h3 className="text-lg font-semibold text-gray-800 mb-3">
+							Client Information
+						</h3>
+						<div className="space-y-2 text-gray-700">
+							<div>
+								<strong>Company:</strong> {sampleData.clientName}
+							</div>
+							<div>
+								<strong>Email:</strong> {sampleData.clientEmail}
+							</div>
+						</div>
+					</div>
+					<div>
+						<h3 className="text-lg font-semibold text-gray-800 mb-3">
+							Quote Details
+						</h3>
+						<div className="space-y-2 text-gray-700">
+							<div>
+								<strong>Date Generated:</strong> {sampleData.dateGenerated}
+							</div>
+							<div>
+								<strong>Valid Until:</strong> {sampleData.validUntil}
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div>
+					<h3 className="text-lg font-semibold text-gray-800 mb-4">
+						Country-wise Fee Breakdown
+					</h3>
+					<div className="overflow-x-auto">
+						<table className="w-full border-collapse border border-gray-300">
+							<thead>
+								<tr className="bg-gray-50">
+									<th className="border border-gray-300 px-4 py-3 text-left">
+										Country
+									</th>
+									<th className="border border-gray-300 px-4 py-3 text-right">
+										Gov. Fee
+									</th>
+									<th className="border border-gray-300 px-4 py-3 text-right">
+										Attorney Fee
+									</th>
+									<th className="border border-gray-300 px-4 py-3 text-right">
+										Commission
+									</th>
+									<th className="border border-gray-300 px-4 py-3 text-right">
+										Total
+									</th>
+									<th className="border border-gray-300 px-4 py-3 text-center">
+										Timeline
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								{sampleData.countries.map((country, index) => (
+									<tr
+										key={index}
+										className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+										<td className="border border-gray-300 px-4 py-3">
+											<div className="flex items-center gap-2">
+												<span className="text-lg">{country.flag}</span>
+												<span className="font-medium">{country.country}</span>
+											</div>
+										</td>
+										<td className="border border-gray-300 px-4 py-3 text-right">
+											${country.governmentFee.toFixed(2)}
+										</td>
+										<td className="border border-gray-300 px-4 py-3 text-right">
+											${country.attorneyFee.toFixed(2)}
+										</td>
+										<td className="border border-gray-300 px-4 py-3 text-right">
+											${country.commission.toFixed(2)}
+										</td>
+										<td className="border border-gray-300 px-4 py-3 text-right font-semibold">
+											${country.total.toFixed(2)}
+										</td>
+										<td className="border border-gray-300 px-4 py-3 text-center text-sm">
+											{country.timeline}
+										</td>
+									</tr>
+								))}
+							</tbody>
+							<tfoot>
+								<tr className="bg-blue-50">
+									<td
+										className="border border-gray-300 px-4 py-3 font-bold"
+										colSpan={4}>
+										GRAND TOTAL
+									</td>
+									<td className="border border-gray-300 px-4 py-3 text-right font-bold text-lg text-blue-600">
+										${sampleData.grandTotal.toFixed(2)}
+									</td>
+									<td className="border border-gray-300 px-4 py-3"></td>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+				</div>
+
+				<div className="text-center text-sm text-gray-500 border-t border-gray-200 pt-4">
+					<div>© 2025 Lex Protector. All rights reserved.</div>
+					<div className="mt-1">
+						This quotation is confidential and proprietary to Lex Protector and
+						the intended recipient.
+					</div>
+				</div>
+			</div>
+		);
+	};
+
+	// Schedule of charges content
+	const createScheduleOfChargesContent = () => {
+		return (
+			<div className="space-y-8">
+				<LexProtectorLetterhead />
+
+				<div className="text-center border-b-2 border-gray-300 pb-6">
+					<h1 className="text-3xl font-bold text-gray-800 mb-2">
+						SCHEDULE OF CHARGES
+					</h1>
+					<div className="text-lg text-gray-600">
+						Trademark Registration Services - 2025
+					</div>
+				</div>
+
+				<div className="space-y-8">
+					<div>
+						<h3 className="text-xl font-semibold text-gray-800 mb-4 bg-blue-50 p-3 rounded">
+							Trademark Search Services
+						</h3>
+						<div className="overflow-x-auto">
+							<table className="w-full border-collapse border border-gray-300">
+								<thead>
+									<tr className="bg-gray-50">
+										<th className="border border-gray-300 px-4 py-3 text-left">
+											Service
+										</th>
+										<th className="border border-gray-300 px-4 py-3 text-left">
+											Description
+										</th>
+										<th className="border border-gray-300 px-4 py-3 text-right">
+											Price (USD)
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td className="border border-gray-300 px-4 py-3 font-medium">
+											Basic Search
+										</td>
+										<td className="border border-gray-300 px-4 py-3">
+											Identical mark search in primary databases
+										</td>
+										<td className="border border-gray-300 px-4 py-3 text-right">
+											$75
+										</td>
+									</tr>
+									<tr className="bg-gray-50">
+										<td className="border border-gray-300 px-4 py-3 font-medium">
+											Comprehensive Search
+										</td>
+										<td className="border border-gray-300 px-4 py-3">
+											Comprehensive search including similar marks and common
+											law
+										</td>
+										<td className="border border-gray-300 px-4 py-3 text-right">
+											$150
+										</td>
+									</tr>
+									<tr>
+										<td className="border border-gray-300 px-4 py-3 font-medium">
+											Watch Service Setup
+										</td>
+										<td className="border border-gray-300 px-4 py-3">
+											Ongoing monitoring for conflicting applications
+										</td>
+										<td className="border border-gray-300 px-4 py-3 text-right">
+											$100
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<div>
+						<h3 className="text-xl font-semibold text-gray-800 mb-4 bg-green-50 p-3 rounded">
+							Application Filing Services
+						</h3>
+						<div className="overflow-x-auto">
+							<table className="w-full border-collapse border border-gray-300">
+								<thead>
+									<tr className="bg-gray-50">
+										<th className="border border-gray-300 px-4 py-3 text-left">
+											Service
+										</th>
+										<th className="border border-gray-300 px-4 py-3 text-left">
+											Description
+										</th>
+										<th className="border border-gray-300 px-4 py-3 text-right">
+											Price (USD)
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td className="border border-gray-300 px-4 py-3 font-medium">
+											Application Preparation
+										</td>
+										<td className="border border-gray-300 px-4 py-3">
+											Complete application drafting and review
+										</td>
+										<td className="border border-gray-300 px-4 py-3 text-right">
+											$200
+										</td>
+									</tr>
+									<tr className="bg-gray-50">
+										<td className="border border-gray-300 px-4 py-3 font-medium">
+											Filing Service
+										</td>
+										<td className="border border-gray-300 px-4 py-3">
+											Electronic filing with relevant trademark office
+										</td>
+										<td className="border border-gray-300 px-4 py-3 text-right">
+											$100
+										</td>
+									</tr>
+									<tr>
+										<td className="border border-gray-300 px-4 py-3 font-medium">
+											Priority Claim
+										</td>
+										<td className="border border-gray-300 px-4 py-3">
+											Paris Convention priority claim preparation
+										</td>
+										<td className="border border-gray-300 px-4 py-3 text-right">
+											$75
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
+				<div className="text-center text-sm text-gray-500 border-t border-gray-200 pt-4">
+					<div>© 2025 Lex Protector. All rights reserved.</div>
+					<div className="mt-1">
+						This schedule of charges is effective January 1, 2025 and subject to
+						periodic review.
+					</div>
+				</div>
+			</div>
+		);
+	};
+
+	// Button handlers
+	const handleShowSampleQuotation = () => {
+		pdfModal.openModal(createSampleQuotationContent(), {
+			title: "Sample Trademark Quotation",
+			filename: "sample-trademark-quotation.pdf",
+		});
+	};
+
+	const handleShowScheduleOfCharges = () => {
+		pdfModal.openModal(createScheduleOfChargesContent(), {
+			title: "Schedule of Charges",
+			filename: "trademark-schedule-of-charges.pdf",
+		});
+	};
 
 	// Unified style function that handles both selection and hover states
 	const getFeatureStyle = useCallback(
@@ -546,14 +893,14 @@ const InteractiveCoverageMap = () => {
 									onClick={() => toggleCountrySelection(country.id)}
 									className={`w-full flex items-center justify-between p-3 rounded-lg border transition-all ${
 										selectedCountries.includes(country.id)
-											? "border-primary bg-primary/10 text-primary"
+											? "border-primary bg-primary/10 text-primary dark:border-border dark:bg-blue-600/10 dark:text-blue-600"
 											: "border-border hover:border-primary/50"
 									}`}>
 									<div className="flex items-center space-x-3">
 										<span className="text-lg">{country.flag}</span>
 										<span className="font-medium">{country.name}</span>
 									</div>
-									<span className="text-sm text-text-secondary">
+									<span className="text-sm text-text-secondary font-bold">
 										${country.price}
 									</span>
 								</button>
@@ -631,7 +978,7 @@ const InteractiveCoverageMap = () => {
 									onClick={() => toggleServiceSelection(service.id)}
 									className={`w-full text-left p-3 rounded-lg border transition-all ${
 										selectedServices.includes(service.id)
-											? "border-primary bg-primary/10 text-primary"
+											? "border-primary bg-primary/10 text-primary dark:border-border dark:bg-blue-600/10 dark:text-blue-600"
 											: "border-border hover:border-primary/50"
 									}`}>
 									<div className="font-medium">{service.name}</div>
@@ -658,10 +1005,7 @@ const InteractiveCoverageMap = () => {
 					<Button
 						variant="default"
 						size="lg"
-						onClick={() => {
-							// Function will be added later
-							console.log("Sample Quotation Demo clicked");
-						}}
+						onClick={handleShowSampleQuotation}
 						className="px-8 py-4 flex items-center gap-2 dark:bg-blue-600/30 dark:text-white">
 						<Icon name="FileText" size={16} />
 						Sample Quotation Demo
@@ -669,15 +1013,22 @@ const InteractiveCoverageMap = () => {
 					<Button
 						variant="default"
 						size="lg"
-						onClick={() => {
-							// Function will be added later
-							console.log("Schedule of Charges clicked");
-						}}
+						onClick={handleShowScheduleOfCharges}
 						className="px-8 py-4 flex items-center gap-2 dark:bg-blue-600/30 dark:text-white">
 						<Icon name="DollarSign" size={16} />
 						Schedule of Charges
 					</Button>
 				</div>
+
+				{/* PDF Viewer Modal */}
+				<PDFViewerModal
+					isOpen={pdfModal.isOpen}
+					onClose={pdfModal.closeModal}
+					title={pdfModal.title}
+					content={pdfModal.content}
+					filename={pdfModal.filename}
+					size={pdfModal.size}
+				/>
 			</div>
 		</section>
 	);
