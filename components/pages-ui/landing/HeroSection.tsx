@@ -767,34 +767,19 @@ const HeroSection: React.FC = () => {
 					</div>
 				</div>
 
-				{/* Inline Calendly Scheduler Section */}
+				{/* Calendly Scheduler Section */}
 				{showCalendlyScheduler && (
-					<div
-						ref={calendlyRef}
-						className="mt-16 lg:mt-24 animate-in fade-in-50 slide-in-from-bottom-8 duration-700">
-						<div className="text-center mb-12">
-							<h2 className="text-3xl lg:text-4xl font-bold text-primary mb-4">
-								Schedule Your Personalized Demo
-							</h2>
-							<p className="text-xl text-text-secondary max-w-3xl mx-auto">
-								See how Lex Protector can transform your legal practice with a
-								live demo. Book a time that works for you directly below.
+					<div ref={calendlyRef} className="mt-16 fade-in">
+						<div className="mb-8 text-center">
+							<h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+								Schedule Your Demo
+							</h3>
+							<p className="text-gray-600 dark:text-gray-400">
+								Book a personalized demo to see how Lex Protector can transform
+								your practice
 							</p>
 						</div>
-
-						<div className="bg-white rounded-2xl shadow-cta border border-border p-8 lg:p-12">
-							<InlineCalendlyScheduler
-								calendlyUrl="https://calendly.com/lexprotector-int/30min"
-								title="Schedule Your Demo"
-								description="Choose a convenient time for your personalized demonstration"
-								responsiveHeight={{
-									mobile: "500px",
-									tablet: "600px",
-									desktop: "700px",
-								}}
-								containerClassName="max-w-4xl mx-auto"
-							/>
-						</div>
+						<InlineCalendlyScheduler calendlyUrl="https://calendly.com/lexprotector-int/30min" />
 					</div>
 				)}
 			</div>

@@ -1,21 +1,15 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/icon/AppIcon";
 import Link from "next/link";
-import {
-	EnhancedModal as Modal,
-	ModalContent,
-	ModalHeader,
-	ModalTitle,
-	ModalDescription,
-} from "@/components/ui/modal";
-import { CalendlyScheduler } from "@/components/scheduling";
+import { InlineCalendlyScheduler } from "@/components/scheduling";
 
 const PricingSection = () => {
 	const [billingCycle, setBillingCycle] = useState("monthly");
 	const [selectedPlan, setSelectedPlan] = useState("professional");
-	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [showCalendlyScheduler, setShowCalendlyScheduler] = useState(false);
+	const calendlyRef = useRef<HTMLDivElement>(null);
 
 	const plans = {
 		starter: {
@@ -164,7 +158,17 @@ const PricingSection = () => {
 	};
 
 	const handleScheduleDemo = () => {
-		setIsModalOpen(true);
+		setShowCalendlyScheduler(true);
+		// Small delay to ensure the component is rendered before scrolling
+		setTimeout(() => {
+			if (calendlyRef.current) {
+				calendlyRef.current.scrollIntoView({
+					behavior: "smooth",
+					block: "start",
+					inline: "nearest",
+				});
+			}
+		}, 100);
 	};
 
 	return (
@@ -434,34 +438,21 @@ const PricingSection = () => {
 					</div>
 				</div>
 
-				{/* Demo Modal */}
-				<Modal
-					open={isModalOpen}
-					onOpenChange={setIsModalOpen}
-					modalId="pricing-demo-modal">
-					<ModalContent
-						size="xl"
-						className="mt-4 max-w-[95vw] rounded-lg md:max-w-4xl max-h-[90vh] w-full overflow-hidden">
-						<ModalHeader className="sr-only">
-							<ModalTitle>Schedule Demo</ModalTitle>
-							<ModalDescription>Book a demo with our team</ModalDescription>
-						</ModalHeader>
-						<div className="overflow-y-auto max-h-[calc(90vh-2rem)] p-1">
-							<CalendlyScheduler
-								calendlyUrl="https://calendly.com/lexprotector-int"
-								eventType="30min"
-								title="Schedule Your Demo"
-								description="Book a personalized demo with our team to see how Lex Protector can transform your legal practice."
-								buttonText="Schedule Demo"
-								responsiveHeight={{
-									mobile: "500px",
-									tablet: "600px",
-									desktop: "800px",
-								}}
-							/>
+				{/* Calendly Scheduler Section */}
+				{showCalendlyScheduler && (
+					<div ref={calendlyRef} className="mt-16 fade-in">
+						<div className="mb-8 text-center">
+							<h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+								Schedule Your Demo
+							</h3>
+							<p className="text-gray-600 dark:text-gray-400">
+								Book a personalized demo to see how Lex Protector can transform
+								your practice
+							</p>
 						</div>
-					</ModalContent>
-				</Modal>
+						<InlineCalendlyScheduler calendlyUrl="https://calendly.com/lexprotector-int/30min" />
+					</div>
+				)}
 			</div>
 		</section>
 	);
