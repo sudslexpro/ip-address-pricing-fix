@@ -363,12 +363,12 @@ const PricingSection = () => {
 						{addOns.map((addon, index) => (
 							<div
 								key={index}
-								className="bg-white rounded-xl p-6 border border-border hover:shadow-cta transition-all duration-200">
-								<div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+								className="bg-white dark:bg-white/10 rounded-xl p-6 border border-border hover:shadow-cta transition-all duration-200">
+								<div className="w-12 h-12 bg-primary/10 dark:bg-primary/30 border border-border rounded-lg flex items-center justify-center mb-4">
 									<Icon
 										name={addon.icon as keyof typeof import("lucide-react")}
 										size={24}
-										className="text-primary"
+										className="text-primary dark:text-white"
 									/>
 								</div>
 								<h4 className="font-semibold text-text-primary mb-2">
@@ -400,7 +400,7 @@ const PricingSection = () => {
 						{faqItems.map((faq, index) => (
 							<div
 								key={index}
-								className="bg-white rounded-lg p-6 border border-border">
+								className="bg-white dark:bg-white/10 rounded-lg p-6 border border-border">
 								<h4 className="font-semibold text-text-primary mb-3">
 									{faq.question}
 								</h4>
