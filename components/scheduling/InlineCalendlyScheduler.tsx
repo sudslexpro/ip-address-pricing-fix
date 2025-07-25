@@ -174,12 +174,20 @@ const InlineCalendlyScheduler: React.FC<InlineCalendlySchedulerProps> = ({
 					minWidth,
 					height: finalHeight,
 					display: isWidgetLoaded || !showLoader ? "block" : "none",
+					background: "transparent",
 				}}
 			/>
 
-			{/* Responsive styles */}
-			{responsiveHeight && (
-				<style jsx>{`
+			{/* Responsive styles and background override */}
+			<style jsx>{`
+				.calendly-inline-widget {
+					background: transparent !important;
+				}
+				.calendly-inline-widget iframe {
+					background: transparent !important;
+				}
+				${responsiveHeight
+					? `
 					@media (max-width: 768px) {
 						.calendly-inline-widget {
 							height: ${responsiveHeight.mobile || "500px"} !important;
@@ -195,8 +203,9 @@ const InlineCalendlyScheduler: React.FC<InlineCalendlySchedulerProps> = ({
 							height: ${responsiveHeight.desktop || height} !important;
 						}
 					}
-				`}</style>
-			)}
+				`
+					: ""}
+			`}</style>
 		</div>
 	);
 };
