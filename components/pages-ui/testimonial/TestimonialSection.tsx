@@ -10,13 +10,12 @@ const TestimonialsSection = () => {
 	const testimonials = [
 		{
 			id: 1,
-			name: "Sarah Chen",
-			title: "Managing Partner",
-			firm: "Chen & Associates IP Law",
-			location: "San Francisco, CA",
-			avatar:
-				"/assets/images/no_image.png",
-			quote: `Lex Protector transformed our practice overnight. What used to take 2-3 hours of research now takes 2 minutes. Our clients are amazed by our speed, and we've increased our quote volume by 300% while maintaining accuracy.`,
+			name: "PRADEESH PL",
+			title: "Founder & CEO",
+			firm: "Trumarx",
+			location: "Bangalore, India",
+			avatar: "/assets/testimonials/Trumarx_Logo.png",
+			quote: `As a law firm managing international trademark matters, we’ve found the Partner Portal to be an invaluable resource. It enables us to obtain accurate quotations across multiple jurisdictions quickly and ensures a smooth process through to registration. The team is highly responsive and professional, making the entire experience efficient and reliable. We’re pleased to collaborate and look forward to continuing this trusted partnership.`,
 			metrics: {
 				timeSaved: "85%",
 				revenueIncrease: "240%",
@@ -29,13 +28,13 @@ const TestimonialsSection = () => {
 		},
 		{
 			id: 2,
-			name: "Michael Rodriguez",
-			title: "Senior Trademark Attorney",
-			firm: "Rodriguez IP Solutions",
-			location: "Austin, TX",
+			name: "Shantanu Guchhait",
+			title: "Founder",
+			firm: "Lex Motion",
+			location: "Kolkata, West Bengal, India",
 			avatar:
-				"https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-			quote: `The white-label feature is a game-changer. Our clients see professional quotes with our branding, and we control our commission rates. It's like having a trademark research team working 24/7.`,
+				"/assets/testimonials/LexMotion_Logo.png",
+			quote: `Our experience working through the Partner Portal has been seamless and efficient. The platform simplifies the process of obtaining trademark quotes across various jurisdictions, saving us time and effort. The support team is knowledgeable and prompt, which has greatly enhanced our ability to manage international filings smoothly. It’s a practical and reliable solution for law firms handling cross-border trademark work.`,
 			metrics: {
 				timeSaved: "90%",
 				revenueIncrease: "180%",
@@ -48,13 +47,13 @@ const TestimonialsSection = () => {
 		},
 		{
 			id: 3,
-			name: "Jennifer Park",
-			title: "Founder & Principal",
-			firm: "Park Trademark Group",
-			location: "Seattle, WA",
+			name: "Abhishek Sharam",
+			title: "Chartered Accountant",
+			firm: "CA",
+			location: "",
 			avatar:
-				"https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
-			quote: `As a solo practitioner, I was drowning in quote preparation. Lex Protector gave me my life back. I can now handle 3x more clients while spending time on high-value legal work instead of administrative tasks.`,
+				"/assets/testimonials/CA_Logo.jpg",
+			quote: `As a CA firm supporting clients with IP-related documentation and compliance, Lex Protector's Partner Portal has been a valuable tool for us. It offers quick access to multi-country trademark quotations, including countries like the USA, UK, Australia, and Canada, and it takes only 2-3 minutes to generate a quote. The platform streamlines our coordination with legal teams, is user-friendly, and the professional support ensures smooth handling of trademark filings, helping us deliver comprehensive service to our clients.`,
 			metrics: {
 				timeSaved: "80%",
 				revenueIncrease: "320%",
@@ -67,13 +66,13 @@ const TestimonialsSection = () => {
 		},
 		{
 			id: 4,
-			name: "David Thompson",
-			title: "IP Practice Lead",
-			firm: "Thompson & Partners",
-			location: "Chicago, IL",
+			name: "Wendy Au",
+			title: "",
+			firm: "",
+			location: "",
 			avatar:
-				"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
-			quote: `The international coverage is incredible. We now confidently quote for countries we never touched before. Our clients love the comprehensive options, and we've expanded our practice globally.`,
+				"/assets/images/LP_Logo.png",
+			quote: `The Partner Portal made it easy to request trademark quotes across multiple countries. The team provided excellent support throughout the process, guiding me efficiently from quote to successful filing. Their prompt assistance and clear communication were truly commendable.`,
 			metrics: {
 				timeSaved: "75%",
 				revenueIncrease: "200%",
@@ -197,13 +196,13 @@ const TestimonialsSection = () => {
 									<Image
 										src={currentTest.avatar}
 										alt={currentTest.name}
-										width={64}
-										height={64}
-										className="w-16 h-16 rounded-full object-cover"
+										width={400}
+										height={400}
+										className="w-54 h-30 object-fit bg-white dark:bg-white/90 rounded-lg shadow-md p-2"
 									/>
-									<div className="absolute -bottom-1 -right-1 w-6 h-6 bg-success rounded-full flex items-center justify-center">
+									{/* <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-success rounded-full flex items-center justify-center">
 										<Icon name="Check" size={12} className="text-white" />
-									</div>
+									</div> */}
 								</div>
 								<div>
 									<h3 className="text-lg font-semibold text-text-primary">
@@ -350,16 +349,14 @@ const TestimonialsSection = () => {
 				{/* Partner Logos */}
 				<div className="mt-16 text-center">
 					<p className="text-sm text-text-secondary mb-8">
-						Trusted by leading boutique law firms
+						Trusted by leading IP Lawyers & Boutique law firms
 					</p>
 					<div className="flex flex-wrap items-center justify-center gap-8 opacity-60">
 						{[
-							"Chen & Associates",
-							"Rodriguez IP Solutions",
-							"Park Trademark Group",
-							"Thompson & Partners",
-							"Williams IP Law",
-							"Davis Legal Group",
+							"Trumarx",
+							"Lex Motion",
+							"CA",
+							"Wendy Au",
 						].map((firm, index) => (
 							<div key={index} className="text-sm font-medium text-text-muted">
 								{firm}
