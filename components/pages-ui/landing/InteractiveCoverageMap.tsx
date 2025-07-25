@@ -714,6 +714,13 @@ const InteractiveCoverageMap = () => {
 					</div>
 				</div>
 
+				{/* Note about fees */}
+				<div className="mt-8 text-center bg-accent/10 border border-accent p-6 rounded-lg">
+					<p className="text-sm text-accent font-bold italic">
+						Note: The fee above covers the professional filing fee, excluding the government fee
+					</p>
+				</div>
+
 				{/* Generate Quote Button */}
 				<div className="flex flex-col md:flex-row justify-center items-center gap-4 mt-8">
 					<Link href="https://partner.lexprotector.com/signup">
