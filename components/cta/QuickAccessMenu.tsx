@@ -55,27 +55,27 @@ const QuickAccessMenu = () => {
 			},
 			href: "/#success-stories",
 		},
-		{
-			id: "resources",
-			label: "Download Resources",
-			description: "Guides and whitepapers",
-			icon: "Download",
-			href: "/legal-resources",
-		},
-		{
-			id: "help",
-			label: "Help Center",
-			description: "Support & tutorials",
-			icon: "Info",
-			href: "/help-center",
-		},
-		{
-			id: "training",
-			label: "Training Center",
-			description: "Learn the platform",
-			icon: "GraduationCap",
-			href: "/training",
-		},
+		// {
+		// 	id: "resources",
+		// 	label: "Download Resources",
+		// 	description: "Guides and whitepapers",
+		// 	icon: "Download",
+		// 	href: "/legal-resources",
+		// },
+		// {
+		// 	id: "help",
+		// 	label: "Help Center",
+		// 	description: "Support & tutorials",
+		// 	icon: "Info",
+		// 	href: "/help-center",
+		// },
+		// {
+		// 	id: "training",
+		// 	label: "Training Center",
+		// 	description: "Learn the platform",
+		// 	icon: "GraduationCap",
+		// 	href: "/training",
+		// },
 	];
 
 	const toggleMenu = () => {
@@ -180,15 +180,16 @@ const QuickAccessMenu = () => {
 							{quickAccessItems.map((item) => {
 								const itemContent = (
 									<div className="w-full flex items-start space-x-3 p-3 rounded-md text-left hover:bg-surface transition-smooth group">
-										<div className="flex-shrink-0 w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-smooth">
+										<div className="flex-shrink-0 w-10 h-10 bg-primary/10 dark:bg-blue-600/10 border border-border rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-smooth">
 											<Icon
 												name={item.icon}
 												size={20}
-												color="var(--color-primary)"
+												// color="var(--color-primary)"
+												className={`text-primary dark:text-blue-600 group-hover:text-primary/80 transition-smooth`}
 											/>
 										</div>
 										<div className="flex-1 min-w-0">
-											<p className="text-sm font-medium text-text-primary group-hover:text-primary transition-smooth">
+											<p className="text-sm font-medium text-text-primary group-hover:text-primary dark:text-blue-600 dark:group-hover:text-blue-600/80 transition-smooth">
 												{item.label}
 											</p>
 											<p className="text-xs text-text-secondary mt-1">
@@ -198,7 +199,7 @@ const QuickAccessMenu = () => {
 										<Icon
 											name="ChevronRight"
 											size={16}
-											className="text-text-muted group-hover:text-primary transition-smooth"
+											className="text-text-muted group-hover:text-primary dark:text-blue-600 dark:group-hover:text-blue-600/60 transition-smooth"
 										/>
 									</div>
 								);
@@ -234,7 +235,7 @@ const QuickAccessMenu = () => {
 							<Link
 								href="https://partner.lexprotector.com/signup"
 								onClick={() => setIsOpen(false)}>
-								<Button variant="default" size="sm" className="w-full">
+								<Button variant="default" size="sm" className="w-full dark:bg-blue-600 dark:hover:bg-blue-700 dark:text-white">
 									Get Started with your free trial
 									<Icon name="ArrowRight" size={16} className="ml-2" />
 								</Button>
