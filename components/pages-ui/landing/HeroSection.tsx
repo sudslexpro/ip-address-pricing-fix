@@ -16,7 +16,7 @@ import { Style, Circle as CircleStyle, Fill, Stroke } from "ol/style";
 import Overlay from "ol/Overlay";
 import type { FeatureLike } from "ol/Feature";
 import Link from "next/link";
-import { InlineCalendlyScheduler } from "@/components/scheduling";
+import { VersatileCalendlyScheduler } from "@/components/scheduling";
 
 interface CountryData {
 	id: string;
@@ -482,7 +482,7 @@ const HeroSection: React.FC = () => {
 	};
 
 	return (
-		<section className="relative min-h-screen bg-[#ecf6ff] pt-20 pb-16 overflow-hidden">
+		<section className="relative min-h-screen bg-[#ecf6ff] dark:bg-[#152235] pt-20 pb-16 overflow-hidden">
 			{/* Custom CSS for OpenLayers elements */}
 			<style jsx>{`
 				.ol-popup {
@@ -551,11 +551,13 @@ const HeroSection: React.FC = () => {
 								<span>White-Label Trademark Quotation</span>
 							</div>
 
-							<h1 className="text-4xl lg:text-6xl font-bold text-primary leading-tight">
+							<h1 className="text-4xl lg:text-6xl font-bold text-primary dark:text-muted-foreground leading-tight">
 								Generate Professional{" "}
 								<span className="text-accent">Trademark Quotes</span> in 2
 								Minutes for{" "}
-								<span className="text-[#1a365d]">100+ Countries</span>
+								<span className="text-[#1a365d] dark:text-muted-foreground">
+									100+ Countries
+								</span>
 							</h1>
 
 							<p className="text-xl text-text-secondary leading-relaxed max-w-2xl">
@@ -581,7 +583,7 @@ const HeroSection: React.FC = () => {
 									variant="outline"
 									size="lg"
 									onClick={handleTrialStart}
-									className="border-primary text-primary hover:bg-[#1a365d] hover:text-white w-[22rem] md:w-auto px-8 py-8">
+									className="border-primary text-primary dark:text-gray-100 hover:bg-[#1a365d] hover:text-white w-[22rem] md:w-auto px-8 py-8">
 									Start Free Trial
 									<Icon name="ArrowRight" size={16} />
 								</Button>
@@ -593,7 +595,7 @@ const HeroSection: React.FC = () => {
 							<div className="flex flex-wrap items-center gap-8">
 								<div className="flex items-center space-x-2">
 									<div className="w-3 h-3 bg-success rounded-full animate-pulse"></div>
-									<span className="text-sm font-medium text-primary">
+									<span className="text-sm font-medium text-primary dark:text-gray-100">
 										{quotesGenerated.toLocaleString()}+ quotes generated monthly
 									</span>
 								</div>
@@ -604,7 +606,11 @@ const HeroSection: React.FC = () => {
 									</span>
 								</div>
 								<div className="flex items-center space-x-2">
-									<Icon name="Users" size={16} className="text-primary" />
+									<Icon
+										name="Users"
+										size={16}
+										className="text-primary dark:text-gray-100"
+									/>
 									<span className="text-sm font-medium text-text-secondary">
 										100+ Partner Firms
 									</span>
@@ -615,7 +621,7 @@ const HeroSection: React.FC = () => {
 
 					{/* Right Side - Interactive World Map */}
 					<div className="relative">
-						<div className="bg-white rounded-2xl shadow-cta p-8 border border-border">
+						<div className="bg-white dark:bg-white/5 rounded-2xl shadow-cta p-8 border border-border">
 							<div className="text-center mb-6">
 								<h3 className="text-lg font-semibold text-text-primary mb-2">
 									Quick Coverage Preview
@@ -639,15 +645,15 @@ const HeroSection: React.FC = () => {
 								/>
 
 								{/* Map Controls */}
-								<div className="absolute top-4 right-4 flex space-x-2 z-10">
+								<div className="absolute top-4 right-4 flex flex-col items-end space-y-2 z-10">
 									<button
 										onClick={resetMapView}
-										className="bg-white/80 hover:bg-white p-2 rounded-full shadow-sm text-text-secondary hover:text-primary transition-colors"
+										className="bg-white/80 hover:bg-white dark:bg-primary dark:hover:text-white p-2 rounded-full shadow-sm text-text-secondary hover:text-primary transition-colors"
 										title="Reset View">
 										<Icon name="RefreshCw" size={14} />
 									</button>
 									<button
-										className="bg-white/80 hover:bg-white p-2 rounded-full shadow-sm text-text-secondary hover:text-primary transition-colors"
+										className="bg-white/80 hover:bg-white dark:bg-primary dark:hover:text-white p-2 rounded-full shadow-sm text-text-secondary hover:text-primary transition-colors"
 										title="Toggle Satellite View"
 										onClick={() => {
 											// Toggle between standard and satellite view
@@ -673,7 +679,7 @@ const HeroSection: React.FC = () => {
 										className={`${
 											showAllPrices
 												? "bg-accent text-white"
-												: "bg-white/80 text-text-secondary hover:text-primary"
+												: "bg-white/80 text-text-secondary hover:text-primary dark:bg-primary dark:hover:text-white"
 										} p-2 rounded-full shadow-sm transition-colors`}
 										title="Show All Prices">
 										<Icon name="DollarSign" size={14} />
@@ -696,7 +702,7 @@ const HeroSection: React.FC = () => {
 										className={`${
 											activeRegion === "americas"
 												? "bg-accent text-white"
-												: "bg-white/80 text-text-secondary hover:text-primary"
+												: "bg-white/80 text-text-secondary hover:text-primary dark:bg-primary dark:hover:text-white"
 										} px-2 py-1 rounded text-xs font-medium shadow-sm transition-colors`}>
 										Americas
 									</button>
@@ -705,7 +711,7 @@ const HeroSection: React.FC = () => {
 										className={`${
 											activeRegion === "europe"
 												? "bg-accent text-white"
-												: "bg-white/80 text-text-secondary hover:text-primary"
+												: "bg-white/80 text-text-secondary hover:text-primary dark:bg-primary dark:hover:text-white"
 										} px-2 py-1 rounded text-xs font-medium shadow-sm transition-colors`}>
 										Europe
 									</button>
@@ -714,17 +720,17 @@ const HeroSection: React.FC = () => {
 										className={`${
 											activeRegion === "asia"
 												? "bg-accent text-white"
-												: "bg-white/80 text-text-secondary hover:text-primary"
+												: "bg-white/80 text-text-secondary hover:text-primary dark:bg-primary dark:hover:text-white"
 										} px-2 py-1 rounded text-xs font-medium shadow-sm transition-colors`}>
 										Asia
 									</button>
 								</div>
 
 								{/* Coverage Stats */}
-								<div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-4 border border-border/50 z-10">
+								<div className="absolute bottom-4 left-4 right-4 bg-white/90 dark:bg-primary backdrop-blur-sm rounded-lg p-4 border border-border/50 z-10">
 									<div className="grid grid-cols-3 gap-4 text-center">
 										<div>
-											<div className="text-2xl font-bold text-[#1a365d]">
+											<div className="text-2xl font-bold text-[#1a365d] dark:text-muted-foreground">
 												100+
 											</div>
 											<div className="text-xs text-text-secondary">
@@ -779,7 +785,12 @@ const HeroSection: React.FC = () => {
 								your practice
 							</p>
 						</div>
-						<InlineCalendlyScheduler calendlyUrl="https://calendly.com/lexprotector-int/30min" />
+						<VersatileCalendlyScheduler
+							calendlyUrl="https://calendly.com/lexprotector-int"
+							eventType="30min"
+							mode="inline"
+							autoLoadScript={true}
+						/>
 					</div>
 				)}
 			</div>

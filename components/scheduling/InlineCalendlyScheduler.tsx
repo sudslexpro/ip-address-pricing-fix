@@ -174,17 +174,17 @@ const InlineCalendlyScheduler: React.FC<InlineCalendlySchedulerProps> = ({
 					minWidth,
 					height: finalHeight,
 					display: isWidgetLoaded || !showLoader ? "block" : "none",
-					background: "transparent",
 				}}
 			/>
 
-			{/* Responsive styles and background override */}
+			{/* Responsive styles */}
 			<style jsx>{`
 				.calendly-inline-widget {
-					background: transparent !important;
+					border-radius: 0.5rem;
 				}
 				.calendly-inline-widget iframe {
-					background: transparent !important;
+					border-radius: 0.5rem;
+					border: 1px solid hsl(var(--border));
 				}
 				${responsiveHeight
 					? `

@@ -63,14 +63,9 @@ declare global {
 const VersatileCalendlyScheduler: React.FC<VersatileCalendlySchedulerProps> = ({
 	calendlyUrl,
 	eventType = "30min",
-	title = "Schedule Your Demo",
-	description = "Book a personalized demo with our team to see how Lex Protector can transform your legal practice.",
-	features = [
-		"How to generate accurate quotes in minutes",
-		"Custom branding and white-label options",
-		"Advanced analytics and reporting features",
-		"Integration with your existing workflow",
-	],
+	title,
+	description,
+	features = [],
 	buttonText = "Schedule Now",
 	duration = "30-minute session",
 	onCalendlyOpen,
@@ -220,7 +215,7 @@ const VersatileCalendlyScheduler: React.FC<VersatileCalendlySchedulerProps> = ({
 				{/* Inline Calendly widget container */}
 				<div
 					ref={inlineWidgetRef}
-					className="calendly-inline-widget w-full"
+					className="calendly-inline-widget w-full bg-transparent rounded-lg overflow-hidden"
 					data-url={finalUrl}
 					style={{
 						minWidth,
@@ -319,7 +314,7 @@ const VersatileCalendlyScheduler: React.FC<VersatileCalendlySchedulerProps> = ({
 
 				{/* Calendly widget */}
 				<div
-					className="w-full border border-border rounded-lg overflow-hidden calendly-responsive-container"
+					className="w-full border border-border bg-primary/10 rounded-lg overflow-hidden calendly-responsive-container"
 					style={
 						{
 							"--mobile-height": responsiveHeight?.mobile || "500px",
@@ -365,7 +360,7 @@ const VersatileCalendlyScheduler: React.FC<VersatileCalendlySchedulerProps> = ({
 	// Compact info view
 	if (compact) {
 		return (
-			<div className="text-center space-y-4">
+			<div className="text-center space-y-4 overflow-hidden">
 				<div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
 					<Icon name="Calendar" size={24} className="text-primary" />
 				</div>
@@ -395,7 +390,7 @@ const VersatileCalendlyScheduler: React.FC<VersatileCalendlySchedulerProps> = ({
 
 	// Full info view
 	return (
-		<div className="text-center space-y-6">
+		<div className="text-center space-y-6 overflow-hidden">
 			{/* Header */}
 			<div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
 				<Icon name="Calendar" size={32} className="text-primary" />

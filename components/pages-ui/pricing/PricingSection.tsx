@@ -10,7 +10,7 @@ import {
 	ModalTitle,
 	ModalDescription,
 } from "@/components/ui/modal";
-import { InlineCalendlyScheduler } from "@/components/scheduling";
+import { VersatileCalendlyScheduler } from "@/components/scheduling";
 
 const PricingSection = () => {
 	const [billingCycle, setBillingCycle] = useState("monthly");
@@ -458,7 +458,12 @@ const PricingSection = () => {
 								your practice
 							</p>
 						</div>
-						<InlineCalendlyScheduler calendlyUrl="https://calendly.com/lexprotector-int/30min" />
+						<VersatileCalendlyScheduler
+							calendlyUrl="https://calendly.com/lexprotector-int"
+							eventType="30min"
+							mode="inline"
+							autoLoadScript={true}
+						/>
 					</div>
 				)}
 			</div>
