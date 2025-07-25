@@ -191,7 +191,7 @@ const PDFViewerModal: React.FC<PDFViewerModalProps> = ({
 			open={isOpen}
 			onOpenChange={onClose}
 			modalId={`pdf-viewer-${title.replace(/\s+/g, "-").toLowerCase()}`}>
-			<ModalContent size={size} className="max-h-[90vh] flex flex-col">
+			<ModalContent size={size} className="max-h-[90vh] mt-7 flex flex-col">
 				<ModalHeader className="flex-shrink-0">
 					<div className="flex items-center gap-2">
 						<Icon name="FileText" size={20} />
@@ -209,9 +209,9 @@ const PDFViewerModal: React.FC<PDFViewerModalProps> = ({
 				<ModalFooter className="flex-shrink-0 border-t border-border pt-4">
 					<div className="flex justify-end w-full">
 						<Button
-							variant="secondary"
+							variant="default"
 							onClick={onClose}
-							className="flex items-center gap-2">
+							className="flex items-center gap-2 dark:bg-blue-900 dark:text-white">
 							<Icon name="X" size={16} />
 							Close
 						</Button>
