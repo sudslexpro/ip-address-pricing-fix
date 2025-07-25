@@ -3,11 +3,19 @@ import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/icon/AppIcon";
 import Link from "next/link";
+import {
+	EnhancedModal as Modal,
+	ModalContent,
+	ModalHeader,
+	ModalTitle,
+	ModalDescription,
+} from "@/components/ui/modal";
 import { InlineCalendlyScheduler } from "@/components/scheduling";
 
 const PricingSection = () => {
 	const [billingCycle, setBillingCycle] = useState("monthly");
 	const [selectedPlan, setSelectedPlan] = useState("professional");
+	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [showCalendlyScheduler, setShowCalendlyScheduler] = useState(false);
 	const calendlyRef = useRef<HTMLDivElement>(null);
 
