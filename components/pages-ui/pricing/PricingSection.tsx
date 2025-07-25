@@ -202,7 +202,7 @@ const PricingSection = () => {
 							onClick={() => setBillingCycle("monthly")}
 							className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
 								billingCycle === "monthly"
-									? "bg-white text-primary shadow-sm"
+									? "bg-white dark:bg-primary/70 text-primary dark:text-white shadow-sm"
 									: "text-text-secondary hover:text-primary"
 							}`}>
 							Monthly
@@ -211,7 +211,7 @@ const PricingSection = () => {
 							onClick={() => setBillingCycle("annual")}
 							className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
 								billingCycle === "annual"
-									? "bg-white text-primary shadow-sm"
+									? "bg-white dark:bg-primary/70 text-primary dark:text-white shadow-sm"
 									: "text-text-secondary hover:text-primary"
 							}`}>
 							Annual
@@ -227,7 +227,7 @@ const PricingSection = () => {
 					{Object.entries(plans).map(([key, plan]) => (
 						<div
 							key={key}
-							className={`relative bg-white rounded-2xl border-2 transition-all duration-200 ${
+							className={`relative bg-white dark:bg-white/10 rounded-2xl border-2 transition-all duration-200 ${
 								plan.popular
 									? "border-accent shadow-cta scale-105"
 									: selectedPlan === key

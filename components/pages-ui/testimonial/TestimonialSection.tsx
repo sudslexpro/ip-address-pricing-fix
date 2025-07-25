@@ -166,7 +166,7 @@ const TestimonialsSection = () => {
 					{successMetrics.map((metric, index) => (
 						<div
 							key={index}
-							className="bg-white rounded-xl p-6 border border-border text-center hover:shadow-cta transition-all duration-200">
+							className="bg-white dark:bg-white/10 rounded-xl p-6 border border-border text-center hover:shadow-cta transition-all duration-200">
 							<div className="w-12 h-12 bg-success/20 rounded-lg flex items-center justify-center mx-auto mb-4">
 								<Icon
 									name={metric.icon as keyof typeof import("lucide-react")}
@@ -188,7 +188,7 @@ const TestimonialsSection = () => {
 				</div>
 
 				{/* Main Testimonial */}
-				<div className="bg-white rounded-2xl shadow-cta border border-border overflow-hidden">
+				<div className="bg-white dark:bg-white/10 rounded-2xl shadow-cta border border-border overflow-hidden">
 					<div className="grid lg:grid-cols-2">
 						{/* Testimonial Content */}
 						<div className="p-8 lg:p-12">
@@ -212,7 +212,7 @@ const TestimonialsSection = () => {
 									<p className="text-sm text-text-secondary">
 										{currentTest.title}
 									</p>
-									<p className="text-sm text-primary font-medium">
+									<p className="text-sm text-primary dark:text-blue-600 font-medium">
 										{currentTest.firm}
 									</p>
 									<p className="text-xs text-text-muted">
@@ -256,7 +256,7 @@ const TestimonialsSection = () => {
 											onClick={() => handleTestimonialChange(index)}
 											className={`w-2 h-2 rounded-full transition-all duration-200 ${
 												index === currentTestimonial
-													? "bg-primary w-6"
+													? "bg-primary dark:bg-blue-600 w-6"
 													: "bg-border hover:bg-primary/50"
 											}`}
 										/>
@@ -285,13 +285,13 @@ const TestimonialsSection = () => {
 
 							<div className="space-y-6">
 								<div className="text-center">
-									<div className="text-4xl font-bold text-primary mb-2">
+									<div className="text-4xl font-bold text-primary dark:text-blue-600 mb-2">
 										{currentTest.metrics.timeSaved}
 									</div>
 									<div className="text-sm text-text-secondary">Time Saved</div>
-									<div className="w-full bg-surface rounded-full h-2 mt-2">
+									<div className="w-full bg-surface dark:bg-primary rounded-full h-2 mt-2">
 										<div
-											className="bg-primary h-2 rounded-full transition-all duration-1000"
+											className="bg-primary dark:bg-blue-600 h-2 rounded-full transition-all duration-1000"
 											style={{ width: currentTest.metrics.timeSaved }}></div>
 									</div>
 								</div>
@@ -332,7 +332,7 @@ const TestimonialsSection = () => {
 								</div>
 							</div>
 
-							<div className="mt-8 p-4 bg-white/50 rounded-lg text-center">
+							<div className="mt-8 p-4 bg-white/50 dark:bg-white/10 rounded-lg text-center">
 								<div className="text-xs text-text-secondary mb-1">
 									VERIFIED PARTNER
 								</div>
