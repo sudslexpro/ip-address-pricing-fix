@@ -27,11 +27,13 @@ function LayoutContent({ children }: LayoutClientProps) {
 	// Load Bitrix24 script
 	useEffect(() => {
 		if (shouldShowFloatingElements) {
-			const script = document.createElement('script');
+			const script = document.createElement("script");
 			script.async = true;
-			script.src = `https://cdn.bitrix24.com/b3999627/crm/site_button/loader_9_dsfmdv.js?${Date.now()/60000|0}`;
-			
-			const firstScript = document.getElementsByTagName('script')[0];
+			script.src = `https://cdn.bitrix24.com/b3999627/crm/site_button/loader_9_dsfmdv.js?${
+				(Date.now() / 60000) | 0
+			}`;
+
+			const firstScript = document.getElementsByTagName("script")[0];
 			if (firstScript && firstScript.parentNode) {
 				firstScript.parentNode.insertBefore(script, firstScript);
 			}
