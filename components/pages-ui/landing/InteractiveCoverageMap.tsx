@@ -520,7 +520,7 @@ const InteractiveCoverageMap = () => {
 			<div className="max-w-7xl mx-auto px-6 lg:px-8">
 				{/* Section Header */}
 				<div className="text-center mb-16">
-					<div className="inline-flex items-center space-x-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
+					<div className="inline-flex items-center space-x-2 dark:bg-blue-600/30 text-primary dark:text-blue-600 px-4 py-2 rounded-full text-sm font-medium mb-6">
 						<Icon name="Globe" size={16} />
 						<span>Global Coverage</span>
 					</div>
@@ -535,7 +535,7 @@ const InteractiveCoverageMap = () => {
 
 				<div className="grid lg:grid-cols-3 gap-8">
 					{/* Country Selection */}
-					<div className="bg-white rounded-2xl shadow-cta border border-border p-6">
+					<div className="bg-white dark:bg-white/10 rounded-2xl shadow-cta border border-border p-6">
 						<h3 className="text-lg font-semibold text-text-primary mb-4">
 							Step 1: Select Countries
 						</h3>
@@ -562,7 +562,7 @@ const InteractiveCoverageMap = () => {
 					</div>
 
 					{/* Interactive Map */}
-					<div className="bg-white rounded-2xl shadow-cta border border-border p-6">
+					<div className="bg-white dark:bg-white/10 rounded-2xl shadow-cta border border-border p-6">
 						<h3 className="text-lg font-semibold text-text-primary mb-4">
 							World Coverage Map
 						</h3>
@@ -585,7 +585,7 @@ const InteractiveCoverageMap = () => {
 								</div>
 							</div>
 							{/* Color Legend */}
-							<div className="bg-gray-600 rounded-lg p-3">
+							<div className="bg-gray-600 dark:bg-white/20 rounded-lg p-3">
 								<div className="text-xs font-medium text-white mb-2 text-center">
 									Map Colour Codes Identification
 								</div>
@@ -620,7 +620,7 @@ const InteractiveCoverageMap = () => {
 					</div>
 
 					{/* Service Selection */}
-					<div className="bg-white rounded-2xl shadow-cta border border-border p-6">
+					<div className="bg-white dark:bg-white/10 rounded-2xl shadow-cta border border-border p-6">
 						<h3 className="text-lg font-semibold text-text-primary mb-4">
 							Step 2: Select Services
 						</h3>
@@ -650,7 +650,7 @@ const InteractiveCoverageMap = () => {
 						<Button
 							variant="default"
 							size="lg"
-							className="px-8 py-4 flex items-center gap-2">
+							className="px-8 py-4 flex items-center gap-2 dark:bg-blue-600/30 dark:text-white">
 							<Icon name="Calculator" size={16} />
 							Generate Multi-Country Quote
 						</Button>
@@ -662,7 +662,7 @@ const InteractiveCoverageMap = () => {
 							// Function will be added later
 							console.log("Sample Quotation Demo clicked");
 						}}
-						className="px-8 py-4 flex items-center gap-2">
+						className="px-8 py-4 flex items-center gap-2 dark:bg-blue-600/30 dark:text-white">
 						<Icon name="FileText" size={16} />
 						Sample Quotation Demo
 					</Button>
@@ -673,7 +673,7 @@ const InteractiveCoverageMap = () => {
 							// Function will be added later
 							console.log("Schedule of Charges clicked");
 						}}
-						className="px-8 py-4 flex items-center gap-2">
+						className="px-8 py-4 flex items-center gap-2 dark:bg-blue-600/30 dark:text-white">
 						<Icon name="DollarSign" size={16} />
 						Schedule of Charges
 					</Button>

@@ -98,7 +98,7 @@ const CommissionCalculator = () => {
 
 				<div className="grid lg:grid-cols-2 gap-12">
 					{/* Calculator Controls */}
-					<div className="bg-white rounded-2xl shadow-cta border border-border p-8">
+					<div className="bg-white dark:bg-white/10 rounded-2xl shadow-cta border border-border p-8">
 						<h3 className="text-xl font-semibold text-text-primary mb-6">
 							Customize Your Parameters
 						</h3>
@@ -116,7 +116,7 @@ const CommissionCalculator = () => {
 											onClick={() => handleFirmSizeChange(key)}
 											className={`w-full flex items-center justify-between p-4 rounded-lg border transition-all duration-200 ${
 												firmSize === key
-													? "border-primary bg-primary/10 text-primary"
+													? "border-primary bg-primary/10 text-primary dark:border-blue-400 dark:bg-blue-600/10 dark:text-blue-600"
 													: "border-border hover:border-primary/50 hover:bg-surface"
 											}`}>
 											<span className="font-medium">{size.label}</span>
@@ -133,7 +133,7 @@ const CommissionCalculator = () => {
 						<div className="mb-8">
 							<label className="block text-sm font-medium text-text-primary mb-3">
 								Monthly Quotes:{" "}
-								<span className="text-primary font-semibold">
+								<span className="text-primary dark:text-blue-600 font-semibold">
 									{monthlyQuotes}
 								</span>
 							</label>
@@ -181,7 +181,7 @@ const CommissionCalculator = () => {
 						<div className="mb-8">
 							<label className="block text-sm font-medium text-text-primary mb-3">
 								Average Quote Value:{" "}
-								<span className="text-primary font-semibold">
+								<span className="text-primary dark:text-blue-600 font-semibold">
 									${averageQuoteValue}
 								</span>
 							</label>
@@ -207,7 +207,7 @@ const CommissionCalculator = () => {
 						{/* Platform Cost Info */}
 						<div className="bg-surface rounded-lg p-4">
 							<div className="flex items-center space-x-2 mb-2">
-								<Icon name="Info" size={16} className="text-primary" />
+								<Icon name="Info" size={16} className="text-primary dark:text-blue-600" />
 								<span className="text-sm font-medium text-text-primary">
 									Platform Cost
 								</span>
@@ -295,10 +295,10 @@ const CommissionCalculator = () => {
 						</div>
 
 						{/* Time Savings */}
-						<div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl p-8 border border-primary/20">
+						<div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl p-8 border border-primary/20 dark:bg-primary/10 dark:border-blue-400 dark:to-blue-600/5">
 							<div className="flex items-center space-x-3 mb-6">
-								<div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
-									<Icon name="Clock" size={24} className="text-primary" />
+								<div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center dark:bg-blue-600/10">
+									<Icon name="Clock" size={24} className="text-primary dark:text-blue-600" />
 								</div>
 								<div>
 									<h3 className="text-xl font-semibold text-text-primary">
@@ -311,7 +311,7 @@ const CommissionCalculator = () => {
 							</div>
 
 							<div className="text-center">
-								<div className="text-3xl font-bold text-primary mb-1">
+								<div className="text-3xl font-bold text-primary dark:text-blue-600 mb-1">
 									{calculations.timeSaved?.toFixed(0) || "0"} hours
 								</div>
 								<div className="text-sm text-text-secondary">

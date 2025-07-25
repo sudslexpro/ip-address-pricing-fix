@@ -158,7 +158,7 @@ const ProblemSection = () => {
 									className={`flex items-center space-x-4 p-4 rounded-lg transition-all duration-300 ${
 										activeStep === index && !isAnimating
 											? "bg-destructive/10 border border-destructive/30"
-											: "bg-white/50"
+											: "bg-white/50 dark:bg-white/5"
 									}`}>
 									<div className="flex-shrink-0 w-10 h-10 bg-destructive/20 rounded-lg flex items-center justify-center">
 										<Icon
@@ -214,8 +214,8 @@ const ProblemSection = () => {
 							{automatedProcess.map((process, index) => (
 								<div
 									key={index}
-									className="flex items-center space-x-4 p-4 bg-white/50 rounded-lg">
-									<div className="flex-shrink-0 w-10 h-10 bg-success/20 rounded-lg flex items-center justify-center">
+									className="flex items-center space-x-4 p-4 bg-white/50 dark:bg-white/5 rounded-lg">
+									<div className="flex-shrink-0 w-10 h-10 bg-success/20 dark:bg-success/10 rounded-lg flex items-center justify-center">
 										<Icon
 											name={process.icon}
 											size={20}
@@ -257,7 +257,7 @@ const ProblemSection = () => {
 					{painPoints.map((pain, index) => (
 						<div
 							key={index}
-							className="bg-white border border-border rounded-xl p-6 hover:shadow-cta transition-all duration-200 group">
+							className="bg-white dark:bg-white/5 border border-border rounded-xl p-6 hover:shadow-cta transition-all duration-200 group">
 							<div className="w-12 h-12 bg-destructive/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-destructive/20 transition-colors">
 								<Icon name={pain.icon} size={24} className="text-destructive" />
 							</div>
@@ -277,7 +277,7 @@ const ProblemSection = () => {
 
 				{/* Bottom CTA */}
 				<div className="text-center mt-16">
-					<p className="text-lg text-secondary mb-6">
+					<p className="text-lg text-secondary dark:text-muted-foreground mb-6">
 						Ready to transform your quote process from hours to minutes?
 					</p>
 					<div className="inline-flex items-center space-x-2 text-accent font-medium">

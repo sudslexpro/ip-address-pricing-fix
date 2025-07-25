@@ -17,7 +17,7 @@ const SolutionDemo = () => {
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				{/* Section Header */}
 				<div className="text-center mb-12 sm:mb-16">
-					<div className="inline-flex items-center space-x-2 bg-primary/10 text-primary px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+					<div className="inline-flex items-center space-x-2 bg-primary/10 dark:bg-blue-600/30 text-primary dark:text-blue-600 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
 						<Icon name="Play" size={14} className="sm:w-4 sm:h-4" />
 						<span>Live Demo</span>
 					</div>
@@ -54,11 +54,11 @@ const SolutionDemo = () => {
 												onClick={handleVideoPlay}
 												className="group mb-4 sm:mb-6 transform hover:scale-105 transition-all duration-300"
 												aria-label="Play video demo">
-												<div className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-xl group-hover:bg-white transition-colors">
+												<div className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-white/90 dark:bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center shadow-xl group-hover:bg-white transition-colors">
 													<Icon
 														name="Play"
 														size={20}
-														className="text-primary ml-0.5 sm:ml-1 sm:w-6 sm:h-6 lg:w-8 lg:h-8"
+														className="text-primary dark:text-white ml-0.5 sm:ml-1 sm:w-6 sm:h-6 lg:w-8 lg:h-8"
 													/>
 												</div>
 											</button>
@@ -127,7 +127,7 @@ const SolutionDemo = () => {
 
 					<h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-text-primary mb-4 sm:mb-6 px-4 sm:px-0">
 						Interactive Demo:{" "}
-						<span className="text-primary">Try It Yourself</span>
+						<span className="text-primary dark:text-blue-600">Try It Yourself</span>
 					</h2>
 					<p className="text-lg sm:text-xl text-text-secondary max-w-3xl mx-auto px-4 sm:px-0">
 						Experience how our platform transforms complex trademark research
@@ -137,7 +137,7 @@ const SolutionDemo = () => {
 
 				{/* Benefits Section */}
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-					<div className="bg-white rounded-lg p-8 border border-border aspect-square flex flex-col justify-center text-center">
+					<div className="bg-white dark:bg-white/10 rounded-lg p-8 border border-border aspect-square flex flex-col justify-center text-center">
 						<div className="w-16 h-16 bg-success/20 rounded-lg flex items-center justify-center mx-auto mb-6">
 							<Icon name="Clock" size={32} className="text-success" />
 						</div>
@@ -153,7 +153,7 @@ const SolutionDemo = () => {
 						</p>
 					</div>
 
-					<div className="bg-white rounded-lg p-8 border border-border aspect-square flex flex-col justify-center text-center">
+					<div className="bg-white dark:bg-white/10 rounded-lg p-8 border border-border aspect-square flex flex-col justify-center text-center">
 						<div className="w-16 h-16 bg-primary/20 rounded-lg flex items-center justify-center mx-auto mb-6">
 							<Icon name="Target" size={32} className="text-primary" />
 						</div>
@@ -169,7 +169,7 @@ const SolutionDemo = () => {
 						</p>
 					</div>
 
-					<div className="bg-white rounded-lg p-8 border border-border aspect-square flex flex-col justify-center text-center">
+					<div className="bg-white dark:bg-white/10 rounded-lg p-8 border border-border aspect-square flex flex-col justify-center text-center">
 						<div className="w-16 h-16 bg-accent/20 rounded-lg flex items-center justify-center mx-auto mb-6">
 							<Icon name="Palette" size={32} className="text-accent" />
 						</div>
