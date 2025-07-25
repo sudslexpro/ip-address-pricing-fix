@@ -1,6 +1,6 @@
-# PDF Download Components
+# PDF Viewer Components
 
-This folder contains components for generating and downloading PDF quotes with the Lex Protector letterhead, including a comprehensive PDF viewer modal system.
+This folder contains components for viewing and displaying PDF-style documents with the Lex Protector letterhead, including a comprehensive PDF viewer modal system.
 
 ## Components
 
@@ -39,9 +39,9 @@ A React component that generates and downloads PDF quotes with the letterhead an
 - Automatic filename with timestamp
 - High-quality PDF output (2x scale)
 
-### 3. PDFViewerModal ⭐ NEW
+### 3. PDFViewerModal ⭐ VIEW-ONLY
 
-A comprehensive PDF viewer modal component with download and print functionality.
+A simplified PDF viewer modal component for displaying documents in a professional format.
 
 **Props:**
 
@@ -50,20 +50,18 @@ interface PDFViewerModalProps {
  isOpen: boolean; // Controls modal visibility
  onClose: () => void; // Callback when modal closes
  title?: string; // Modal title (default: "PDF Document")
- content: React.ReactNode; // Content to display and export
- filename?: string; // Download filename (default: "document.pdf")
+ content: React.ReactNode; // Content to display
  size?: "sm" | "default" | "md" | "lg" | "xl" | "full" | "auto"; // Modal size
 }
 ```
 
 **Features:**
 
-- **High-Quality PDF Generation**: Uses jsPDF and html2canvas with 2x scaling
-- **Print Functionality**: Opens optimized print window with proper styling
-- **Configurable Options**: Format (A4/Letter/Legal), orientation, margins, scale
+- **Document Viewing**: Professional A4-sized document display
 - **Responsive Design**: Multiple size options and mobile-friendly
-- **Dark Mode Compatible**: Automatically converts content for PDF/print
+- **Clean Interface**: Simplified view-only modal with professional styling
 - **Accessibility**: Full keyboard navigation and screen reader support
+- **Professional Formatting**: A4 page sizing with proper margins and styling
 
 ### 4. usePDFViewerModal Hook
 
@@ -74,14 +72,12 @@ A custom hook for managing PDF viewer modal state.
 ```typescript
 const pdfModal = usePDFViewerModal({
  defaultTitle: "My Document",
- defaultFilename: "my-document.pdf",
  defaultSize: "xl",
 });
 
 // Open modal with content
 pdfModal.openModal(<MyContent />, {
  title: "Custom Title",
- filename: "custom-filename.pdf",
 });
 ```
 
@@ -91,63 +87,57 @@ A demonstration component showing sample quotation and schedule of charges with 
 
 ## Dependencies
 
-- `jspdf` - PDF generation library
-- `html2canvas` - HTML to canvas conversion for PDF
-- `@types/jspdf` - TypeScript definitions for jsPDF
+- `@radix-ui/react-dialog` - Modal components for accessibility
+- React and TypeScript for component functionality
 
 ## Usage Example
 
 ```tsx
-import { PDFDownloadComponent } from "@/components/pages-ui/download-pdf";
+import {
+ PDFViewerModal,
+ usePDFViewerModal,
+} from "@/components/pages-ui/download-pdf";
 
 // In your component
 const MyComponent = () => {
- const quote = {
-  countries: [
-   {
-    country: "United States",
-    flag: "🇺🇸",
-    governmentFee: 325,
-    attorneyFee: 200,
-    commission: 78,
-    total: 603,
-    timeline: "8-12 months",
-    services: ["Trademark Search", "Application Filing"],
-   },
-   // ... more countries
-  ],
-  services: [
-   {
-    id: "search",
-    name: "Trademark Search",
-    description: "Comprehensive database search",
-    basePrice: 150,
-   },
-   // ... more services
-  ],
-  grandTotal: 1500,
-  generatedAt: new Date().toISOString(),
+ const pdfModal = usePDFViewerModal();
+
+ const handleShowDocument = () => {
+  const content = (
+   <div>
+    <h1>My Document Title</h1>
+    <p>Document content goes here...</p>
+   </div>
+  );
+
+  pdfModal.openModal(content, {
+   title: "My Custom Document",
+  });
  };
 
  return (
-  <PDFDownloadComponent
-   quote={quote}
-   onDownloadComplete={() => {
-    console.log("PDF download completed");
-   }}
-  />
+  <div>
+   <button onClick={handleShowDocument}>View Document</button>
+
+   <PDFViewerModal
+    isOpen={pdfModal.isOpen}
+    onClose={pdfModal.closeModal}
+    title={pdfModal.title}
+    content={pdfModal.content}
+    size={pdfModal.size}
+   />
+  </div>
  );
 };
 ```
 
 ## Technical Details
 
-- PDF is generated at A4 size (210mm x 297mm)
-- Uses 2x scaling for high-quality output
-- Supports multi-page PDFs for long content
-- Currency formatting in USD
+- Documents are displayed in A4 size format (210mm x 297mm)
 - Professional styling with proper margins and spacing
-- Print-optimized CSS for clean PDF output
+- Modal-based viewing with responsive design
+- Clean, distraction-free viewing experience
+- Optimized for both desktop and mobile devices
 
 ## File Structure
 
@@ -155,6 +145,8 @@ const MyComponent = () => {
 components/pages-ui/download-pdf/
 ├── index.ts                     # Export file
 ├── LexProtectorLetterhead.tsx   # Letterhead component
-├── PDFDownloadComponent.tsx     # Main PDF generation component
-└── README.md                    # This documentation
+├── PDFDownloadComponent.tsx     # PDF generation component
+├── PDFViewerModal.tsx          # Document viewer modal (view-only)
+├── PDFViewerDemo.tsx           # Demo component
+└── README.md                   # This documentation
 ```

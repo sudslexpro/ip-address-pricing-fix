@@ -592,6 +592,15 @@ const InteractiveCoverageMap = () => {
 		});
 	};
 
+	// Example function to open a PDF file
+	const handleShowPDFFile = () => {
+		// Example: Load a PDF from the public folder
+		// You can replace this with any valid PDF URL or path
+		pdfModal.openPDFModal("/sample-pdfs/sample-document.pdf", {
+			title: "Sample PDF Document",
+		});
+	};
+
 	// Unified style function that handles both selection and hover states
 	const getFeatureStyle = useCallback(
 		(feature: FeatureLike) => {
@@ -1024,6 +1033,7 @@ const InteractiveCoverageMap = () => {
 					onClose={pdfModal.closeModal}
 					title={pdfModal.title}
 					content={pdfModal.content}
+					pdfPath={pdfModal.pdfPath}
 					size={pdfModal.size}
 				/>
 			</div>
