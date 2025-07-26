@@ -355,7 +355,7 @@ const TestimonialsSection = () => {
 						{[
 							"Trumarx",
 							"Lex Motion",
-							"CA",
+							"Abhishek Sharam",
 							"Wendy Au",
 						].map((firm, index) => (
 							<div key={index} className="text-sm font-medium text-text-muted">
