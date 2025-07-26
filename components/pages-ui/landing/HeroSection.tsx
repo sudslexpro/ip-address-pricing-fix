@@ -601,7 +601,7 @@ const HeroSection: React.FC = () => {
 	};
 
 	return (
-		<section className="relative min-h-screen bg-[#ecf6ff] dark:bg-[#152235] pt-20 pb-16 overflow-hidden">
+		<section className="relative min-h-screen bg-[#ecf6ff] dark:bg-[#0d1520] pt-20 pb-16 overflow-hidden">
 			{/* Custom CSS for OpenLayers elements */}
 			<style jsx>{`
 				.ol-popup {
