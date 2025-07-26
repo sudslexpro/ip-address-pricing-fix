@@ -160,8 +160,8 @@ const SolutionDemo = () => {
 					</div>
 
 					<div className="bg-white dark:bg-white/10 rounded-lg p-8 border border-border aspect-square flex flex-col justify-center text-center">
-						<div className="w-16 h-16 bg-primary/20 rounded-lg flex items-center justify-center mx-auto mb-6">
-							<Icon name="Target" size={32} className="text-primary" />
+						<div className="w-16 h-16 bg-primary/20 dark:bg-blue-600/40 rounded-lg flex items-center justify-center mx-auto mb-6">
+							<Icon name="Target" size={32} className="text-primary dark:text-blue-600" />
 						</div>
 						<h3 className="font-bold text-text-primary text-xl mb-2">
 							99% Accuracy
