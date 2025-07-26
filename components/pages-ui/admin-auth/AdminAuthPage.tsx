@@ -150,12 +150,12 @@ export const AdminAuthPage: React.FC = () => {
 						</CardHeader>
 						<CardContent className="space-y-4">
 							{session?.user ? (
-								<div className="space-y-3">
+								<div className="space-y-3 mt-6">
 									<p className="text-sm text-green-600 dark:text-green-400">
 										✓ Already authenticated
 									</p>
 									<Link href="/dashboard">
-										<Button className="w-full">
+										<Button className="w-full dark:bg-blue-600 dark:hover:bg-blue-700 dark:text-white">
 											<Monitor className="mr-2 h-4 w-4" />
 											Access Dashboard
 											<ArrowRight className="ml-2 h-4 w-4" />
@@ -163,7 +163,7 @@ export const AdminAuthPage: React.FC = () => {
 									</Link>
 								</div>
 							) : (
-								<div className="space-y-3">
+								<div className="flex flex-col gap-4 mt-6">
 									<Link href="/auth/signin">
 										<Button variant="outline" className="w-full">
 											<User className="mr-2 h-4 w-4" />
@@ -171,8 +171,8 @@ export const AdminAuthPage: React.FC = () => {
 										</Button>
 									</Link>
 									<Link href="/auth/signup">
-										<Button className="w-full">
-											<Shield className="mr-2 h-4 w-4" />
+										<Button className="w-full dark:bg-blue-600 dark:hover:bg-blue-700 dark:text-white">
+											<Shield className="mr-2 h-4 w-4 dark:text-white" />
 											Create Admin Account
 										</Button>
 									</Link>
@@ -192,7 +192,7 @@ export const AdminAuthPage: React.FC = () => {
 								Quick access to testing and debugging features
 							</CardDescription>
 						</CardHeader>
-						<CardContent className="space-y-3">
+						<CardContent className="flex flex-col gap-4">
 							<Link href="/test-auth">
 								<Button
 									variant="outline"

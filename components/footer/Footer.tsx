@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Icon from "@/components/icon/AppIcon";
+import { FaXTwitter } from "react-icons/fa6";
 
 const Footer: React.FC = () => {
 	return (
@@ -49,9 +50,9 @@ const Footer: React.FC = () => {
 								</Link>
 								{/* Twitter/X */}
 								<Link
-									href="https://twitter.com/LexProtector"
+									href="https://x.com/LexProtector"
 									className="w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center hover:bg-blue-900 transition-colors">
-									<Icon name="Twitter" size={25} />
+									<FaXTwitter size={25} />
 								</Link>
 								{/* YouTube */}
 								<Link

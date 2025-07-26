@@ -19,7 +19,6 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Separator } from "@/components/ui/separator";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { FaGoogle, FaFacebook, FaXTwitter } from "react-icons/fa6";
-import { cn } from "@/lib/utils";
 
 const SignInForm: React.FC = () => {
 	const [email, setEmail] = useState("");
@@ -69,7 +68,7 @@ const SignInForm: React.FC = () => {
 	};
 
 	return (
-		<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4 py-12">
+		<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 px-4 py-12">
 			<Card className="w-full max-w-md">
 				<CardHeader className="space-y-1">
 					<CardTitle className="text-2xl font-bold text-center">
@@ -109,7 +108,7 @@ const SignInForm: React.FC = () => {
 							onClick={() => handleOAuthSignIn("x")}
 							disabled={isLoading}
 							className="w-full hover:text-white h-12 text-md">
-							<FaXTwitter className="mr-2 h-12 w-12 text-black" />
+							<FaXTwitter className="mr-2 h-12 w-12 text-black dark:text-white" />
 							Continue with X
 						</Button>
 					</div>
@@ -119,7 +118,7 @@ const SignInForm: React.FC = () => {
 							<Separator className="w-full" />
 						</div>
 						<div className="relative flex justify-center text-xs uppercase">
-							<span className="bg-background px-2 text-muted-foreground">
+							<span className="bg-background px-2 text-muted-foreground dark:text-blue-600">
 								Or continue with email
 							</span>
 						</div>
@@ -172,20 +171,20 @@ const SignInForm: React.FC = () => {
 						<div className="flex items-center justify-between">
 							<Link
 								href="/auth/forgot-password"
-								className="text-sm text-primary hover:underline">
+								className="text-sm text-primary dark:text-blue-600 hover:underline">
 								Forgot your password?
 							</Link>
 						</div>
 
-						<Button type="submit" className="w-full" disabled={isLoading}>
+						<Button type="submit" className="w-full dark:bg-blue-600 dark:text-white" disabled={isLoading}>
 							{isLoading ? "Signing in..." : "Sign in"}
 						</Button>
 					</form>
 				</CardContent>
 				<CardFooter>
-					<div className="text-center text-sm text-muted-foreground w-full">
+					<div className="text-center text-sm text-muted-foreground dark:text-white w-full">
 						Don&apos;t have an account?{" "}
-						<Link href="/auth/signup" className="text-primary hover:underline">
+						<Link href="/auth/signup" className="text-primary dark:text-blue-600 hover:underline">
 							Sign up
 						</Link>
 					</div>
