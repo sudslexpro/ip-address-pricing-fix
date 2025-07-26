@@ -142,7 +142,7 @@ const DashboardRoleLayoutClient: React.FC<DashboardRoleLayoutClientProps> = ({
 			{/* Main Content */}
 			<div className="flex-1 flex flex-col overflow-hidden">
 				{/* Header */}
-				<div className="bg-white border-b border-border px-6 py-4 flex-shrink-0">
+				<div className="bg-white dark:bg-slate-900 border-b border-border px-6 py-4 flex-shrink-0">
 					<div className="flex items-center justify-between">
 						<div className="flex items-center space-x-4">
 							<IconComponent className={`h-6 w-6 ${welcome.color}`} />

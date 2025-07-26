@@ -13,23 +13,6 @@ const SuperAdminOverviewPage: React.FC = () => {
 
 	return (
 		<div className="space-y-6">
-			{/* Welcome Section */}
-			<div className="bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200 rounded-lg p-6">
-				<div className="flex items-center space-x-4">
-					<div className="bg-purple-100 p-3 rounded-full">
-						<Crown className="h-8 w-8 text-purple-600" />
-					</div>
-					<div>
-						<h1 className="text-2xl font-bold text-purple-800">
-							System Administration Dashboard
-						</h1>
-						<p className="text-purple-600">
-							Complete system oversight and management capabilities
-						</p>
-					</div>
-				</div>
-			</div>
-
 			{/* Super Admin Stats */}
 			<DashboardStats role={role || "SUPER_ADMIN"} />
 

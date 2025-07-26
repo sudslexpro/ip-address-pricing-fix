@@ -203,7 +203,7 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ role }) => {
 						</div>
 						<Badge
 							variant={analytics.system.uptime > 99 ? "default" : "destructive"}
-							className="text-xs">
+							className="text-xs dark:bg-blue-600/50 dark:text-white">
 							{analytics.system.uptime > 99 ? "Operational" : "Issues"}
 						</Badge>
 					</CardContent>
@@ -237,7 +237,7 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ role }) => {
 							variant={
 								analytics.system.errorRate < 1 ? "default" : "destructive"
 							}
-							className="text-xs">
+							className="text-xs dark:bg-blue-600/50 dark:text-white">
 							{analytics.system.errorRate < 1 ? "Good" : "High"}
 						</Badge>
 					</CardContent>

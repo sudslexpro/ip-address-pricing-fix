@@ -233,20 +233,20 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
 										className={cn(
 											"w-full justify-start gap-3 h-10",
 											collapsed ? "px-2" : "px-3",
-											isActive && "bg-primary/10 text-primary border-primary/20"
+											isActive && "bg-primary/10 dark:bg-blue-600/20 text-primary border border-primary/20 dark:border-blue-600 dark:text-blue-400"
 										)}
 										onClick={() => handleItemClick(item.id)}>
 										<IconComponent
 											className={cn(
 												"h-4 w-4 shrink-0",
-												isActive ? "text-primary" : "text-muted-foreground"
+												isActive ? "text-primary dark:text-blue-400" : "text-muted-foreground"
 											)}
 										/>
 										{!collapsed && (
 											<span
 												className={cn(
 													"text-sm font-medium",
-													isActive ? "text-primary" : "text-foreground"
+													isActive ? "text-primary dark:text-blue-400" : "text-foreground"
 												)}>
 												{item.label}
 											</span>

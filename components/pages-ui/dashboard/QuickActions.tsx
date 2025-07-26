@@ -287,7 +287,7 @@ const QuickActions: React.FC<QuickActionsProps> = ({
 							<Button
 								key={index}
 								variant={action.variant}
-								className="w-full h-auto p-4 flex items-center justify-start gap-3 text-left"
+								className="w-full h-auto p-4 flex items-center justify-start gap-3 text-left dark:bg-blue-600/20 dark:text-white border dark:border-blue-600 hover:bg-blue-600/30"
 								onClick={() => handleAction(action.id, action.action)}
 								disabled={isLoading}>
 								{isLoading ? (
