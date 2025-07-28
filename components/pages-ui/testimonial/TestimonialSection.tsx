@@ -68,7 +68,7 @@ const TestimonialsSection = () => {
 			title: "",
 			firm: "",
 			location: "",
-			avatar: "/assets/images/LP_Logo.png",
+			avatar: "/assets/images/user.png",
 			quote: `The Partner Portal made it easy to request trademark quotes across multiple countries. The team provided excellent support throughout the process, guiding me efficiently from quote to successful filing. Their prompt assistance and clear communication were truly commendable.`,
 			metrics: {
 				timeSaved: "75%",
