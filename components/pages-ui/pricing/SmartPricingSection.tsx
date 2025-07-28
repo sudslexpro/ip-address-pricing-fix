@@ -1,14 +1,14 @@
 "use client";
 
 import React from "react";
-import SmartPrice from "@/components/ui/smart-price";
+import EnhancedSmartPrice from "@/components/ui/enhanced-smart-price";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Icon from "@/components/icon/AppIcon";
 
 /**
- * Example of integrating SmartPrice into an existing pricing section
- * This shows how to replace static prices with smart conversion
+ * Example of integrating EnhancedSmartPrice into an existing pricing section
+ * This shows how to replace static prices with enhanced geolocation-based conversion
  */
 export const SmartPricingSection = () => {
 	const plans = [
@@ -137,16 +137,20 @@ export const SmartPricingSection = () => {
 									{plan.description}
 								</p>
 
-								{/* Smart Price Display */}
+								{/* Enhanced Smart Price Display */}
 								<div className="py-6">
 									<div className="flex items-baseline justify-center gap-1">
-										<SmartPrice
+										<EnhancedSmartPrice
 											amount={
 												billingCycle === "monthly"
 													? plan.monthlyPrice
 													: plan.annualPrice
 											}
 											variant="large"
+											preferBrowserGeolocation={true}
+											fallbackToIP={true}
+											showPermissionPrompt={plan.popular} // Only show prompts on popular plan
+											showLocationIndicator={true}
 											showCurrencySelector={plan.popular} // Only show selector on popular plan
 											showRoundingControls={plan.popular} // Only show controls on popular plan
 											className="text-3xl font-bold"
@@ -157,9 +161,12 @@ export const SmartPricingSection = () => {
 									</div>
 									{billingCycle === "annual" && (
 										<p className="text-sm text-green-600 mt-2">
-											<SmartPrice
+											<EnhancedSmartPrice
 												amount={plan.monthlyPrice}
 												variant="compact"
+												preferBrowserGeolocation={true}
+												fallbackToIP={true}
+												showPermissionPrompt={false}
 												showCurrencySelector={false}
 												showLocationIndicator={false}
 												prefix="Save "
@@ -175,7 +182,7 @@ export const SmartPricingSection = () => {
 									</p>
 									<p className="text-xs text-muted-foreground">
 										Additional quotes:{" "}
-										<SmartPrice
+										<EnhancedSmartPrice
 											amount={
 												plan.id === "starter"
 													? 15
@@ -184,6 +191,9 @@ export const SmartPricingSection = () => {
 													: 10
 											}
 											variant="compact"
+											preferBrowserGeolocation={true}
+											fallbackToIP={true}
+											showPermissionPrompt={false}
 											showCurrencySelector={false}
 											showLocationIndicator={false}
 											suffix=" each"
@@ -234,12 +244,16 @@ export const SmartPricingSection = () => {
 								<Icon name="Users" size={24} className="text-primary" />
 							</div>
 							<h4 className="font-medium mb-1">Training Sessions</h4>
-							<SmartPrice
+							<EnhancedSmartPrice
 								amount={200}
 								prefix="Starting at "
 								suffix="/session"
 								variant="inline"
+								preferBrowserGeolocation={true}
+								fallbackToIP={true}
+								showPermissionPrompt={false}
 								showCurrencySelector={false}
+								showLocationIndicator={false}
 								className="text-primary font-medium"
 							/>
 						</div>
@@ -248,11 +262,15 @@ export const SmartPricingSection = () => {
 								<Icon name="Cog" size={24} className="text-primary" />
 							</div>
 							<h4 className="font-medium mb-1">Custom Integration</h4>
-							<SmartPrice
+							<EnhancedSmartPrice
 								amount={500}
 								prefix="Starting at "
 								variant="inline"
+								preferBrowserGeolocation={true}
+								fallbackToIP={true}
+								showPermissionPrompt={false}
 								showCurrencySelector={false}
+								showLocationIndicator={false}
 								className="text-primary font-medium"
 							/>
 						</div>
@@ -261,25 +279,30 @@ export const SmartPricingSection = () => {
 								<Icon name="Headphones" size={24} className="text-primary" />
 							</div>
 							<h4 className="font-medium mb-1">Priority Support</h4>
-							<SmartPrice
+							<EnhancedSmartPrice
 								amount={99}
 								prefix="Starting at "
 								suffix="/month"
 								variant="inline"
+								preferBrowserGeolocation={true}
+								fallbackToIP={true}
+								showPermissionPrompt={false}
 								showCurrencySelector={false}
+								showLocationIndicator={false}
 								className="text-primary font-medium"
 							/>
 						</div>
 					</div>
 				</div>
 
-				{/* Note about currency conversion */}
+				{/* Note about enhanced currency conversion */}
 				<div className="mt-12 text-center">
 					<div className="inline-flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 px-4 py-2 rounded-lg">
-						<Icon name="Globe" size={16} />
+						<Icon name="MapPin" size={16} />
 						<span>
-							Prices shown in your local currency. Billing in USD. Exchange
-							rates updated daily.
+							Prices automatically convert using high-precision location
+							detection (GPS + IP fallback). Exchange rates updated daily.
+							Billing in USD.
 						</span>
 					</div>
 				</div>

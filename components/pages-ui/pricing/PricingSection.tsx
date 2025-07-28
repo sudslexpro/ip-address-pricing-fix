@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import Icon from "@/components/icon/AppIcon";
 import Link from "next/link";
 import { VersatileCalendlyScheduler } from "@/components/scheduling";
+import EnhancedSmartPrice from "@/components/ui/enhanced-smart-price";
 
 const PricingSection = () => {
 	const [billingCycle, setBillingCycle] = useState("monthly");
@@ -89,26 +90,36 @@ const PricingSection = () => {
 		{
 			name: "Additional Quotes",
 			description: "Extra quotes beyond your plan limit",
-			price: "From $10-15 per quote",
+			price: "From ",
+			priceAmount: 12, // Use middle price for conversion
+			priceSuffix: " per quote",
 			icon: "Plus",
+			hasSmartPricing: true,
 		},
 		{
 			name: "Custom Solutions",
 			description: "Tailored features for your firm",
 			price: "Custom pricing",
 			icon: "Link",
+			hasSmartPricing: false,
 		},
 		{
 			name: "Training & Onboarding",
 			description: "Dedicated training for your team",
-			price: "$200 per session",
+			price: "",
+			priceAmount: 200,
+			priceSuffix: " per session",
 			icon: "GraduationCap",
+			hasSmartPricing: true,
 		},
 		{
 			name: "Priority Support",
 			description: "24/7 phone and email support",
-			price: "$99 per month",
+			price: "",
+			priceAmount: 99,
+			priceSuffix: " per month",
 			icon: "Headphones",
+			hasSmartPricing: true,
 		},
 	];
 
@@ -245,12 +256,19 @@ const PricingSection = () => {
 									</p>
 
 									<div className="mb-4">
-										<span className="text-4xl font-bold text-text-primary">
-											${getPrice(plan)}
-										</span>
-										<span className="text-text-secondary">
-											/{billingCycle === "monthly" ? "month" : "year"}
-										</span>
+										<EnhancedSmartPrice
+											amount={getPrice(plan)}
+											variant="large"
+											preferBrowserGeolocation={true}
+											fallbackToIP={true}
+											showPermissionPrompt={true}
+											showLocationIndicator={true}
+											showCurrencySelector={plan.popular} // Show currency selector on popular plan
+											className="text-text-primary"
+											suffix={`/${
+												billingCycle === "monthly" ? "month" : "year"
+											}`}
+										/>
 									</div>
 
 									{billingCycle === "annual" && (
@@ -370,7 +388,24 @@ const PricingSection = () => {
 									{addon.description}
 								</p>
 								<div className="text-sm font-medium text-accent">
-									{addon.price}
+									{addon.hasSmartPricing ? (
+										<>
+											{addon.price}
+											<EnhancedSmartPrice
+												amount={addon.priceAmount!}
+												variant="compact"
+												preferBrowserGeolocation={true}
+												fallbackToIP={true}
+												showPermissionPrompt={false}
+												showLocationIndicator={false}
+												showCurrencySelector={false}
+												className="inline"
+												suffix={addon.priceSuffix}
+											/>
+										</>
+									) : (
+										addon.price
+									)}
 								</div>
 							</div>
 						))}
