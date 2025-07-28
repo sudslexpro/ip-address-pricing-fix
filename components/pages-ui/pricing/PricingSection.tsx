@@ -8,7 +8,6 @@ import { VersatileCalendlyScheduler } from "@/components/scheduling";
 const PricingSection = () => {
 	const [billingCycle, setBillingCycle] = useState("monthly");
 	const [selectedPlan, setSelectedPlan] = useState("professional");
-	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [showCalendlyScheduler, setShowCalendlyScheduler] = useState(false);
 	const calendlyRef = useRef<HTMLDivElement>(null);
 
