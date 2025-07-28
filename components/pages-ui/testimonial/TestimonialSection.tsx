@@ -32,8 +32,7 @@ const TestimonialsSection = () => {
 			title: "Founder",
 			firm: "Lex Motion",
 			location: "Kolkata, West Bengal, India",
-			avatar:
-				"/assets/testimonials/LexMotion_Logo.png",
+			avatar: "/assets/testimonials/LexMotion_Logo.png",
 			quote: `Our experience working through the Partner Portal has been seamless and efficient. The platform simplifies the process of obtaining trademark quotes across various jurisdictions, saving us time and effort. The support team is knowledgeable and prompt, which has greatly enhanced our ability to manage international filings smoothly. It’s a practical and reliable solution for law firms handling cross-border trademark work.`,
 			metrics: {
 				timeSaved: "90%",
@@ -51,8 +50,7 @@ const TestimonialsSection = () => {
 			title: "Chartered Accountant",
 			firm: "CA",
 			location: "",
-			avatar:
-				"/assets/testimonials/CA_Logo.jpg",
+			avatar: "/assets/testimonials/CA_Logo.jpg",
 			quote: `As a CA firm supporting clients with IP-related documentation and compliance, Lex Protector's Partner Portal has been a valuable tool for us. It offers quick access to multi-country trademark quotations, including countries like the USA, UK, Australia, and Canada, and it takes only 2-3 minutes to generate a quote. The platform streamlines our coordination with legal teams, is user-friendly, and the professional support ensures smooth handling of trademark filings, helping us deliver comprehensive service to our clients.`,
 			metrics: {
 				timeSaved: "80%",
@@ -70,8 +68,7 @@ const TestimonialsSection = () => {
 			title: "",
 			firm: "",
 			location: "",
-			avatar:
-				"/assets/images/LP_Logo.png",
+			avatar: "/assets/images/LP_Logo.png",
 			quote: `The Partner Portal made it easy to request trademark quotes across multiple countries. The team provided excellent support throughout the process, guiding me efficiently from quote to successful filing. Their prompt assistance and clear communication were truly commendable.`,
 			metrics: {
 				timeSaved: "75%",
@@ -355,8 +352,10 @@ const TestimonialsSection = () => {
 						{[
 							"Trumarx",
 							"Lex Motion",
-							"Abhishek Sharam",
+							"CA Abhishek Sharam",
 							"Wendy Au",
+							"C&H IP LAW LIMITED",
+							"WIPS Law Associates Pvt Ltd",
 						].map((firm, index) => (
 							<div key={index} className="text-sm font-medium text-text-muted">
 								{firm}
