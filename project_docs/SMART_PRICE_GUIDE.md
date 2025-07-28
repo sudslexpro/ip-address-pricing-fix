@@ -2,16 +2,50 @@
 
 ## Overview
 
-The `SmartPrice` component is a versatile React component that automatically converts pricing based on the user's IP address location. It provides real-time currency conversion with manual override options and customizable rounding controls.
+The `SmartPrice` component is a versatile React component that automatically converts pricing based on the user's location. It supports both IP-based detection and browser geolocation for maximum accuracy and flexibility.
 
 ## Features
 
-- 🌍 **Automatic IP-based location detection**
+- 🌍 **Automatic location detection (IP + Browser Geolocation)**
+- 📍 **High-precision GPS location support**
 - 💱 **Real-time currency conversion**
 - 🎛️ **Manual currency selection**
 - 🔄 **Customizable rounding options**
 - 📱 **Multiple display variants**
+- 🔒 **Privacy-friendly with user control**
 - ⚡ **Lightweight and easy to integrate**
+
+## Detection Methods
+
+### 1. IP-Based Detection (Default)
+
+- ✅ No permissions required
+- ✅ Works immediately
+- ✅ Anonymous and private
+- 🟡 Medium accuracy
+- 🟡 Affected by VPNs
+
+### 2. Browser Geolocation (Enhanced)
+
+- 🟢 High accuracy (GPS/WiFi/Cell towers)
+- 🟢 Works through VPNs (real location)
+- 🟢 User controlled
+- 🟡 Requires permission
+- 🟡 Slightly slower initial load
+
+## Available Components
+
+### SmartPrice (IP-based)
+
+- **File**: `components/ui/smart-price.tsx`
+- **Detection**: IP address location
+- **Best for**: General use, privacy-conscious applications
+
+### EnhancedSmartPrice (GPS + IP fallback)
+
+- **File**: `components/ui/enhanced-smart-price.tsx`
+- **Detection**: Browser geolocation with IP fallback
+- **Best for**: High-accuracy requirements, mobile apps
 
 ## Basic Usage
 
@@ -282,3 +316,142 @@ Add this to see conversion details:
  }}
 />
 ```
+
+## Enhanced SmartPrice (GPS + Browser Geolocation)
+
+### Overview
+
+The `EnhancedSmartPrice` component provides high-accuracy location detection using the browser's Geolocation API with IP-based fallback. This component offers GPS-level precision while maintaining compatibility with the standard SmartPrice API.
+
+### Key Features
+
+- 📍 **GPS-level accuracy** using browser geolocation
+- 🔄 **Automatic IP fallback** if GPS is unavailable
+- 🔐 **Permission management** with user-friendly prompts
+- ⚡ **Smart caching** to avoid repeated permission requests
+- 🌐 **Reverse geocoding** to convert coordinates to country
+
+### Usage Examples
+
+#### Basic Enhanced Implementation
+
+```tsx
+import { EnhancedSmartPrice } from "@/components/ui/enhanced-smart-price";
+
+// High-accuracy GPS-based pricing
+<EnhancedSmartPrice basePrice={99} baseCurrency="USD" />;
+```
+
+#### With Full Configuration
+
+```tsx
+<EnhancedSmartPrice
+ basePrice={299.99}
+ baseCurrency="EUR"
+ variant="large"
+ enableRounding={true}
+ enableManualSelection={true}
+ className="my-custom-class"
+/>
+```
+
+#### In Pricing Tables
+
+```tsx
+const plans = [
+ { name: "Starter", price: 99 },
+ { name: "Professional", price: 199 },
+ { name: "Enterprise", price: 399 },
+];
+
+return (
+ <div className="grid grid-cols-3 gap-6">
+  {plans.map((plan) => (
+   <div key={plan.name} className="border rounded-lg p-6">
+    <h3 className="text-lg font-semibold">{plan.name}</h3>
+    <EnhancedSmartPrice
+     basePrice={plan.price}
+     baseCurrency="USD"
+     variant="block"
+     enableRounding={true}
+    />
+   </div>
+  ))}
+ </div>
+);
+```
+
+### Props Reference (Enhanced)
+
+All standard SmartPrice props plus:
+
+| Prop                    | Type                                          | Default      | Description                                 |
+| ----------------------- | --------------------------------------------- | ------------ | ------------------------------------------- |
+| `basePrice`             | `number`                                      | **required** | The base price amount                       |
+| `baseCurrency`          | `string`                                      | **required** | The base currency code (e.g., "USD", "EUR") |
+| `variant`               | `"inline" \| "block" \| "compact" \| "large"` | `"inline"`   | Display style variant                       |
+| `enableRounding`        | `boolean`                                     | `false`      | Show rounding controls                      |
+| `enableManualSelection` | `boolean`                                     | `true`       | Allow manual currency selection             |
+| `className`             | `string`                                      | -            | Additional CSS classes                      |
+
+### Permission Flow
+
+1. **First Load**: Component attempts GPS detection
+2. **Permission Prompt**: Browser requests location access
+3. **User Response**:
+   - ✅ **Allow**: Uses GPS coordinates for accurate detection
+   - ❌ **Deny**: Falls back to IP-based detection
+   - ⏳ **Ignore**: Timeout after 10s, uses IP fallback
+
+### Detection Methods Comparison
+
+| Method              | Accuracy | Speed  | Privacy  | Permissions | VPN-Proof |
+| ------------------- | -------- | ------ | -------- | ----------- | --------- |
+| **IP-based**        | Medium   | Fast   | High     | None        | No        |
+| **Browser GPS**     | High     | Medium | Medium   | Required    | Yes       |
+| **Enhanced (Both)** | High     | Smart  | Flexible | Optional    | Yes       |
+
+### When to Use Enhanced vs Standard
+
+#### Use **EnhancedSmartPrice** when:
+
+- Accuracy is critical (financial apps, location-sensitive pricing)
+- Users are likely on mobile devices
+- You want to handle VPN users correctly
+- User experience benefits from precision
+
+#### Use **SmartPrice** when:
+
+- Privacy is paramount
+- Simplicity is preferred
+- Permission prompts might be disruptive
+- Quick loading is essential
+
+### Troubleshooting Enhanced Features
+
+**GPS permission denied:**
+
+- Component automatically falls back to IP detection
+- User can still manually select currency
+- No functionality is lost
+
+**Slow GPS detection:**
+
+- 10-second timeout prevents hanging
+- Loading indicators keep users informed
+- IP fallback ensures quick resolution
+
+**HTTPS requirement:**
+
+- Geolocation API requires HTTPS in production
+- Development (localhost) works with HTTP
+- Component handles gracefully on HTTP sites
+
+### Demo Pages
+
+Visit these pages to see the components in action:
+
+- `/currency-demo` - Standard IP-based SmartPrice
+- `/geolocation-pricing-demo` - Enhanced GPS+IP SmartPrice
+
+Both pages include side-by-side comparisons and real-time debugging information.
