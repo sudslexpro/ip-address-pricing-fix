@@ -3,13 +3,6 @@ import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/icon/AppIcon";
 import Link from "next/link";
-import {
-	EnhancedModal as Modal,
-	ModalContent,
-	ModalHeader,
-	ModalTitle,
-	ModalDescription,
-} from "@/components/ui/modal";
 import { VersatileCalendlyScheduler } from "@/components/scheduling";
 
 const PricingSection = () => {
