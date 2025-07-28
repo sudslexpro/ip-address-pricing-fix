@@ -195,7 +195,7 @@ const TestimonialsSection = () => {
 										alt={currentTest.name}
 										width={400}
 										height={400}
-										className="w-54 h-30 object-fit bg-white dark:bg-white/90 rounded-lg shadow-md p-2"
+										className="w-38 h-30 object-contain bg-white dark:bg-white/90 rounded-lg shadow-md p-1"
 									/>
 									{/* <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-success rounded-full flex items-center justify-center">
 										<Icon name="Check" size={12} className="text-white" />
