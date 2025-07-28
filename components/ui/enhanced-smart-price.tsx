@@ -53,16 +53,14 @@ interface EnhancedSmartPriceProps {
 }
 
 /**
- * EnhancedSmartPrice - A versatile component with browser geolocation support
+ * EnhancedSmartPrice - Always uses IP-based auto-detection for location/currency.
  *
  * Features:
- * - Browser Geolocation API for high accuracy
- * - IP-based fallback detection
+ * - IP-based location detection only (no browser geolocation)
  * - Real-time currency conversion
  * - Manual currency override
  * - Customizable rounding options
  * - Multiple display variants
- * - Permission management
  */
 const EnhancedSmartPrice: React.FC<EnhancedSmartPriceProps> = ({
 	amount,
@@ -73,9 +71,11 @@ const EnhancedSmartPrice: React.FC<EnhancedSmartPriceProps> = ({
 	showCurrencySelector = true,
 	showRoundingControls = false,
 	showLocationIndicator = true,
+	// Always use auto-detect (IP-based), never browser geolocation
 	enableAutoDetection = true,
 	preferBrowserGeolocation = false,
 	fallbackToIP = true,
+	// Never show permission prompt
 	showPermissionPrompt = false,
 	onChange,
 	loadingText = "Converting...",
@@ -122,31 +122,8 @@ const EnhancedSmartPrice: React.FC<EnhancedSmartPriceProps> = ({
 		}
 	}, [currentCurrency, convertedAmount, exchangeRate, onChange]);
 
-	// Render geolocation permission prompt
-	const renderPermissionPrompt = () => {
-		if (!showPermissionPrompt || !preferBrowserGeolocation) return null;
-
-		if (
-			geolocationPermission === "prompt" ||
-			geolocationPermission === "denied"
-		) {
-			return (
-				<div className="flex items-center gap-2 text-xs text-muted-foreground bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-lg p-2 mb-2">
-					<Icon name="MapPin" size={12} className="text-amber-600" />
-					<span>Enable location for accurate currency detection</span>
-					<Button
-						size="sm"
-						variant="outline"
-						onClick={requestGeolocationPermission}
-						className="ml-auto h-6 px-2 text-xs">
-						Allow
-					</Button>
-				</div>
-			);
-		}
-
-		return null;
-	};
+	// Remove geolocation permission prompt entirely (always use IP-based detection)
+	const renderPermissionPrompt = () => null;
 
 	// Render the formatted price
 	const renderPrice = () => {
@@ -242,7 +219,7 @@ const EnhancedSmartPrice: React.FC<EnhancedSmartPriceProps> = ({
 		);
 	};
 
-	// Render rounding controls
+	// Render rounding controls (location settings always show IP-based only)
 	const renderRoundingControls = () => {
 		if (!showRoundingControls) return null;
 
@@ -259,49 +236,6 @@ const EnhancedSmartPrice: React.FC<EnhancedSmartPriceProps> = ({
 				<PopoverContent className="w-80">
 					<div className="space-y-4">
 						<h4 className="font-medium">Currency & Location Settings</h4>
-
-						{/* Location Detection Settings */}
-						{preferBrowserGeolocation && (
-							<div className="space-y-3 p-3 bg-muted/50 rounded-lg">
-								<div className="flex items-center justify-between">
-									<Label className="text-sm font-medium">Location Method</Label>
-									<div className="flex items-center gap-2">
-										{userLocation?.method === "browser" && (
-											<Icon
-												name="Navigation"
-												size={12}
-												className="text-green-600"
-											/>
-										)}
-										<span className="text-xs text-muted-foreground">
-											{userLocation?.method === "browser"
-												? "GPS"
-												: userLocation?.method === "ip"
-												? "IP"
-												: "Default"}
-										</span>
-									</div>
-								</div>
-
-								{geolocationPermission === "denied" && (
-									<div className="text-xs text-amber-600">
-										Geolocation blocked. Using IP detection.
-									</div>
-								)}
-
-								{(geolocationPermission === "prompt" ||
-									geolocationPermission === "denied") && (
-									<Button
-										size="sm"
-										variant="outline"
-										onClick={requestGeolocationPermission}
-										className="w-full h-7 text-xs">
-										<Icon name="MapPin" size={12} className="mr-1" />
-										Enable Precise Location
-									</Button>
-								)}
-							</div>
-						)}
 
 						{/* Rounding Settings */}
 						<div className="space-y-3">
@@ -355,19 +289,8 @@ const EnhancedSmartPrice: React.FC<EnhancedSmartPriceProps> = ({
 						{userLocation && (
 							<div className="pt-3 border-t text-xs text-muted-foreground">
 								<div className="flex items-center gap-1 mb-1">
-									<Icon
-										name={
-											userLocation.method === "browser"
-												? "Navigation"
-												: "MapPin"
-										}
-										size={10}
-									/>
-									<span className="font-medium">
-										{userLocation.method === "browser"
-											? "GPS Location"
-											: "IP Location"}
-									</span>
+									<Icon name="MapPin" size={10} />
+									<span className="font-medium">IP Location</span>
 									<span
 										className={cn(
 											"px-1 py-0.5 rounded text-xs",

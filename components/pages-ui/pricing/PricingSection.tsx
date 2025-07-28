@@ -260,7 +260,6 @@ const PricingSection = () => {
 											amount={getPrice(plan)}
 											variant="large"
 											preferBrowserGeolocation={true}
-											fallbackToIP={true}
 											showPermissionPrompt={true}
 											showLocationIndicator={true}
 											showCurrencySelector={plan.popular} // Show currency selector on popular plan
@@ -320,9 +319,17 @@ const PricingSection = () => {
 								<div className="bg-surface rounded-lg p-4 mb-6">
 									<div className="text-sm text-text-secondary">
 										Additional quotes:{" "}
-										<span className="font-medium text-text-primary">
-											${plan.additionalQuoteCost} each
-										</span>
+										<EnhancedSmartPrice
+											amount={plan.additionalQuoteCost}
+											variant="compact"
+											preferBrowserGeolocation={true}
+											fallbackToIP={true}
+											showPermissionPrompt={false}
+											showLocationIndicator={false}
+											showCurrencySelector={false}
+											className="font-medium text-text-primary inline"
+											suffix=" each"
+										/>
 									</div>
 								</div>
 
