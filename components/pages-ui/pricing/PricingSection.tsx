@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import Icon from "@/components/icon/AppIcon";
 import Link from "next/link";
 import { VersatileCalendlyScheduler } from "@/components/scheduling";
-import SmartPrice from "@/components/ui/smart-price";
 
 const PricingSection = () => {
 	const [billingCycle, setBillingCycle] = useState("monthly");
@@ -90,7 +89,7 @@ const PricingSection = () => {
 		{
 			name: "Additional Quotes",
 			description: "Extra quotes beyond your plan limit",
-			price: "From ",
+			price: "From $10-15 per quote",
 			priceAmount: 12, // Use middle price for conversion
 			priceSuffix: " per quote",
 			icon: "Plus",
@@ -99,14 +98,14 @@ const PricingSection = () => {
 		{
 			name: "Custom Solutions",
 			description: "Tailored features for your firm",
-			price: "Custom pricing",
+			price: "Starting at $500",
 			icon: "Link",
 			hasSmartPricing: false,
 		},
 		{
 			name: "Training & Onboarding",
 			description: "Dedicated training for your team",
-			price: "",
+			price: "$200 per session",
 			priceAmount: 200,
 			priceSuffix: " per session",
 			icon: "GraduationCap",
@@ -115,7 +114,7 @@ const PricingSection = () => {
 		{
 			name: "Priority Support",
 			description: "24/7 phone and email support",
-			price: "",
+			price: "$99 per month",
 			priceAmount: 99,
 			priceSuffix: " per month",
 			icon: "Headphones",
@@ -256,15 +255,12 @@ const PricingSection = () => {
 									</p>
 
 									<div className="mb-4">
-										<SmartPrice
-											amount={getPrice(plan)}
-											variant="large"
-											showCurrencySelector={plan.popular} // Show currency selector on popular plan
-											className="text-text-primary"
-											suffix={`/${
-												billingCycle === "monthly" ? "month" : "year"
-											}`}
-										/>
+										<span className="text-4xl font-bold text-text-primary">
+											${getPrice(plan)}
+										</span>
+										<span className="text-text-secondary">
+											/{billingCycle === "monthly" ? "month" : "year"}
+										</span>
 									</div>
 
 									{billingCycle === "annual" && (
@@ -316,13 +312,9 @@ const PricingSection = () => {
 								<div className="bg-surface rounded-lg p-4 mb-6">
 									<div className="text-sm text-text-secondary">
 										Additional quotes:{" "}
-										<SmartPrice
-											amount={plan.additionalQuoteCost}
-											variant="compact"
-											showCurrencySelector={false}
-											className="font-medium text-text-primary inline"
-											suffix=" each"
-										/>
+										<span className="font-medium text-text-primary">
+											${plan.additionalQuoteCost} each
+										</span>
 									</div>
 								</div>
 
@@ -388,20 +380,7 @@ const PricingSection = () => {
 									{addon.description}
 								</p>
 								<div className="text-sm font-medium text-accent">
-									{addon.hasSmartPricing ? (
-										<>
-											{addon.price}
-											<SmartPrice
-												amount={addon.priceAmount!}
-												variant="compact"
-												showCurrencySelector={false}
-												className="inline"
-												suffix={addon.priceSuffix}
-											/>
-										</>
-									) : (
-										addon.price
-									)}
+									{addon.price}
 								</div>
 							</div>
 						))}
