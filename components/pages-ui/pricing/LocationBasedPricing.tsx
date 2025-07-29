@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Icon from "@/components/icon/AppIcon";
 import useIPLocation from "@/hooks/useIPLocation";
 
 interface ExchangeRateData {
