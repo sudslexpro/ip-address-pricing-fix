@@ -62,42 +62,96 @@ export const LocationBasedPricing: React.FC<LocationBasedPricingProps> = ({
 		const fetchExchangeRate = async () => {
 			try {
 				setRateLoading(true);
-				const response = await fetch("/api/exchange-rates?target=INR");
+				setError(null); // Clear any previous errors
 
-				if (!response.ok) {
-					throw new Error("Failed to fetch exchange rate data");
-				}
+				// Add retry logic with exponential backoff
+				const MAX_RETRIES = 3;
+				let retryCount = 0;
+				let lastError;
 
-				const data = await response.json();
-
-				// Cache the exchange rate data
-				if (typeof window !== "undefined") {
+				while (retryCount < MAX_RETRIES) {
 					try {
-						localStorage.setItem(
-							EXCHANGE_RATE_CACHE_KEY,
-							JSON.stringify({
-								data,
-								timestamp: Date.now(),
-							})
-						);
+						const response = await fetch("/api/exchange-rates?target=INR");
+
+						if (!response.ok) {
+							throw new Error("Failed to fetch exchange rate data");
+						}
+
+						const data = await response.json();
+
+						// Validate the response data
+						if (!data.rates?.INR) {
+							throw new Error("Invalid exchange rate data received");
+						}
+
+						// Cache the exchange rate data
+						if (typeof window !== "undefined") {
+							try {
+								localStorage.setItem(
+									EXCHANGE_RATE_CACHE_KEY,
+									JSON.stringify({
+										data,
+										timestamp: Date.now(),
+									})
+								);
+							} catch (err) {
+								console.warn("Failed to cache exchange rate:", err);
+								// Don't throw - caching failure shouldn't break functionality
+							}
+						}
+
+						setExchangeRate(data);
+						return; // Success - exit retry loop
 					} catch (err) {
-						console.error("Failed to cache exchange rate:", err);
+						lastError = err;
+						retryCount++;
+						if (retryCount < MAX_RETRIES) {
+							// Wait with exponential backoff before retrying
+							await new Promise((resolve) =>
+								setTimeout(resolve, Math.pow(2, retryCount) * 1000)
+							);
+						}
 					}
 				}
 
-				setExchangeRate(data);
+				// If we get here, all retries failed
+				throw lastError;
 			} catch (err) {
 				const errorMessage =
 					err instanceof Error ? err.message : "Failed to fetch exchange rates";
 				setError(errorMessage);
-				console.error("Exchange rate fetch error:", err);
+				console.error("Exchange rate fetch error after retries:", err);
+
+				// If we have cached data, keep using it even if refresh failed
+				if (!exchangeRate) {
+					// Try to recover cached data even if it's expired
+					try {
+						const cached = localStorage.getItem(EXCHANGE_RATE_CACHE_KEY);
+						if (cached) {
+							const { data } = JSON.parse(cached);
+							setExchangeRate(data);
+						}
+					} catch (cacheErr) {
+						console.warn("Failed to recover cached exchange rate:", cacheErr);
+					}
+				}
 			} finally {
 				setRateLoading(false);
 			}
 		};
 
 		// Fetch exchange rate if we're showing INR prices and don't have a manual override or cached rate
-		if (isIndian && convertToINR && !priceINR && !exchangeRate) {
+		if (
+			isIndian &&
+			convertToINR &&
+			!priceINR &&
+			(!exchangeRate ||
+				Date.now() -
+					JSON.parse(
+						localStorage.getItem(EXCHANGE_RATE_CACHE_KEY) || '{"timestamp":0}'
+					).timestamp >=
+					EXCHANGE_RATE_CACHE_DURATION)
+		) {
 			fetchExchangeRate();
 		}
 	}, [isIndian, priceINR, exchangeRate, convertToINR]);
@@ -145,10 +199,12 @@ export const LocationBasedPricing: React.FC<LocationBasedPricingProps> = ({
 		}
 
 		return (
-			<span>
-				{currencySymbol}
-				{priceUSD}
-			</span>
+			<div>
+				<span>
+					{currencySymbol}
+					{priceUSD}
+				</span>
+			</div>
 		);
 	};
 
