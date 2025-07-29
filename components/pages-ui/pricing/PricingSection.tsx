@@ -107,6 +107,9 @@ const PricingSection = () => {
 			name: "Custom Solutions",
 			description: "Tailored features for your firm",
 			price: "Starting at $500",
+			priceAmount: 500,
+			priceAmountINR: 39999, // Manual INR price
+			pricePrefix: "Starting at ",
 			icon: "Link",
 			hasSmartPricing: false,
 		},
@@ -399,6 +402,7 @@ const PricingSection = () => {
 								<div className="text-sm font-medium text-accent">
 									{addon.hasSmartPricing && addon.priceAmount ? (
 										<>
+										{/* {addon.pricePrefix} */}
 											<LocationBasedPricing
 												priceUSD={addon.priceAmount}
 												priceINR={addon.priceAmountINR}

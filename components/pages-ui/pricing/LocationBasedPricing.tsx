@@ -2,18 +2,13 @@
 
 import React, { useEffect, useState } from "react";
 import Icon from "@/components/icon/AppIcon";
-
-interface GeolocationData {
-	country: string;
-	countryName: string;
-	currency: string;
-	timezone: string;
-	ip: string;
-}
+import useIPLocation from "@/hooks/useIPLocation";
 
 interface ExchangeRateData {
-	INR: number;
-	timestamp: number;
+	rates: {
+		INR: number;
+	};
+	lastUpdated: string;
 }
 
 interface LocationBasedPricingProps {
@@ -27,71 +22,69 @@ export const LocationBasedPricing: React.FC<LocationBasedPricingProps> = ({
 	priceINR,
 	convertToINR = true,
 }) => {
-	const [location, setLocation] = useState<GeolocationData | null>(null);
+	const {
+		location,
+		isLoading: locationLoading,
+		isIndian,
+		currencySymbol,
+	} = useIPLocation();
 	const [exchangeRate, setExchangeRate] = useState<ExchangeRateData | null>(
 		null
 	);
-	const [loading, setLoading] = useState(true);
+	const [rateLoading, setRateLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
-		const fetchData = async () => {
+		const fetchExchangeRate = async () => {
 			try {
-				// Fetch location and exchange rate in parallel
-				const [locationResponse, rateResponse] = await Promise.all([
-					fetch("/api/geolocation"),
-					fetch("/api/exchange-rates"),
-				]);
+				setRateLoading(true);
+				const response = await fetch("/api/exchange-rates?target=INR");
 
-				if (!locationResponse.ok) {
-					throw new Error("Failed to fetch location data");
-				}
-				if (!rateResponse.ok) {
+				if (!response.ok) {
 					throw new Error("Failed to fetch exchange rate data");
 				}
 
-				const [locationData, rateData] = await Promise.all([
-					locationResponse.json(),
-					rateResponse.json(),
-				]);
-
-				setLocation(locationData);
-				setExchangeRate(rateData);
+				const data = await response.json();
+				setExchangeRate(data);
 			} catch (err) {
-				setError("Unable to fetch required data");
-				console.error("Data fetch error:", err);
+				const errorMessage =
+					err instanceof Error ? err.message : "Failed to fetch exchange rates";
+				setError(errorMessage);
+				console.error("Exchange rate fetch error:", err);
 			} finally {
-				setLoading(false);
+				setRateLoading(false);
 			}
 		};
 
-		fetchData();
-	}, []);
+		if (isIndian && !priceINR) {
+			fetchExchangeRate();
+		}
+	}, [isIndian, priceINR]);
 
 	const formatPrice = () => {
-		if (loading) {
+		if (locationLoading || (isIndian && rateLoading && !priceINR)) {
 			return <span className="animate-pulse">Loading...</span>;
 		}
 
-		if (error || !location) {
-			return `${priceUSD}`;
+		if (!location) {
+			return `${currencySymbol}${priceUSD}`;
 		}
 
-		if (location.country === "IN" && convertToINR) {
+		if (isIndian && convertToINR) {
 			if (priceINR) {
 				// Use manual override price without showing USD equivalent
 				return <span>₹{priceINR.toLocaleString("en-IN")}</span>;
 			}
 
 			// Use real-time exchange rate if available, fallback to default rate
-			const rate = exchangeRate?.INR ?? 83;
+			const rate = exchangeRate?.rates?.INR ?? 83;
 			const calculatedINR = Math.round(priceUSD * rate);
 
 			return (
 				<span>
 					₹{calculatedINR.toLocaleString("en-IN")}
 					<span className="text-xs text-text-muted ml-1">
-						(≈ {priceUSD})
+						(≈ ${priceUSD})
 						{exchangeRate && (
 							<span className="text-xs text-text-muted ml-1">
 								• Live rate: ₹{rate.toFixed(2)}
@@ -102,16 +95,11 @@ export const LocationBasedPricing: React.FC<LocationBasedPricingProps> = ({
 			);
 		}
 
-		return `${priceUSD}`;
+		return `${currencySymbol}${priceUSD}`;
 	};
 
 	return (
 		<div className="inline-flex items-center">
-			{location?.country === "IN" && convertToINR ? (
-				<Icon name="IndianRupee" size={16} className="mr-1" />
-			) : (
-				<Icon name="DollarSign" size={16} className="mr-1" />
-			)}
 			<span className="font-bold">{formatPrice()}</span>
 		</div>
 	);
