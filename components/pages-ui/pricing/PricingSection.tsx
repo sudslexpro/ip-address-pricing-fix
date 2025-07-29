@@ -402,7 +402,7 @@ const PricingSection = () => {
 								<div className="text-sm font-medium text-accent">
 									{addon.hasSmartPricing && addon.priceAmount ? (
 										<>
-										{/* {addon.pricePrefix} */}
+										{addon.pricePrefix}
 											<LocationBasedPricing
 												priceUSD={addon.priceAmount}
 												priceINR={addon.priceAmountINR}
