@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import Icon from "@/components/icon/AppIcon";
 import Link from "next/link";
 import { VersatileCalendlyScheduler } from "@/components/scheduling";
+import { LocationBasedPricing } from "./LocationBasedPricing";
 
 const PricingSection = () => {
 	const [billingCycle, setBillingCycle] = useState("monthly");
@@ -16,7 +17,9 @@ const PricingSection = () => {
 			name: "Starter",
 			description: "Perfect for solo practitioners and small firms",
 			monthlyPrice: 99,
+			monthlyPriceINR: 7999, // Manual INR price
 			annualPrice: 990,
+			annualPriceINR: 79990, // Manual INR price
 			quotesIncluded: 25,
 			additionalQuoteCost: 15,
 			features: [
@@ -39,7 +42,9 @@ const PricingSection = () => {
 			name: "Professional",
 			description: "Ideal for growing boutique firms",
 			monthlyPrice: 199,
+			monthlyPriceINR: 15999,
 			annualPrice: 1990,
+			annualPriceINR: 159990,
 			quotesIncluded: 75,
 			additionalQuoteCost: 12,
 			features: [
@@ -62,7 +67,9 @@ const PricingSection = () => {
 			name: "Enterprise",
 			description: "For established firms with high volume",
 			monthlyPrice: 399,
+			monthlyPriceINR: 31999,
 			annualPrice: 3990,
+			annualPriceINR: 319990,
 			quotesIncluded: 200,
 			additionalQuoteCost: 10,
 			features: [
@@ -91,6 +98,7 @@ const PricingSection = () => {
 			description: "Extra quotes beyond your plan limit",
 			price: "From $10-15 per quote",
 			priceAmount: 12, // Use middle price for conversion
+			priceAmountINR: 999, // Manual INR price
 			priceSuffix: " per quote",
 			icon: "Plus",
 			hasSmartPricing: true,
@@ -107,6 +115,7 @@ const PricingSection = () => {
 			description: "Dedicated training for your team",
 			price: "$200 per session",
 			priceAmount: 200,
+			priceAmountINR: 15999,
 			priceSuffix: " per session",
 			icon: "GraduationCap",
 			hasSmartPricing: true,
@@ -116,6 +125,7 @@ const PricingSection = () => {
 			description: "24/7 phone and email support",
 			price: "$99 per month",
 			priceAmount: 99,
+			priceAmountINR: 7999,
 			priceSuffix: " per month",
 			icon: "Headphones",
 			hasSmartPricing: true,
@@ -146,7 +156,11 @@ const PricingSection = () => {
 	];
 
 	const getPrice = (plan: typeof plans.starter) => {
-		return billingCycle === "monthly" ? plan.monthlyPrice : plan.annualPrice;
+		return {
+			usd: billingCycle === "monthly" ? plan.monthlyPrice : plan.annualPrice,
+			inr:
+				billingCycle === "monthly" ? plan.monthlyPriceINR : plan.annualPriceINR,
+		};
 	};
 
 	const getSavings = (plan: typeof plans.starter) => {
@@ -256,7 +270,10 @@ const PricingSection = () => {
 
 									<div className="mb-4">
 										<span className="text-4xl font-bold text-text-primary">
-											${getPrice(plan)}
+											<LocationBasedPricing
+												priceUSD={getPrice(plan).usd}
+												priceINR={getPrice(plan).inr}
+											/>
 										</span>
 										<span className="text-text-secondary">
 											/{billingCycle === "monthly" ? "month" : "year"}
@@ -313,7 +330,7 @@ const PricingSection = () => {
 									<div className="text-sm text-text-secondary">
 										Additional quotes:{" "}
 										<span className="font-medium text-text-primary">
-											${plan.additionalQuoteCost} each
+											{plan.additionalQuoteCost} each
 										</span>
 									</div>
 								</div>
@@ -380,7 +397,18 @@ const PricingSection = () => {
 									{addon.description}
 								</p>
 								<div className="text-sm font-medium text-accent">
-									{addon.price}
+									{addon.hasSmartPricing && addon.priceAmount ? (
+										<>
+											<LocationBasedPricing
+												priceUSD={addon.priceAmount}
+												priceINR={addon.priceAmountINR}
+												convertToINR={true}
+											/>
+											{addon.priceSuffix}
+										</>
+									) : (
+										addon.price
+									)}
 								</div>
 							</div>
 						))}
