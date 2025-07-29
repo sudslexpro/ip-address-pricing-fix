@@ -17,9 +17,9 @@ const PricingSection = () => {
 			name: "Starter",
 			description: "Perfect for solo practitioners and small firms",
 			monthlyPrice: 99,
-			monthlyPriceINR: 7999, // Manual INR price
+			monthlyPriceINR: 8599, // Manual INR price
 			annualPrice: 990,
-			annualPriceINR: 79990, // Manual INR price
+			annualPriceINR: 85999, // Manual INR price
 			quotesIncluded: 25,
 			additionalQuoteCost: 15,
 			features: [
