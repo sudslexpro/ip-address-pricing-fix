@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import Icon from "@/components/icon/AppIcon";
 import Link from "next/link";
 import { VersatileCalendlyScheduler } from "@/components/scheduling";
-import EnhancedSmartPrice from "@/components/ui/enhanced-smart-price";
+import SmartPrice from "@/components/ui/smart-price";
 
 const PricingSection = () => {
 	const [billingCycle, setBillingCycle] = useState("monthly");
@@ -256,12 +256,9 @@ const PricingSection = () => {
 									</p>
 
 									<div className="mb-4">
-										<EnhancedSmartPrice
+										<SmartPrice
 											amount={getPrice(plan)}
 											variant="large"
-											preferBrowserGeolocation={true}
-											showPermissionPrompt={true}
-											showLocationIndicator={true}
 											showCurrencySelector={plan.popular} // Show currency selector on popular plan
 											className="text-text-primary"
 											suffix={`/${
@@ -319,13 +316,9 @@ const PricingSection = () => {
 								<div className="bg-surface rounded-lg p-4 mb-6">
 									<div className="text-sm text-text-secondary">
 										Additional quotes:{" "}
-										<EnhancedSmartPrice
+										<SmartPrice
 											amount={plan.additionalQuoteCost}
 											variant="compact"
-											preferBrowserGeolocation={true}
-											fallbackToIP={true}
-											showPermissionPrompt={false}
-											showLocationIndicator={false}
 											showCurrencySelector={false}
 											className="font-medium text-text-primary inline"
 											suffix=" each"
@@ -398,13 +391,9 @@ const PricingSection = () => {
 									{addon.hasSmartPricing ? (
 										<>
 											{addon.price}
-											<EnhancedSmartPrice
+											<SmartPrice
 												amount={addon.priceAmount!}
 												variant="compact"
-												preferBrowserGeolocation={true}
-												fallbackToIP={true}
-												showPermissionPrompt={false}
-												showLocationIndicator={false}
 												showCurrencySelector={false}
 												className="inline"
 												suffix={addon.priceSuffix}
