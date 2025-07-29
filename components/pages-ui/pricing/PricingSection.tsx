@@ -6,6 +6,8 @@ import Link from "next/link";
 import { VersatileCalendlyScheduler } from "@/components/scheduling";
 import { LocationBasedPricing } from "./LocationBasedPricing";
 
+// using IP address to detect location, if it's India, show INR prices and if other countries, show USD prices
+
 const PricingSection = () => {
 	const [billingCycle, setBillingCycle] = useState("monthly");
 	const [selectedPlan, setSelectedPlan] = useState("professional");
