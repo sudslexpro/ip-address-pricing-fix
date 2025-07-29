@@ -23,7 +23,8 @@ const nextConfig: NextConfig = {
 		"*.local-origin.dev",
 		"192.168.0.144",
 		"192.168.0.112",
-		"192.168.29.183"
+		"192.168.29.183",
+		"192.168.76.219"
 	],
 	crossOrigin: "anonymous",
 	serverExternalPackages: ["@prisma/client"],

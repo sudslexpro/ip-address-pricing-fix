@@ -17,9 +17,9 @@ const PricingSection = () => {
 			name: "Starter",
 			description: "Perfect for solo practitioners and small firms",
 			monthlyPrice: 99,
-			monthlyPriceINR: 8599, // Manual INR price
+			monthlyPriceINR: 7999, // Manual INR price
 			annualPrice: 990,
-			annualPriceINR: 85999, // Manual INR price
+			annualPriceINR: 79990, // Manual INR price
 			quotesIncluded: 25,
 			additionalQuoteCost: 15,
 			features: [
@@ -42,9 +42,9 @@ const PricingSection = () => {
 			name: "Professional",
 			description: "Ideal for growing boutique firms",
 			monthlyPrice: 199,
-			monthlyPriceINR: 15999,
+			monthlyPriceINR: 14999,
 			annualPrice: 1990,
-			annualPriceINR: 159990,
+			annualPriceINR: 149990, // Manual INR price
 			quotesIncluded: 75,
 			additionalQuoteCost: 12,
 			features: [
@@ -67,9 +67,9 @@ const PricingSection = () => {
 			name: "Enterprise",
 			description: "For established firms with high volume",
 			monthlyPrice: 399,
-			monthlyPriceINR: 31999,
+			monthlyPriceINR: 29999,
 			annualPrice: 3990,
-			annualPriceINR: 319990,
+			annualPriceINR: 299990, // Manual INR price
 			quotesIncluded: 200,
 			additionalQuoteCost: 10,
 			features: [
@@ -107,11 +107,11 @@ const PricingSection = () => {
 			name: "Custom Solutions",
 			description: "Tailored features for your firm",
 			price: "Starting at $500",
-			priceAmount: 500,
+			priceAmount: 500, // Use middle price for conversion
 			priceAmountINR: 39999, // Manual INR price
 			pricePrefix: "Starting at ",
 			icon: "Link",
-			hasSmartPricing: false,
+			hasSmartPricing: true,
 		},
 		{
 			name: "Training & Onboarding",
