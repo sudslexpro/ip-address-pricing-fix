@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/icon/AppIcon";
 import Link from "next/link";
@@ -14,7 +14,16 @@ const PricingSection = () => {
 	const [selectedPlan, setSelectedPlan] = useState("professional");
 	const [showCalendlyScheduler, setShowCalendlyScheduler] = useState(false);
 	const calendlyRef = useRef<HTMLDivElement>(null);
-	const { shouldShowINR } = useIPLocation();
+	const { shouldShowINR, location } = useIPLocation();
+
+	// Debug log for pricing section
+	useEffect(() => {
+		console.log("PricingSection: Location state updated", {
+			shouldShowINR,
+			location,
+			currentCycle: billingCycle,
+		});
+	}, [shouldShowINR, location, billingCycle]);
 
 	const plans = {
 		starter: {

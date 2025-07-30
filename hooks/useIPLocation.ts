@@ -199,11 +199,14 @@ const useIPLocation = () => {
 
 	// Debug logging
 	useEffect(() => {
-		if (location) {
-			console.log("Current location:", location);
-			console.log("Should show INR:", shouldShowINR);
-		}
-	}, [location, shouldShowINR]);
+		console.log("Location state:", {
+			location,
+			isIndian,
+			shouldShowINR,
+			isUSorDefault,
+			country: location?.country,
+		});
+	}, [location, isIndian, shouldShowINR, isUSorDefault]);
 
 	return {
 		location,
