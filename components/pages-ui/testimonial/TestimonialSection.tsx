@@ -46,7 +46,7 @@ const TestimonialsSection = () => {
 		},
 		{
 			id: 3,
-			name: "Abhishek Sharam",
+			name: "Abhishek Sharma",
 			title: "Chartered Accountant",
 			firm: "CA",
 			location: "",
@@ -352,7 +352,7 @@ const TestimonialsSection = () => {
 						{[
 							"Trumarx",
 							"Lex Motion",
-							"CA Abhishek Sharam",
+							"CA Abhishek Sharma",
 							"Wendy Au",
 							"C&H IP LAW LIMITED",
 							"WIPS Law Associates Pvt Ltd",
