@@ -20,7 +20,7 @@ async function getLocationData(ip: string) {
 	}
 
 	const response = await fetch(
-		`https://ipgeolocation.abstractapi.com/v1/?api_key=${API_KEY}&ip_address=${ip}`,
+		`https://ipgeolocation.abstractapi.com/v1/?api_key=${API_KEY}`,
 		{
 			headers: {
 				Accept: "application/json",
