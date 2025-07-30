@@ -14,11 +14,17 @@ const COUNTRY_CURRENCIES: { [key: string]: string } = {
 
 // Function to get location data for an IP
 async function getLocationData(ip: string) {
-	const API_KEY = process.env.ABSTRACT_API_KEY;
+	const API_KEY = process.env.NEXT_PUBLIC_ABSTRACT_API_KEY;
 
 	if (!API_KEY) {
-		throw new Error("ABSTRACT_API_KEY environment variable is not set");
+		console.error("API Key environment variable is not set");
+		throw new Error(
+			"NEXT_PUBLIC_ABSTRACT_API_KEY environment variable is not set"
+		);
 	}
+
+	// Log the IP we're checking for debugging
+	console.log("Checking location for IP:", ip);
 
 	try {
 		const response = await axios.get(
@@ -38,13 +44,18 @@ async function getLocationData(ip: string) {
 		// With axios, successful response is in response.data
 		const data = response.data;
 
+		// Log the raw response for debugging
+		console.log("Abstract API raw response:", data);
+
 		// Validate the response data
 		if (!data.country_code) {
+			console.error("Invalid response - missing country_code:", data);
 			throw new Error("Invalid response from Abstract API");
 		}
 
 		// Map the response to our expected format
 		const countryCode = data.country_code;
+		console.log("Detected country code:", countryCode);
 		return {
 			country: countryCode,
 			countryName: data.country || "United States",

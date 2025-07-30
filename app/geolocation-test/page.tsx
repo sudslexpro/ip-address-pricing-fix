@@ -35,12 +35,20 @@ export default function GeolocationTest() {
 				setError(null);
 
 				// Make two calls - one to our API and one directly to Abstract API for comparison
+				console.log(
+					"API Key being used:",
+					process.env.NEXT_PUBLIC_ABSTRACT_API_KEY
+				);
+
 				const [localResponse, abstractResponse] = await Promise.all([
 					fetch("/api/geolocation"),
 					fetch(
 						`https://ipgeolocation.abstractapi.com/v1/?api_key=${process.env.NEXT_PUBLIC_ABSTRACT_API_KEY}`
 					),
 				]);
+
+				console.log("Local API Response Status:", localResponse.status);
+				console.log("Abstract API Response Status:", abstractResponse.status);
 
 				if (!localResponse.ok) {
 					throw new Error(

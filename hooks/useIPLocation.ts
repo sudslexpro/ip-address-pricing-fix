@@ -22,9 +22,24 @@ interface CachedLocation {
 
 const useIPLocation = () => {
 	const [location, setLocation] = useState<IPLocation | null>(() => {
-		// Clear existing cache on component mount to ensure fresh data
+		// Try to load from cache on mount
 		if (typeof window !== "undefined") {
-			localStorage.removeItem(LOCATION_CACHE_KEY);
+			try {
+				const cached = localStorage.getItem(LOCATION_CACHE_KEY);
+				if (cached) {
+					const { data, timestamp } = JSON.parse(cached);
+					if (Date.now() - timestamp < LOCATION_CACHE_DURATION) {
+						console.log("Using cached location data:", data);
+						return data;
+					} else {
+						console.log("Cache expired, will fetch fresh data");
+						localStorage.removeItem(LOCATION_CACHE_KEY);
+					}
+				}
+			} catch (err) {
+				console.warn("Failed to load cached location:", err);
+				localStorage.removeItem(LOCATION_CACHE_KEY);
+			}
 		}
 		return null;
 	});
