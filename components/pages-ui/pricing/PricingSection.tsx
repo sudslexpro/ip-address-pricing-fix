@@ -3,6 +3,7 @@ import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/icon/AppIcon";
 import Link from "next/link";
+import useIPLocation from "@/hooks/useIPLocation";
 import { VersatileCalendlyScheduler } from "@/components/scheduling";
 import { LocationBasedPricing } from "./LocationBasedPricing";
 
@@ -13,6 +14,7 @@ const PricingSection = () => {
 	const [selectedPlan, setSelectedPlan] = useState("professional");
 	const [showCalendlyScheduler, setShowCalendlyScheduler] = useState(false);
 	const calendlyRef = useRef<HTMLDivElement>(null);
+	const { shouldShowINR } = useIPLocation();
 
 	const plans = {
 		starter: {
@@ -181,9 +183,26 @@ const PricingSection = () => {
 	};
 
 	const getSavings = (plan: typeof plans.starter) => {
-		const monthlyCost = plan.monthlyPrice * 12;
-		const annualCost = plan.annualPrice;
-		return Math.round(((monthlyCost - annualCost) / monthlyCost) * 100);
+		// Calculate USD savings
+		const monthlyUSDCost = plan.monthlyPrice * 12;
+		const annualUSDCost = plan.annualPrice;
+		const usdSavings = Math.round(
+			((monthlyUSDCost - annualUSDCost) / monthlyUSDCost) * 100
+		);
+
+		// Calculate INR savings
+		const monthlyINRCost = plan.monthlyPriceINR * 12;
+		const annualINRCost = plan.annualPriceINR;
+		const inrSavings = Math.round(
+			((monthlyINRCost - annualINRCost) / monthlyINRCost) * 100
+		);
+
+		return {
+			// usd: usdSavings,
+			// inr: inrSavings,
+			usd: 20, // Fixed 20% savings for annual plans
+			inr: 20, // Fixed 20% savings for annual plans
+		};
 	};
 
 	const handlePlanSelect = (planKey: string) => {
@@ -299,7 +318,9 @@ const PricingSection = () => {
 
 									{billingCycle === "annual" && (
 										<div className="text-sm text-success font-medium">
-											Save {getSavings(plan)}% annually
+											{shouldShowINR
+												? `Save ${getSavings(plan).inr}% annually`
+												: `Save ${getSavings(plan).usd}% annually`}
 										</div>
 									)}
 
