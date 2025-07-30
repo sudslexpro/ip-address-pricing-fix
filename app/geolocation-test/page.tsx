@@ -38,7 +38,7 @@ export default function GeolocationTest() {
 				const [localResponse, abstractResponse] = await Promise.all([
 					fetch("/api/geolocation"),
 					fetch(
-						`https://ipgeolocation.abstractapi.com/v1/?api_key=${process.env.ABSTRACT_API_KEY}`
+						`https://ipgeolocation.abstractapi.com/v1/?api_key=${process.env.NEXT_PUBLIC_ABSTRACT_API_KEY}`
 					),
 				]);
 
