@@ -2,12 +2,14 @@
 import { useState, useEffect } from "react";
 
 interface IPLocation {
-	country_code: string;
-	country_name?: string;
-	currency?: string;
-	timezone?: string;
-	city?: string;
-	region?: string;
+	country: string;
+	countryName: string;
+	currency: string;
+	timezone: string;
+	city: string | null;
+	region: string | null;
+	ip: string;
+	error?: string;
 }
 
 const LOCATION_CACHE_KEY = "user-location-cache";
@@ -20,16 +22,9 @@ interface CachedLocation {
 
 const useIPLocation = () => {
 	const [location, setLocation] = useState<IPLocation | null>(() => {
-		// Try to get cached location on initial render
+		// Clear existing cache on component mount to ensure fresh data
 		if (typeof window !== "undefined") {
-			const cached = localStorage.getItem(LOCATION_CACHE_KEY);
-			if (cached) {
-				const { data, timestamp }: CachedLocation = JSON.parse(cached);
-				if (Date.now() - timestamp < LOCATION_CACHE_DURATION) {
-					return data;
-				}
-				localStorage.removeItem(LOCATION_CACHE_KEY);
-			}
+			localStorage.removeItem(LOCATION_CACHE_KEY);
 		}
 		return null;
 	});
@@ -72,58 +67,23 @@ const useIPLocation = () => {
 
 				while (retryCount < MAX_RETRIES && isMounted) {
 					try {
-						// Try our own geolocation API first
-						const localApiResponse = await fetch("/api/geolocation", {
-							signal: controller.signal,
-						});
-
-						if (localApiResponse.ok) {
-							const data = await localApiResponse.json();
-							if (data.country) {
-								const locationData = {
-									country_code: data.country,
-									country_name: data.countryName,
-									currency: data.currency,
-									timezone: data.timezone,
-									city: data.city,
-									region: data.region,
-								};
-
-								// Cache the location data
-								if (typeof window !== "undefined") {
-									localStorage.setItem(
-										LOCATION_CACHE_KEY,
-										JSON.stringify({
-											data: locationData,
-											timestamp: Date.now(),
-										})
-									);
-								}
-
-								if (isMounted) {
-									setLocation(locationData);
-								}
-								return;
-							}
-						}
-
-						// Fallback to ipapi.co if our API fails
-						const response = await fetch("https://ipapi.co/json/", {
+						// Use our geolocation API
+						const response = await fetch("/api/geolocation", {
 							signal: controller.signal,
 						});
 
 						if (!response.ok) {
-							throw new Error("Failed to fetch location");
+							throw new Error(`Failed to fetch location: ${response.status}`);
 						}
 
 						const data = await response.json();
 
 						// Validate the response data
-						if (!data.country_code) {
+						if (!data.country) {
 							throw new Error("Invalid location data received");
 						}
 
-						// Cache the location data
+						// Cache the location data with shorter duration in development
 						if (typeof window !== "undefined") {
 							localStorage.setItem(
 								LOCATION_CACHE_KEY,
@@ -135,6 +95,7 @@ const useIPLocation = () => {
 						}
 
 						if (isMounted) {
+							console.log("Setting location:", data); // Debug log
 							setLocation(data);
 						}
 						return; // Success - exit retry loop
@@ -180,7 +141,15 @@ const useIPLocation = () => {
 						? lastError.message
 						: "An error occurred while fetching location";
 					setError(errorMessage);
-					const defaultLocation = { country_code: "US" };
+					const defaultLocation: IPLocation = {
+						country: "US",
+						countryName: "United States",
+						currency: "USD",
+						timezone: "America/New_York",
+						city: null,
+						region: null,
+						ip: "unknown",
+					};
 					setLocation(defaultLocation);
 
 					// Cache the default location
@@ -209,17 +178,25 @@ const useIPLocation = () => {
 		};
 	}, []); // Remove location from dependencies to prevent refetch loops
 
-	const isIndian = location?.country_code === "IN";
-	const currency = isIndian ? "INR" : "USD";
-	const currencySymbol = isIndian ? "₹" : "$";
+	const isIndian = location?.country === "IN";
+	const shouldShowINR = isIndian;
+	const isUSorDefault = !location || location.country === "US";
+
+	// Debug logging
+	useEffect(() => {
+		if (location) {
+			console.log("Current location:", location);
+			console.log("Should show INR:", shouldShowINR);
+		}
+	}, [location, shouldShowINR]);
 
 	return {
 		location,
 		isLoading,
 		error,
 		isIndian,
-		currency,
-		currencySymbol,
+		shouldShowINR,
+		isUSorDefault,
 	};
 };
 

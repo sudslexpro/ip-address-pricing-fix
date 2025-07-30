@@ -94,7 +94,19 @@ const PricingSection = () => {
 		},
 	};
 
-	const addOns = [
+	interface AddOn {
+		name: string;
+		description: string;
+		price: string;
+		priceAmount: number;
+		priceAmountINR: number;
+		priceSuffix?: string;
+		pricePrefix?: string;
+		icon: keyof typeof import("lucide-react");
+		hasSmartPricing: boolean;
+	}
+
+	const addOns: AddOn[] = [
 		{
 			name: "Additional Quotes",
 			description: "Extra quotes beyond your plan limit",
@@ -384,13 +396,13 @@ const PricingSection = () => {
 					</div>
 
 					<div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-						{addOns.map((addon, index) => (
+						{addOns.map((addon: AddOn, index: number) => (
 							<div
 								key={index}
 								className="bg-white dark:bg-white/10 rounded-xl p-6 border border-border hover:shadow-cta transition-all duration-200">
 								<div className="w-12 h-12 bg-primary/10 dark:bg-primary/30 border border-border rounded-lg flex items-center justify-center mb-4">
 									<Icon
-										name={addon.icon as keyof typeof import("lucide-react")}
+										name={addon.icon}
 										size={24}
 										className="text-primary dark:text-white"
 									/>
@@ -404,13 +416,12 @@ const PricingSection = () => {
 								<div className="text-sm font-medium text-accent">
 									{addon.hasSmartPricing && addon.priceAmount ? (
 										<>
-										{addon.pricePrefix}
+											{addon.pricePrefix ? addon.pricePrefix : ""}
 											<LocationBasedPricing
 												priceUSD={addon.priceAmount}
 												priceINR={addon.priceAmountINR}
-												convertToINR={true}
 											/>
-											{addon.priceSuffix}
+											{addon.priceSuffix ? addon.priceSuffix : ""}
 										</>
 									) : (
 										addon.price
