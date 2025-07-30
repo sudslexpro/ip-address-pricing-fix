@@ -26,6 +26,7 @@ const PricingSection = () => {
 			annualPriceINR: 79990, // Manual INR price
 			quotesIncluded: 25,
 			additionalQuoteCost: 15,
+			additionalQuoteCostINR: 1299, // Manual INR price
 			features: [
 				"Up to 25 quotes per month",
 				"100+ country coverage",
@@ -50,7 +51,8 @@ const PricingSection = () => {
 			annualPrice: 1990,
 			annualPriceINR: 149990, // Manual INR price
 			quotesIncluded: 75,
-			additionalQuoteCost: 12,
+			additionalQuoteCost: 20,
+			additionalQuoteCostINR: 1599,
 			features: [
 				"Up to 75 quotes per month",
 				"100+ country coverage",
@@ -75,7 +77,8 @@ const PricingSection = () => {
 			annualPrice: 3990,
 			annualPriceINR: 299990, // Manual INR price
 			quotesIncluded: 200,
-			additionalQuoteCost: 10,
+			additionalQuoteCost: 35,
+			additionalQuoteCostINR: 2999,
 			features: [
 				"Up to 200 quotes per month",
 				"100+ country coverage",
@@ -368,7 +371,11 @@ const PricingSection = () => {
 									<div className="text-sm text-text-secondary">
 										Additional quotes:{" "}
 										<span className="font-medium text-text-primary">
-											{plan.additionalQuoteCost} each
+											<LocationBasedPricing
+												priceUSD={plan.additionalQuoteCost}
+												priceINR={plan.additionalQuoteCostINR}
+											/>{" "}
+											each
 										</span>
 									</div>
 								</div>
