@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import axios from "axios";
 
 // Currency codes for common countries
 const COUNTRY_CURRENCIES: { [key: string]: string } = {
@@ -19,45 +20,58 @@ async function getLocationData(ip: string) {
 		throw new Error("ABSTRACT_API_KEY environment variable is not set");
 	}
 
-	const response = await fetch(
-		`https://ipgeolocation.abstractapi.com/v1/?api_key=${API_KEY}`,
-		{
-			headers: {
-				Accept: "application/json",
-			},
-			// Add timeout to prevent hanging requests
-			signal: AbortSignal.timeout(5000),
+	try {
+		const response = await axios.get(
+			`https://ipgeolocation.abstractapi.com/v1/`,
+			{
+				params: {
+					api_key: API_KEY,
+					ip_address: ip,
+				},
+				headers: {
+					Accept: "application/json",
+				},
+				timeout: 5000, // 5 second timeout
+			}
+		);
+
+		// With axios, successful response is in response.data
+		const data = response.data;
+
+		// Validate the response data
+		if (!data.country_code) {
+			throw new Error("Invalid response from Abstract API");
 		}
-	);
 
-	if (!response.ok) {
-		// Check specific error codes
-		if (response.status === 429) {
-			console.warn("Rate limit hit for Abstract API");
-			throw new Error("Rate limit exceeded");
+		// Map the response to our expected format
+		const countryCode = data.country_code;
+		return {
+			country: countryCode,
+			countryName: data.country || "United States",
+			currency:
+				data.currency?.currency_code ||
+				COUNTRY_CURRENCIES[countryCode] ||
+				"USD",
+			timezone: data.timezone?.name || "UTC",
+			city: data.city,
+			region: data.region,
+			ip: ip,
+		};
+	} catch (error) {
+		// Handle Axios errors
+		if (axios.isAxiosError(error)) {
+			if (error.response?.status === 429) {
+				console.warn("Rate limit hit for Abstract API");
+				throw new Error("Rate limit exceeded");
+			}
+			throw new Error(
+				`Failed to fetch geolocation data: ${
+					error.response?.status || error.message
+				}`
+			);
 		}
-		throw new Error(`Failed to fetch geolocation data: ${response.status}`);
+		throw error;
 	}
-
-	const data = await response.json();
-
-	// Validate the response data
-	if (!data.country_code) {
-		throw new Error("Invalid response from Abstract API");
-	}
-
-	// Map the response to our expected format
-	const countryCode = data.country_code;
-	return {
-		country: countryCode,
-		countryName: data.country || "United States",
-		currency:
-			data.currency?.currency_code || COUNTRY_CURRENCIES[countryCode] || "USD",
-		timezone: data.timezone?.name || "UTC",
-		city: data.city,
-		region: data.region,
-		ip: ip,
-	};
 }
 
 export async function GET(request: NextRequest) {
@@ -72,23 +86,23 @@ export async function GET(request: NextRequest) {
 		// For development, if we get a loopback address, use a service to get our public IP
 		if (ip === "127.0.0.1" || ip === "::1") {
 			try {
-				const publicIpResponse = await fetch(
+				const publicIpResponse = await axios.get(
 					"https://api.ipify.org?format=json"
 				);
-				if (publicIpResponse.ok) {
-					const publicIpData = await publicIpResponse.json();
-					if (publicIpData.ip) {
-						const locationData = await getLocationData(publicIpData.ip);
-						return NextResponse.json(locationData, {
-							headers: {
-								"Cache-Control":
-									"public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400",
-							},
-						});
-					}
+				if (publicIpResponse.data?.ip) {
+					const locationData = await getLocationData(publicIpResponse.data.ip);
+					return NextResponse.json(locationData, {
+						headers: {
+							"Cache-Control":
+								"public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400",
+						},
+					});
 				}
 			} catch (error) {
-				console.warn("Failed to get public IP:", error);
+				console.warn(
+					"Failed to get public IP:",
+					error instanceof Error ? error.message : error
+				);
 			}
 		}
 
