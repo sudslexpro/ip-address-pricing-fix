@@ -96,6 +96,5 @@
 		"tailwindcss": "^4.1.11",
 		"tw-animate-css": "^1.3.6",
 		"typescript": "^5"
-	},
-	"packageManager": "yarn@4.9.2"
+	}
 }
